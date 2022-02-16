@@ -1,0 +1,18 @@
+{
+  "name": "mathbox-clj",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "cssauron": "^1.4.0",
+    "three": ">=0.137.0",
+    "mathbox": "file:../../js/mathbox",
+    "threestrap": "file:../../js/threestrap",
+    "shadergraph": "file:../../js/shadergraph",
+    "stats.js": "^0.17.0",
+    "glsl-parser": "^2.0.1",
+    "glsl-tokenizer": "^2.1.5"
+  },
+  "devDependencies": {
+    "shadow-cljs": "2.16.12"
+  }
+}
