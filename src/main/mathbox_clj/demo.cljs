@@ -1,7 +1,8 @@
-(ns user
+(ns mathbox-clj.demo
   (:require ["mathbox" :as MathBox]
             ["three" :as THREE]
-            ["three/examples/jsm/controls/OrbitControls.js" :as OrbitControls]))
+            ["three/examples/jsm/controls/OrbitControls.js"
+             :as OrbitControls]))
 
 (defn build-mathbox [opts]
   (MathBox/mathBox
