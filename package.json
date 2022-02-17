@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "mathbox": "^2.0.0",
+    "mathbox": "^2.1.0",
     "three": "^0.137.5"
   },
   "devDependencies": {
