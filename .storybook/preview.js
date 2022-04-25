@@ -1,8 +1,14 @@
-import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
+import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
+
+import "mathbox/mathbox.css";
+import "./preview.css";
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
+  layout: "fullscreen",
   controls: {
+    // show docs!
+    expanded: true,
     matchers: {
       color: /(background|color)$/i,
       date: /Date$/,
@@ -11,8 +17,5 @@ export const parameters = {
   viewport: {
     viewports: INITIAL_VIEWPORTS,
   },
-  backgrounds: {default: "light"},
-  docs: {
-      inlineStories: false,  // A (temporary?) workaround for dependecy conflicts in Storybook and MUI5.
-  }
-}
+  backgrounds: { default: "light" },
+};
