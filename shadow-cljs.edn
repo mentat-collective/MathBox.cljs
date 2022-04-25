@@ -1,11 +1,5 @@
-;; shadow-cljs configuration
-{:source-paths
- ["src/dev"
-  "src/main"
-  "src/test"]
-
- :dependencies
- []
-
+{:deps true
  :builds
- {}}
+ {:stories {:target     :npm-module
+            :ns-regexp  "-stories$"
+            :output-dir "public/js/stories"}}}

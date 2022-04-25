@@ -1,4 +1,4 @@
-(ns mathbox-clj.demo
+(ns mathbox-cljs.demo
   (:require ["mathbox" :as MathBox]
             ["three" :as THREE]
             ["three/examples/jsm/controls/OrbitControls.js"

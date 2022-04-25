@@ -1,12 +1,20 @@
 {
-  "name": "mathbox-clj",
+  "name": "mathbox-cljs",
   "version": "0.0.1",
-  "private": true,
   "dependencies": {
-    "mathbox": "^2.1.0",
+    "mathbox-react": "^0.0.10"
+  },
+  "peerDependencies": {
+    "mathbox": "^2.2.0",
     "three": "^0.137.5"
   },
   "devDependencies": {
     "shadow-cljs": "2.16.12"
+  },
+  "scripts": {
+    "watch": "shadow-cljs watch stories",
+    "pack": "webpack --watch",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   }
 }
