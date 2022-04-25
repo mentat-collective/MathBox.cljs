@@ -14,3 +14,13 @@
       (->reactified [:component])
       (->reactified [:parameters :docs :page])
       clj->js))
+
+(defn color [{:keys [name description default]}]
+  {:name name
+   :description description
+   :default "cake"
+   :defaultValue default
+   :control "color"
+   :table {:type {:summary "string"
+                  :detail "Any argument to THREE.Color: https://threejs.org/docs/#api/en/math/Color"}
+           :defaultValue {:summary default}}})
