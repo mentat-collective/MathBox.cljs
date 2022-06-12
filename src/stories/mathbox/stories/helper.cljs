@@ -1,4 +1,4 @@
-(ns mathbox-cljs.stories.helper
+(ns mathbox.stories.helper
   (:require [reagent.core :as reagent]))
 
 (defn ->params [^js args]

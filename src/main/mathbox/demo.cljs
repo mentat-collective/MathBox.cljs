@@ -1,8 +1,15 @@
-(ns mathbox-cljs.demo
+(ns mathbox.demo
   (:require ["mathbox" :as MathBox]
             ["three" :as THREE]
-            ["three/examples/jsm/controls/OrbitControls.js"
-             :as OrbitControls]))
+            ["three/examples/jsm/controls/OrbitControls.js" :as OrbitControls]))
+
+;; TODO
+;;
+;; - mirror mathbox source tree... write cljs to emit react defs.
+;;
+;; - make a ticket for splitting up mathbox-react components
+;;
+;; - figure out what to do with SCI.
 
 (defn build-mathbox [opts]
   (MathBox/mathBox

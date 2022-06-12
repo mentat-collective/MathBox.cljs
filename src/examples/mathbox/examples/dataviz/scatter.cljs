@@ -1,4 +1,4 @@
-(ns mathbox-cljs.examples.dataviz.scatter
+(ns mathbox.examples.dataviz.scatter
   (:require ["mathbox-react" :as box]
             #_[reagent.core :as r :include-macros true]
             ["three" :as THREE]

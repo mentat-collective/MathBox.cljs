@@ -1,6 +1,6 @@
-(ns mathbox-cljs.stories.dataviz.scatter-stories
-  (:require [mathbox-cljs.examples.dataviz.scatter :as scatter]
-            [mathbox-cljs.stories.helper :as helper :refer [color]]
+(ns mathbox.stories.dataviz.scatter-stories
+  (:require [mathbox.examples.dataviz.scatter :as scatter]
+            [mathbox.stories.helper :as helper :refer [color]]
             [reagent.core :as r]))
 
 ;; docs on how to write these: https://storybook.js.org/docs/react/api/csf
