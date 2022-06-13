@@ -6,7 +6,7 @@
 ;; docs on how to write these: https://storybook.js.org/docs/react/api/csf
 (def ^:export default
   (helper/->default
-   {:title "mathbox-cljs/examples/dataviz/Scatter"
+   {:title "mathbox.cljs/examples/dataviz/Scatter"
     :parameters
     {:component scatter/Scatter
      :componentSubtitle "3D Scatterplot"

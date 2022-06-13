@@ -1,11 +1,11 @@
-# mathbox-cljs
+# mathbox.cljs
 
 A light ClojureScript wrapper over [mathbox-react][MBR].
 
-[![Build Status](https://github.com/mentat-collective/mathbox-cljs/actions/workflows/kondo.yml/badge.svg?branch=main)](https://github.com/mentat-collective/mathbox-cljs/actions/workflows/kondo.yml)
+[![Build Status](https://github.com/mentat-collective/mathbox.cljs/actions/workflows/kondo.yml/badge.svg?branch=main)](https://github.com/mentat-collective/mathbox.cljs/actions/workflows/kondo.yml)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/sicmutils/sicmutils/blob/main/LICENSE)
-[![cljdoc badge](https://cljdoc.org/badge/mentat-collective/mathbox-cljs)](https://cljdoc.org/d/mentat-collective/mathbox-cljs/CURRENT)
-[![Clojars Project](https://img.shields.io/clojars/v/org.mentat/mathbox-cljs.svg)](https://clojars.org/org.mentat/mathbox-cljs)
+[![cljdoc badge](https://cljdoc.org/badge/mentat-collective/mathbox.cljs)](https://cljdoc.org/d/mentat-collective/mathbox.cljs/CURRENT)
+[![Clojars Project](https://img.shields.io/clojars/v/org.mentat/mathbox.cljs.svg)](https://clojars.org/org.mentat/mathbox.cljs)
 
 - reagent versions of components
 - SCI setup

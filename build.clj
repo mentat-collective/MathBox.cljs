@@ -1,10 +1,10 @@
 (ns build
-  "tools.build declarations for the mathbox-cljs library."
+  "tools.build declarations for the mathbox.cljs library."
   (:require [clojure.tools.build.api :as b]))
 
 ;; ## Variables
 
-(def lib 'org.mentat/mathbox-cljs)
+(def lib 'org.mentat/mathbox.cljs)
 (def version "0.0.0-SNAPSHOT")
 
 (defn- ->version
