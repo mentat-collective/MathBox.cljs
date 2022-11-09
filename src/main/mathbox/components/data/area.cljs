@@ -1,4 +1,4 @@
-(ns data.area)
+(ns mathbox.components.data.area)
 
 "*2D sampled matrix*
 

@@ -1,6 +1,5 @@
 (ns mathbox.examples.dataviz.scatter
   (:require ["mathbox-react" :as box]
-            #_[reagent.core :as r :include-macros true]
             ["three" :as THREE]
             ["three/examples/jsm/controls/OrbitControls.js"
              :as OrbitControls]))
