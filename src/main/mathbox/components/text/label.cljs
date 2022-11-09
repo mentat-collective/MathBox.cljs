@@ -1,6 +1,8 @@
-(ns mathbox.components.text.label)
+(ns mathbox.components.text.label
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Draw GL labels*
+(def ^{:doc "*Draw GL labels*
 
 :background `\\\"rgb(255, 255, 255)\\\"` (color) - Outline background
 :blending `\\\"normal\\\"` (blending) - Blending mode ('no, normal, add, subtract, multiply)
@@ -22,4 +24,6 @@
 :zIndex `0` (positive int) - Z-Index (2D stacking)
 :zOrder `null` (nullable number) - Z-Order (drawing order), e.g. `2`
 :zTest `true` (bool) - Test Z buffer
-:zWrite `true` (bool) - Write Z buffer"
+:zWrite `true` (bool) - Write Z buffer"}
+  Label
+  (r/adapt-react-class box/Label))

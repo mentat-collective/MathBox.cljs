@@ -1,6 +1,8 @@
-(ns mathbox.components.present.play)
+(ns mathbox.components.present.play
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Play a sequenced animation*
+(def ^{:doc "*Play a sequenced animation*
 
 :classes `[]` (string array) - Custom classes, e.g. `[\\\"big\\\"]`
 :delay `0` (number) - Play delay
@@ -14,4 +16,6 @@
 :speed `1` (number) - Play speed
 :target `\\\"<\\\"` (select) - Animation target
 :to `Infinity` (number) - Play until
-:trigger `1` (nullable number) - Trigger on step"
+:trigger `1` (nullable number) - Trigger on step"}
+  Play
+  (r/adapt-react-class box/Play))

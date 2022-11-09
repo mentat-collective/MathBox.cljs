@@ -1,6 +1,8 @@
-(ns mathbox.components.rtt.rtt)
+(ns mathbox.components.rtt.rtt
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Render objects to a texture*
+(def ^{:doc "*Render objects to a texture*
 
 :camera `\\\"[camera]\\\"` (select) - Active camera
 :classes `[]` (string array) - Custom classes, e.g. `[\\\"big\\\"]`
@@ -12,4 +14,6 @@
 :pass `\\\"view\\\"` (vertexPass) - Vertex pass (data, view, world, eye)
 :speed `1` (number) - Global speed
 :type `\\\"unsignedByte\\\"` (type) - Texture data type
-:width `null` (nullable number) - RTT width, e.g. `640`"
+:width `null` (nullable number) - RTT width, e.g. `640`"}
+  Rtt
+  (r/adapt-react-class box/Rtt))

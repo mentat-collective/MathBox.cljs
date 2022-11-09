@@ -1,6 +1,9 @@
-(ns mathbox.components.camera.camera)
+(ns mathbox.components.camera.camera
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Camera instance or proxy*
+(def ^{:doc
+       "*Camera instance or proxy*
 
 :classes `[]` (string array) - Custom classes, e.g. `[\\\"big\\\"]`
 :eulerOrder `\\\"xyz\\\"` (swizzle) - 3D Euler order
@@ -11,4 +14,6 @@
 :proxy `false` (bool) - Re-use existing camera
 :quaternion `null` (nullable quat) - 3D Quaternion, e.g. `[0.707, 0, 0, 0.707]`
 :rotation `null` (nullable vec3) - 3D Euler rotation, e.g. `[π/2, 0, 0]`
-:up `null` (nullable vec3) - 3D Up, e.g. `[0, 1, 0]`"
+:up `null` (nullable vec3) - 3D Up, e.g. `[0, 1, 0]`"}
+  Camera
+  (r/adapt-react-class box/Camera))

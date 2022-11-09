@@ -1,6 +1,8 @@
-(ns mathbox.components.data.matrix)
+(ns mathbox.components.data.matrix
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*2D matrix*
+(def ^{:doc "*2D matrix*
 
 :aligned `false` (bool) - Use (fast) integer lookups
 :bufferHeight `1` (number) - Matrix buffer height
@@ -22,4 +24,6 @@
 :observe `false` (bool) - Pass clock time to data
 :realtime `false` (bool) - Run on real time, not clock time
 :type `\\\"float\\\"` (type) - Texture data type
-:width `1` (nullable number) - Matrix width"
+:width `1` (nullable number) - Matrix width"}
+  Matrix
+  (r/adapt-react-class box/Matrix))

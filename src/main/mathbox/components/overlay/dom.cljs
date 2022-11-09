@@ -1,6 +1,8 @@
-(ns mathbox.components.overlay.dom)
+(ns mathbox.components.overlay.dom
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*HTML DOM injector*
+(def ^{:doc "*HTML DOM injector*
 
 :attributes `null` (nullable object) - HTML attributes, e.g. `{\\\"style\\\": {\\\"color\\\": \\\"red\\\"}}`
 :classes `[]` (string array) - Custom classes, e.g. `[\\\"big\\\"]`
@@ -17,4 +19,6 @@
 :snap `false` (bool) - Snap to pixel
 :visible `true` (bool) - Visibility for rendering
 :zIndex `0` (positive int) - Z-Index (2D stacking)
-:zoom `1` (number) - HTML zoom"
+:zoom `1` (number) - HTML zoom"}
+  Dom
+  (r/adapt-react-class box/Dom))

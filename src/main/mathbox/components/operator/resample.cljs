@@ -1,6 +1,8 @@
-(ns mathbox.components.operator.resample)
+(ns mathbox.components.operator.resample
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Resample data to new dimensions with a shader*
+(def ^{:doc "*Resample data to new dimensions with a shader*
 
 :centeredW `false` (bool) - Centered instead of corner sampling
 :centeredX `false` (bool) - Centered instead of corner sampling
@@ -21,4 +23,6 @@
 :shader `\\\"<\\\"` (select) - Shader to use
 :size `\\\"absolute\\\"` (mapping) - Scaling mode (relative, absolute)
 :source `\\\"<\\\"` (select) - Input source
-:width `null` (nullable number) - Resample factor width, e.g. `10`"
+:width `null` (nullable number) - Resample factor width, e.g. `10`"}
+  Resample
+  (r/adapt-react-class box/Resample))

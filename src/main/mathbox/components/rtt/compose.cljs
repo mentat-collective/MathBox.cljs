@@ -1,6 +1,8 @@
-(ns mathbox.components.rtt.compose)
+(ns mathbox.components.rtt.compose
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Full-screen render pass*
+(def ^{:doc "*Full-screen render pass*
 
 :alpha `false` (bool) - Compose with alpha transparency
 :blending `\\\"normal\\\"` (blending) - Blending mode ('no, normal, add, subtract, multiply)
@@ -14,4 +16,6 @@
 :zIndex `0` (positive int) - Z-Index (2D stacking)
 :zOrder `null` (nullable number) - Z-Order (drawing order), e.g. `2`
 :zTest `false` (bool) - Test Z buffer
-:zWrite `false` (bool) - Write Z buffer"
+:zWrite `false` (bool) - Write Z buffer"}
+  Compose
+  (r/adapt-react-class box/Compose))

@@ -1,6 +1,8 @@
-(ns mathbox.components.operator.subdivide)
+(ns mathbox.components.operator.subdivide
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Subdivide data points evenly or with a bevel*
+(def ^{:doc "*Subdivide data points evenly or with a bevel*
 
 :bevel `1` (number) - Fraction to end outward from vertices
 :classes `[]` (string array) - Custom classes, e.g. `[\\\"big\\\"]`
@@ -10,4 +12,6 @@
 :items `null` (nullable positive int) - Divisions of items, e.g. `5`
 :lerp `true` (boolean) - Interpolate values with computed indices
 :source `\\\"<\\\"` (select) - Input source
-:width `null` (nullable positive int) - Divisions of width, e.g. `5`"
+:width `null` (nullable positive int) - Divisions of width, e.g. `5`"}
+  Subdivide
+  (r/adapt-react-class box/Subdivide))

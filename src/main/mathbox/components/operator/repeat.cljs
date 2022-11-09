@@ -1,6 +1,9 @@
-(ns mathbox.components.operator.repeat)
+(ns mathbox.components.operator.repeat
+  (:refer-clojure :exclude [Repeat])
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Repeat data in one or more dimensions*
+(def ^{:doc "*Repeat data in one or more dimensions*
 
 :classes `[]` (string array) - Custom classes, e.g. `[\\\"big\\\"]`
 :depth `1` (number) - Repeat depth
@@ -8,4 +11,6 @@
 :id `null` (nullable string) - Unique ID, e.g. `\\\"sampler\\\"`
 :items `1` (number) - Repeat items
 :source `\\\"<\\\"` (select) - Input source
-:width `1` (number) - Repeat width"
+:width `1` (number) - Repeat width"}
+  Repeat
+  (r/adapt-react-class box/Repeat))

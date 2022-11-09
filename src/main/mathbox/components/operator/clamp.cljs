@@ -1,7 +1,11 @@
-(ns mathbox.components.operator.clamp)
+(ns mathbox.components.operator.clamp
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Clamp out-of-bounds samples to the nearest data point*
+(def ^{:doc "*Clamp out-of-bounds samples to the nearest data point*
 
 :classes `[]` (string array) - Custom classes, e.g. `[\\\"big\\\"]`
 :id `null` (nullable string) - Unique ID, e.g. `\\\"sampler\\\"`
-:source `\\\"<\\\"` (select) - Input source"
+:source `\\\"<\\\"` (select) - Input source"}
+  Clamp
+  (r/adapt-react-class box/Clamp))

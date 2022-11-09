@@ -1,6 +1,8 @@
-(ns mathbox.components.operator.lerp)
+(ns mathbox.components.operator.lerp
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Linear interpolation of data*
+(def ^{:doc "*Linear interpolation of data*
 
 :centeredW `false` (bool) - Centered instead of corner sampling
 :centeredX `false` (bool) - Centered instead of corner sampling
@@ -17,4 +19,6 @@
 :paddingZ `0` (number) - Number of samples padding
 :size `\\\"absolute\\\"` (mapping) - Scaling mode (relative, absolute)
 :source `\\\"<\\\"` (select) - Input source
-:width `null` (nullable number) - Lerp to width, e.g. `5`"
+:width `null` (nullable number) - Lerp to width, e.g. `5`"}
+  Lerp
+  (r/adapt-react-class box/Lerp))

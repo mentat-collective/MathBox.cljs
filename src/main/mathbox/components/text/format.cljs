@@ -1,6 +1,8 @@
-(ns mathbox.components.text.format)
+(ns mathbox.components.text.format
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Text formatter*
+(def ^{:doc "*Text formatter*
 
 :classes `[]` (string array) - Custom classes, e.g. `[\\\"big\\\"]`
 :data `null` (nullable array) - Array of labels, e.g. `[\\\"Grumpy\\\", \\\"Sleepy\\\", \\\"Sneezy\\\"]`
@@ -17,4 +19,6 @@
 :style `\\\"\\\"` (string) - Font style, e.g. `\\\"italic\\\"`
 :type `\\\"float\\\"` (type) - Texture data type
 :variant `\\\"\\\"` (string) - Font variant, e.g. `\\\"small-caps\\\"`
-:weight `\\\"\\\"` (string) - Font weight, e.g. `\\\"bold\\\"`"
+:weight `\\\"\\\"` (string) - Font weight, e.g. `\\\"bold\\\"`"}
+  Format
+  (r/adapt-react-class box/Format))

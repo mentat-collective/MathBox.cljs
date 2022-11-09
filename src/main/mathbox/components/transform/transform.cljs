@@ -1,6 +1,8 @@
-(ns mathbox.components.transform.transform)
+(ns mathbox.components.transform.transform
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Transform geometry in 3D*
+(def ^{:doc "*Transform geometry in 3D*
 
 :classes `[]` (string array) - Custom classes, e.g. `[\\\"big\\\"]`
 :eulerOrder `xyz` (swizzle) - 3D Euler order
@@ -10,4 +12,6 @@
 :position `[0, 0, 0]` (vec3) - 3D Position
 :quaternion `[0, 0, 0, 1]` (quat) - 3D Quaternion
 :rotation `[0, 0, 0]` (vec3) - 3D Euler rotation
-:scale `[1, 1, 1]` (vec3) - 3D Scale"
+:scale `[1, 1, 1]` (vec3) - 3D Scale"}
+  Transform
+  (r/adapt-react-class box/Transform))

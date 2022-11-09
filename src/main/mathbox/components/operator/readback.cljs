@@ -1,6 +1,8 @@
-(ns mathbox.components.operator.readback)
+(ns mathbox.components.operator.readback
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Read data back to a binary JavaScript array*
+(def ^{:doc "*Read data back to a binary JavaScript array*
 
 :active `true` (bool) - Updates continuously
 :channels `4` (number) - Readback channels (read only)
@@ -13,4 +15,6 @@
       :items `1` (nullable number) - Readback items (read only)
       :source `\\\"<\\\"` (select) - Input source
       :type `\\\"float\\\"` (float) - Readback data type (float, unsignedByte)
-      :width `1` (nullable number) - Readback width (read only)"
+      :width `1` (nullable number) - Readback width (read only)"}
+  Readback
+  (r/adapt-react-class box/Readback))

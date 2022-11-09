@@ -1,6 +1,8 @@
-(ns mathbox.components.view.stereographic)
+(ns mathbox.components.view.stereographic
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Apply stereographic projection*
+(def ^{:doc "*Apply stereographic projection*
 
 :bend `1` (number) - Amount of stereographic bend
 :classes `[]` (string array) - Custom classes, e.g. `[\\\"big\\\"]`
@@ -12,4 +14,6 @@
 :range `[[-1, 1], [-1, 1], [-1, 1], [-1, 1]]` (array vec2) - 4D range in view
 :rotation `[0, 0, 0]` (vec3) - 3D Euler rotation
 :scale `[1, 1, 1]` (vec3) - 3D Scale
-:visible `true` (bool) - Visibility for rendering"
+:visible `true` (bool) - Visibility for rendering"}
+  Stereographic
+  (r/adapt-react-class box/Stereographic))

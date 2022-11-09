@@ -1,6 +1,8 @@
-(ns mathbox.components.data.interval)
+(ns mathbox.components.data.interval
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*1D sampled array*
+(def ^{:doc "*1D sampled array*
 
 :aligned `false` (bool) - Use (fast) integer lookups
 :axis `1` (axis) - Axis
@@ -24,4 +26,6 @@
 :range `[-1, 1]` (vec2) - Range on axis
 :realtime `false` (bool) - Run on real time, not clock time
 :type `\\\"float\\\"` (type) - Texture data type
-:width `1` (nullable number) - Array width"
+:width `1` (nullable number) - Array width"}
+  Interval
+  (r/adapt-react-class box/Interval))

@@ -1,6 +1,8 @@
-(ns mathbox.components.text.retext)
+(ns mathbox.components.text.retext
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Text atlas resampler*
+(def ^{:doc "*Text atlas resampler*
 
 :centeredW `false` (bool) - Centered instead of corner sampling
 :centeredX `false` (bool) - Centered instead of corner sampling
@@ -21,4 +23,6 @@
 :shader `\\\"<\\\"` (select) - Shader to use
 :size `\\\"absolute\\\"` (mapping) - Scaling mode (relative, absolute)
 :source `\\\"<\\\"` (select) - Input source
-:width `null` (nullable number) - Resample factor width, e.g. `10`"
+:width `null` (nullable number) - Resample factor width, e.g. `10`"}
+  Retext
+  (r/adapt-react-class box/Retext))

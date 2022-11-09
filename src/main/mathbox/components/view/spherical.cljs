@@ -1,6 +1,8 @@
-(ns mathbox.components.view.spherical)
+(ns mathbox.components.view.spherical
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Apply spherical view*
+(def ^{:doc "*Apply spherical view*
 
 :bend `1` (number) - Amount of spherical bend
 :classes `[]` (string array) - Custom classes, e.g. `[\\\"big\\\"]`
@@ -12,4 +14,6 @@
 :range `[[-1, 1], [-1, 1], [-1, 1], [-1, 1]]` (array vec2) - 4D range in view
 :rotation `[0, 0, 0]` (vec3) - 3D Euler rotation
 :scale `[1, 1, 1]` (vec3) - 3D Scale
-:visible `true` (bool) - Visibility for rendering"
+:visible `true` (bool) - Visibility for rendering"}
+  Spherical
+  (r/adapt-react-class box/Spherical))

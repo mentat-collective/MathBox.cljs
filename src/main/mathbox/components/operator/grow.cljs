@@ -1,6 +1,8 @@
-(ns mathbox.components.operator.grow)
+(ns mathbox.components.operator.grow
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Scale data relative to reference data point*
+(def ^{:doc "*Scale data relative to reference data point*
 
 :classes `[]` (string array) - Custom classes, e.g. `[\\\"big\\\"]`
 :depth `null` (nullable anchor) - Depth alignment
@@ -9,4 +11,6 @@
 :items `null` (nullable anchor) - Items alignment
 :scale `1` (number) - Scale factor
 :source `\\\"<\\\"` (select) - Input source
-:width `null` (nullable anchor) - Width alignment"
+:width `null` (nullable anchor) - Width alignment"}
+  Grow
+  (r/adapt-react-class box/Grow))

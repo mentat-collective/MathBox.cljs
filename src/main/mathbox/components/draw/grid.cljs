@@ -1,6 +1,8 @@
-(ns mathbox.components.draw.grid)
+(ns mathbox.components.draw.grid
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Draw a 2D line grid*
+(def ^{:doc "*Draw a 2D line grid*
 
 :axes `[1, 2]` (swizzle(2) axis) - Axis pair
 :baseX `10` (number) - Power base for sub/super units
@@ -48,4 +50,6 @@
 :zTest `true` (bool) - Test Z buffer
 :zWrite `true` (bool) - Write Z buffer
 :zeroX `true` (bool) - Include zero
-:zeroY `true` (bool) - Include zero"
+:zeroY `true` (bool) - Include zero"}
+  Grid
+  (r/adapt-react-class box/Grid))

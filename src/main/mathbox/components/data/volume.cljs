@@ -1,6 +1,8 @@
-(ns mathbox.components.data.volume)
+(ns mathbox.components.data.volume
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*3D sampled voxels*
+(def ^{:doc "*3D sampled voxels*
 
 :aligned `false` (bool) - Use (fast) integer lookups
 :axes `[1, 2, 3]` (swizzle(3) axis) - Axis triplet
@@ -33,4 +35,6 @@
 :rangeZ `[-1, 1]` (vec2) - Range on axis
 :realtime `false` (bool) - Run on real time, not clock time
 :type `\\\"float\\\"` (type) - Texture data type
-:width `1` (nullable number) - Voxel width"
+:width `1` (nullable number) - Voxel width"}
+  Volume
+  (r/adapt-react-class box/Volume))

@@ -1,6 +1,8 @@
-(ns mathbox.components.text.text)
+(ns mathbox.components.text.text
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*GL text source*
+(def ^{:doc "*GL text source*
 
 :aligned `false` (bool) - Use (fast) integer lookups
 :bufferDepth `1` (number) - Voxel buffer depth
@@ -29,4 +31,6 @@
 :type `\\\"float\\\"` (type) - Texture data type
 :variant `\\\"\\\"` (string) - Font variant, e.g. `\\\"small-caps\\\"`
 :weight `\\\"\\\"` (string) - Font weight, e.g. `\\\"bold\\\"`
-:width `1` (nullable number) - Voxel width"
+:width `1` (nullable number) - Voxel width"}
+  Text
+  (r/adapt-react-class box/Text))

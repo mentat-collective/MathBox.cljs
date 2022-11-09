@@ -1,6 +1,8 @@
-(ns mathbox.components.data.voxel)
+(ns mathbox.components.data.voxel
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*3D voxels*
+(def ^{:doc "*3D voxels*
 
 :aligned `false` (bool) - Use (fast) integer lookups
 :bufferDepth `1` (number) - Voxel buffer depth
@@ -23,4 +25,6 @@
 :observe `false` (bool) - Pass clock time to data
 :realtime `false` (bool) - Run on real time, not clock time
 :type `\\\"float\\\"` (type) - Texture data type
-:width `1` (nullable number) - Voxel width"
+:width `1` (nullable number) - Voxel width"}
+  Voxel
+  (r/adapt-react-class box/Voxel))

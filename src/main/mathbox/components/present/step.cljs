@@ -1,6 +1,8 @@
-(ns mathbox.components.present.step)
+(ns mathbox.components.present.step
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Step through a sequenced animation*
+(def ^{:doc "*Step through a sequenced animation*
 
 :classes `[]` (string array) - Custom classes, e.g. `[\\\"big\\\"]`
 :delay `0` (number) - Step delay
@@ -16,4 +18,6 @@
 :speed `1` (number) - Step speed
 :stops `null` (nullable number array) - Playhead stops, e.g. `[0, 1, 3, 5]`
 :target `\\\"<\\\"` (select) - Animation target
-:trigger `1` (nullable number) - Trigger on step"
+:trigger `1` (nullable number) - Trigger on step"}
+  Step
+  (r/adapt-react-class box/Step))

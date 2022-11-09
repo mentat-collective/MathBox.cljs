@@ -1,6 +1,8 @@
-(ns mathbox.components.time.clock)
+(ns mathbox.components.time.clock
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Relative clock that starts from zero.*
+(def ^{:doc "*Relative clock that starts from zero.*
 
 :classes `[]` (string array) - Custom classes, e.g. `[\\\"big\\\"]`
 :delay `0` (number) - Play delay
@@ -11,4 +13,6 @@
 :realtime `false` (bool) - Run on real time, not clock time
 :seek `null` (nullable number) - Seek to time, e.g. `4`
 :speed `1` (number) - Play speed
-:to `Infinity` (number) - Play until"
+:to `Infinity` (number) - Play until"}
+  Clock
+  (r/adapt-react-class box/Clock))

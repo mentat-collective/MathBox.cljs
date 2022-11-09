@@ -1,6 +1,8 @@
-(ns mathbox.components.present.move)
+(ns mathbox.components.present.move
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Move elements in/out on transition*
+(def ^{:doc "*Move elements in/out on transition*
 
 :classes `[]` (string array) - Custom classes, e.g. `[\\\"big\\\"]`
 :delay `0` (number) - Transition delay
@@ -15,4 +17,6 @@
 :id `null` (nullable string) - Unique ID, e.g. `\\\"sampler\\\"`
 :pass `\\\"view\\\"` (vertexPass) - Vertex pass (data, view, world, eye)
 :stagger `[0, 0, 0, 0]` (vec4) - Stagger dimensions, e.g. `[2, 1, 0, 0]`
-:to `[0, 0, 0, 0]` (vec4) - Exit to"
+:to `[0, 0, 0, 0]` (vec4) - Exit to"}
+  Move
+  (r/adapt-react-class box/Move))

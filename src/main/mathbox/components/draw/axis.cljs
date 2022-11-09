@@ -1,6 +1,8 @@
-(ns mathbox.components.draw.axis)
+(ns mathbox.components.draw.axis
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Draw an axis*
+(def ^{:doc "*Draw an axis*
 
 :axis `1` (axis) - Axis
 :blending `\\\"normal\\\"` (blending) - Blending mode ('no, normal, add, subtract, multiply)
@@ -25,4 +27,6 @@
 :zIndex `0` (positive int) - Z-Index (2D stacking)
 :zOrder `null` (nullable number) - Z-Order (drawing order), e.g. `2`
 :zTest `true` (bool) - Test Z buffer
-:zWrite `true` (bool) - Write Z buffer"
+:zWrite `true` (bool) - Write Z buffer"}
+  Axis
+  (r/adapt-react-class box/Axis))

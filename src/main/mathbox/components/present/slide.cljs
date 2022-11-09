@@ -1,6 +1,8 @@
-(ns mathbox.components.present.slide)
+(ns mathbox.components.present.slide
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Presentation slide*
+(def ^{:doc "*Presentation slide*
 
 :classes `[]` (string array) - Custom classes, e.g. `[\\\"big\\\"]`
 :early `0` (number) - Appear early steps
@@ -9,4 +11,6 @@
 :late `0` (number) - Stay late steps
 :order `0` (nullable number) - Slide order
 :steps `1` (number) - Slide steps
-:to `null` (nullable number) - Disappear on step, e.g. `4`"
+:to `null` (nullable number) - Disappear on step, e.g. `4`"}
+  Slide
+  (r/adapt-react-class box/Slide))

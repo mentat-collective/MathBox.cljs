@@ -1,6 +1,8 @@
-(ns mathbox.components.draw.line)
+(ns mathbox.components.draw.line
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Draw lines*
+(def ^{:doc "*Draw lines*
 
 :blending `\\\"normal\\\"` (blending) - Blending mode ('no, normal, add, subtract, multiply)
 :classes `[]` (string array) - Custom classes, e.g. `[\\\"big\\\"]`
@@ -22,4 +24,6 @@
 :zIndex `0` (positive int) - Z-Index (2D stacking)
 :zOrder `null` (nullable number) - Z-Order (drawing order), e.g. `2`
 :zTest `true` (bool) - Test Z buffer
-:zWrite `true` (bool) - Write Z buffer"
+:zWrite `true` (bool) - Write Z buffer"}
+  Line
+  (r/adapt-react-class box/Line))

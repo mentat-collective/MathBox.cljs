@@ -1,6 +1,8 @@
-(ns mathbox.components.view.polar)
+(ns mathbox.components.view.polar
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*Apply polar view*
+(def ^{:doc "*Apply polar view*
 
 :bend `1` (number) - Amount of polar bend
 :classes `[]` (string array) - Custom classes, e.g. `[\\\"big\\\"]`
@@ -13,4 +15,6 @@
 :range `[[-1, 1], [-1, 1], [-1, 1], [-1, 1]]` (array vec2) - 4D range in view
 :rotation `[0, 0, 0]` (vec3) - 3D Euler rotation
 :scale `[1, 1, 1]` (vec3) - 3D Scale
-:visible `true` (bool) - Visibility for rendering"
+:visible `true` (bool) - Visibility for rendering"}
+  Polar
+  (r/adapt-react-class box/Polar))

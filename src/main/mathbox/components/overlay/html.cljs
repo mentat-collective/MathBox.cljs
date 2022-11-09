@@ -1,6 +1,8 @@
-(ns mathbox.components.overlay.html)
+(ns mathbox.components.overlay.html
+  (:require ["mathbox-react" :as box]
+            [reagent.core :as r]))
 
-"*HTML element source*
+(def ^{:doc "*HTML element source*
 
 :aligned `false` (bool) - Use (fast) integer lookups
 :bufferDepth `1` (number) - Voxel buffer depth
@@ -20,4 +22,6 @@
 :live `true` (bool) - Update continuously
 :observe `false` (bool) - Pass clock time to data
 :realtime `false` (bool) - Run on real time, not clock time
-:width `1` (nullable number) - Voxel width"
+:width `1` (nullable number) - Voxel width"}
+  Html
+  (r/adapt-react-class box/Html))
