@@ -1,8 +1,9 @@
 {:deps {:aliases [:dev :storybook]}
  :builds
- {:stories {:target :npm-module
-            :compiler-options
-            {:infer-externs :auto
-             :optimizations :advanced}
-            :ns-regexp  "-stories$"
-            :output-dir "public/js/stories"}}}
+ {:stories
+  {:target :npm-module
+   :compiler-options
+   {:infer-externs :auto
+    :optimizations :advanced}
+   :ns-regexp  "-stories$"
+   :output-dir "output/js/stories"}}}

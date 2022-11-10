@@ -26,7 +26,7 @@
     "watch": "shadow-cljs watch stories",
     "start-storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "release-stories": "shadow-cljs release stories && build-storybook -o storybook-static",
-    "deploy-storybook": "release-storybook && gh-pages -d storybook-static --dest storybook && rm -rf storybook-static"
+    "release-stories": "shadow-cljs release stories && build-storybook -o public/storybook",
+    "deploy-storybook": "release-storybook && gh-pages -d public"
   }
 }
