@@ -43,7 +43,7 @@
   ([_]
    (swap! config/!resource->url merge {"/js/viewer.js" "/js/main.js"})
    (clerk/build!
-    {:paths ["dev/mathbox/notebook.clj"]
+    {:index "dev/mathbox/notebook.clj"
      :bundle? false
      :browse? false
      :out-path "public"})))
