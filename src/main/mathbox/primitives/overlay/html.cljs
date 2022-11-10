@@ -9,14 +9,14 @@
 :bufferHeight `1` (number) - Voxel buffer height
 :bufferWidth `1` (number) - Voxel buffer width
 :channels `4` (number) - Number of channels
-:classes `[]` (string array) - Custom classes, e.g. `[\\\"big\\\"]`
+:classes `[]` (string array) - Custom classes, e.g. `[\"big\"]`
 :data `null` (nullable object) - Data array
 :depth `1` (nullable number) - Voxel depth
 :expr `null` (nullable emitter) - Data emitter expression
 :fps `null` (nullable number) - Frames-per-second update rate, e.g. `60`
 :height `1` (nullable number) - Voxel height
 :hurry `5` (number) - Maximum frames to hurry per frame
-:id `null` (nullable string) - Unique ID, e.g. `\\\"sampler\\\"`
+:id `null` (nullable string) - Unique ID, e.g. `\"sampler\"`
 :items `4` (number) - Number of items
 :limit `60` (number) - Maximum frames to track
 :live `true` (bool) - Update continuously

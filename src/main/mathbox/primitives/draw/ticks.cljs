@@ -4,20 +4,20 @@
 
 (def ^{:doc "*Draw ticks*
 
-:blending `\\\"normal\\\"` (blending) - Blending mode ('no, normal, add, subtract, multiply)
-:classes `[]` (string array) - Custom classes, e.g. `[\\\"big\\\"]`
+:blending `\"normal\"` (blending) - Blending mode ('no, normal, add, subtract, multiply)
+:classes `[]` (string array) - Custom classes, e.g. `[\"big\"]`
 :closed `false` (bool) - Close line
-:color `\\\"rgb(128, 128, 128)\\\"` (color) - Color
-:colors `null` (nullable select) - Colors data source, e.g. `\\\"#colors\\\"`
+:color `\"rgb(128, 128, 128)\"` (color) - Color
+:colors `null` (nullable select) - Colors data source, e.g. `\"#colors\"`
 :depth `1` (number) - Depth scaling
 :epsilon `0.0001` (number) - Tick epsilon
-:id `null` (nullable string) - Unique ID, e.g. `\\\"sampler\\\"`
+:id `null` (nullable string) - Unique ID, e.g. `\"sampler\"`
 :normal `true` (bool) - Normal for reference plane
 :opacity `1` (positive number) - Opacity
 :points `<` (select) - Points data source
 :proximity `null` (nullable number) - Proximity threshold, e.g. `10`
 :size `10` (number) - Tick size
-:stroke `\\\"solid\\\"` (stroke) - Line stroke (solid, dotted, dashed)
+:stroke `\"solid\"` (stroke) - Line stroke (solid, dotted, dashed)
 :visible `true` (bool) - Visibility for rendering
 :width `2` (positive number) - Line width
 :zBias `0` (positive number) - Z-Bias (3D stacking)
