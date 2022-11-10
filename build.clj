@@ -5,7 +5,7 @@
 ;; ## Variables
 
 (def lib 'org.mentat/mathbox.cljs)
-(def version "0.0.0-SNAPSHOT")
+(def version "0.0.0")
 
 (defn- ->version
   ([] version)
