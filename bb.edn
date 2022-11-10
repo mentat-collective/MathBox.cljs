@@ -12,26 +12,30 @@
   (do (shell "npm install")
       (shell "npm run watch-clerk"))
 
-  github-pages
+  release-clerk
   (do (shell "npm ci")
       (shell "npm run release-clerk")
       (shell "clojure -X:dev:clerk user/github-pages!")
       (shell "rm public/index.html")
-      (shell "mv public/dev/mathlive/notebook.html" "public/index.html")
+      (shell "mv public/dev/mathbox/notebook.html" "public/index.html")
       (run 'sha))
 
-  storybook-pages
-  (do (shell "npm ci")
-      (shell "npm run release-stories"))
-
-  publish-local
+  release-clerk-local
   (do (shell "npm install")
       (shell "npm run release-clerk")
       (shell "clojure -X:dev:clerk user/publish-local!")
       (shell "rm public/index.html")
-      (shell "mv public/dev/mathlive/notebook.html" "public/index.html")
+      (shell "mv public/dev/mathbox/notebook.html" "public/index.html")
       (run 'sha)
       (shell "npm run serve"))
+
+  release-storybook
+  (do (shell "npm ci")
+      (shell "npm run release-stories"))
+
+  github-pages
+  (do (run 'release-clerk)
+      (run 'release-storybook))
 
   release
   (shell "clojure -T:build publish")

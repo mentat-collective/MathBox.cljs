@@ -1,0 +1,4 @@
+{:config-in-call
+ {mathbox.clerk-ui/cljs
+  {:linters {:unresolved-symbol {:level :off}
+             :unresolved-namespace {:level :off}}}}}
