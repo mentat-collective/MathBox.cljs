@@ -1,8 +1,24 @@
-{:deps {:aliases [:dev :storybook]}
+{:deps {:aliases [:dev :clerk :storybook]}
+ :dev-http {8766 "public"}
  :builds
- {:stories {:target :npm-module
-            :compiler-options
-            {:infer-externs :auto
-             :optimizations :advanced}
-            :ns-regexp  "-stories$"
-            :output-dir "public/js/stories"}}}
+ {:clerk
+  {:target :browser
+   :modules
+   {:main {:entries
+           [nextjournal.clerk.static-app
+            nextjournal.viewer.notebook
+            nextjournal.clerk.sci-viewer
+            mathbox.clerk-ui]}}
+   :output-dir "public/js"
+   :asset-path "/js"
+   :compiler-options
+   {:infer-externs :auto
+    :optimizations :advanced}}
+
+  :stories
+  {:target :npm-module
+   :compiler-options
+   {:infer-externs :auto
+    :optimizations :advanced}
+   :ns-regexp  "-stories$"
+   :output-dir "output/js/stories"}}}
