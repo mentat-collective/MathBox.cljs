@@ -25,7 +25,8 @@
   "scripts": {
     "watch": "shadow-cljs watch stories",
     "start-storybook": "start-storybook -p 6006",
-    "deploy-storybook": "shadow-cljs release stories && build-storybook -o storybook-static && gh-pages -d storybook-static && rm -rf storybook-static",
-    "build-storybook": "build-storybook"
+    "deploy-storybook": "shadow-cljs release stories && build-storybook -o storybook-static && gh-pages -d storybook-static --dest storybook && rm -rf storybook-static",
+    "build-storybook": "build-storybook",
+    "pages": "gh-pages --help"
   }
 }
