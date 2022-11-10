@@ -32,7 +32,6 @@
 
 ;; ### Color Cube
 
-^{:nextjournal.clerk/width :wide}
 (cljs
  [mathbox/Mathbox
   {:style {:height "400px" :width "100%"}

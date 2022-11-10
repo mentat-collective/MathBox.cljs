@@ -3,7 +3,7 @@ name: Github Pages
 on:
   push:
     branches:
-      - main  # Set a branch name to trigger deployment
+      - sritchie/test_pages  # Set a branch name to trigger deployment
 jobs:
   publish:
     runs-on: ubuntu-20.04
