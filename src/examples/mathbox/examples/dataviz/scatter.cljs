@@ -1,6 +1,6 @@
 (ns mathbox.examples.dataviz.scatter
   (:require [mathbox :refer [Mathbox]]
-            [mathbox.components :as mb]))
+            [mathbox.primitives :as mb]))
 
 (def ^{:doc "http://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"}
   iris-data
