@@ -12,29 +12,23 @@
   (do (shell "npm install")
       (shell "npm run watch-clerk"))
 
-  release-clerk
+  publish-gh-pages
   (do (shell "npm ci")
       (shell "npm run release-clerk")
-      (shell "clojure -X:dev:clerk user/github-pages!")
-      (shell "rm public/index.html")
-      (shell "mv public/dev/mathbox/notebook.html" "public/index.html")
-      (run 'sha))
-
-  release-clerk-local
-  (do (shell "npm install")
-      (shell "npm run release-clerk")
-      (shell "clojure -X:dev:clerk user/publish-local!")
-      (shell "rm public/index.html")
-      (shell "mv public/dev/mathbox/notebook.html" "public/index.html")
+      (shell "clojure -X:dev:nextjournal/clerk user/github-pages!")
       (run 'sha)
+      (spit "./public/CNAME" "mathbox.mentat.org"))
+
+  publish-local
+  (do (run 'publish-gh-pages)
       (shell "npm run serve"))
 
   release-storybook
   (do (shell "npm ci")
       (shell "npm run release-stories"))
 
-  github-pages
-  (do (run 'release-clerk)
+  release-gh-pages
+  (do (run 'publish-gh-pages)
       (run 'release-storybook))
 
   release

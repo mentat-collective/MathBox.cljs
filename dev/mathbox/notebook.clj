@@ -24,11 +24,21 @@
 ;; Okay, here we go.
 
 ^#:nextjournal.clerk
-{:toc true
+{:toc :collapsed
  :no-cache true
  :visibility :hide-ns}
 (ns mathbox.notebook
   (:require [mathbox.clerk-ui :refer [cljs]]))
+
+;; ## Getting Started, Quickstart
+;;
+;; How to install, get this going
+;;
+;; ## What is Mathbox, library structure
+;;
+;; ## What components can nest
+;;
+;; ## Porting an Example
 
 ;; ### Color Cube
 

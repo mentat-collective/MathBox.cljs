@@ -30,25 +30,9 @@
   (clerk/show! "dev/mathbox/notebook.clj"))
 
 (defn github-pages! [_]
-  ;; TODO this now defaults to a project page. Do we want to change this?
-  (swap! config/!resource->url merge {"/js/viewer.js" "/mathbox.cljs/js/main.js"})
+  (swap! config/!resource->url merge {"/js/viewer.js" "/js/main.js"})
   (clerk/build!
    {:paths ["dev/mathbox/notebook.clj"]
     :bundle? false
     :browse? false
     :out-path "public"}))
-
-(defn publish-local!
-  ([] (publish-local! nil))
-  ([_]
-   (swap! config/!resource->url merge {"/js/viewer.js" "/js/main.js"})
-   (clerk/build!
-    {:paths ["dev/mathbox/notebook.clj"]
-     :bundle? false
-     :browse? false
-     :out-path "public"})))
-
-(comment
-  (start!)
-  (clerk/serve! {:browse? true})
-  (publish-local!))
