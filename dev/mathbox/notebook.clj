@@ -24,7 +24,7 @@
 ;; Okay, here we go.
 
 ^#:nextjournal.clerk
-{:toc :collapsed
+{:toc true
  :no-cache true
  :visibility :hide-ns}
 (ns mathbox.notebook

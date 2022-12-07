@@ -55,7 +55,7 @@
     "start-storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "release-stories": "shadow-cljs release stories && build-storybook -o public/storybook",
-    "deploy-pages": "gh-pages -d public",
+    "gh-pages": "gh-pages -d public",
     "serve": "http-server -c-1"
   }
 }
