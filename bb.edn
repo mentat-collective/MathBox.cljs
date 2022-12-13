@@ -2,7 +2,7 @@
  {sha
   (let [sha (-> (shell {:out :string} "git rev-parse HEAD")
                 (:out)
-                (clojure.string/trim ))
+                (clojure.string/trim))
         file "public/index.html"]
     (-> (slurp file)
         (clojure.string/replace "$GIT_SHA" sha)
