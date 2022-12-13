@@ -16,16 +16,12 @@
   (do (shell "npm ci")
       (shell "npm run release-clerk")
       (shell "clojure -X:dev:clerk user/github-pages!")
-      (shell "rm public/index.html")
-      (shell "mv public/dev/mathbox/notebook.html" "public/index.html")
       (run 'sha))
 
   release-clerk-local
   (do (shell "npm install")
       (shell "npm run release-clerk")
       (shell "clojure -X:dev:clerk user/publish-local!")
-      (shell "rm public/index.html")
-      (shell "mv public/dev/mathbox/notebook.html" "public/index.html")
       (run 'sha)
       (shell "npm run serve"))
 

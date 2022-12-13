@@ -8,12 +8,12 @@
 
 :axis `1` (axis) - Axis
 :base `10` (number) - Power base for sub/super units
-:classes `[]` (string array) - Custom classes, e.g. `[\\\"big\\\"]`
+:classes `[]` (string array) - Custom classes, e.g. `[\"big\"]`
 :divide `10` (number) - Number of divisions
 :end `true` (bool) - Include end
 :factor `1` (positive number) - Scale factor
-:id `null` (nullable string) - Unique ID, e.g. `\\\"sampler\\\"`
-:mode `\\\"linear\\\"` (scale) - Scale type
+:id `null` (nullable string) - Unique ID, e.g. `\"sampler\"`
+:mode `\"linear\"` (scale) - Scale type
 :nice `true` (bool) - Snap to nice numbers
 :origin `[0, 0, 0, 0]` (vec4) - 4D Origin
 :range `[-1, 1]` (vec2) - Range on axis
