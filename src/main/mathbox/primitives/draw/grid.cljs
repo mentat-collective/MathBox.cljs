@@ -7,12 +7,12 @@
 :axes `[1, 2]` (swizzle(2) axis) - Axis pair
 :baseX `10` (number) - Power base for sub/super units
 :baseY `10` (number) - Power base for sub/super units
-:blending `\\\"normal\\\"` (blending) - Blending mode ('no, normal, add, subtract, multiply)
-:classes `[]` (string array) - Custom classes, e.g. `[\\\"big\\\"]`
+:blending `\"normal\"` (blending) - Blending mode ('no, normal, add, subtract, multiply)
+:classes `[]` (string array) - Custom classes, e.g. `[\"big\"]`
 :closed `false` (bool) - Close line
 :closedX `false` (bool) - Close X lines
 :closedY `false` (bool) - Close Y lines
-:color `\\\"rgb(128, 128, 128)\\\"` (color) - Color
+:color `\"rgb(128, 128, 128)\"` (color) - Color
 :crossed `true` (bool) - UVWO map on matching axes
 :crossedX `true` (bool) - UVWO map on matching axis
 :crossedY `true` (bool) - UVWO map on matching axis
@@ -25,11 +25,11 @@
 :endY `true` (bool) - Include end
 :factorX `1` (positive number) - Scale factor
 :factorY `1` (positive number) - Scale factor
-:id `null` (nullable string) - Unique ID, e.g. `\\\"sampler\\\"`
+:id `null` (nullable string) - Unique ID, e.g. `\"sampler\"`
 :lineX `true` (bool) - Draw X lines
 :lineY `true` (bool) - Draw Y lines
-:modeX `\\\"linear\\\"` (scale) - Scale type
-:modeY `\\\"linear\\\"` (scale) - Scale type
+:modeX `\"linear\"` (scale) - Scale type
+:modeY `\"linear\"` (scale) - Scale type
 :niceX `true` (bool) - Snap to nice numbers
 :niceY `true` (bool) - Snap to nice numbers
 :opacity `1` (positive number) - Opacity
@@ -39,7 +39,7 @@
 :rangeY `[-1, 1]` (vec2) - Range on axis
 :startX `true` (bool) - Include start
 :startY `true` (bool) - Include start
-:stroke `\\\"solid\\\"` (stroke) - Line stroke (solid, dotted, dashed)
+:stroke `\"solid\"` (stroke) - Line stroke (solid, dotted, dashed)
 :unitX `1` (number) - Reference unit
 :unitY `1` (number) - Reference unit
 :visible `true` (bool) - Visibility for rendering
