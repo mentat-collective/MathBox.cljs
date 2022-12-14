@@ -1,26 +1,23 @@
-{:deps {:aliases [:dev :nextjournal/clerk :storybook]}
+{:deps {:aliases [:dev :nextjournal/clerk]}
  :dev-http {8766 "public"}
  :builds
  {:clerk
-  {:target :browser
-   :modules
-   {:main {:entries
-           [nextjournal.clerk.static-app
-            nextjournal.viewer.notebook
-            nextjournal.clerk.sci-viewer
-            mathbox.clerk-ui]}}
+  {:target :esm
+   :runtime :browser
    :output-dir "public/js"
-   :asset-path "/js"
    :build-options
-   {:ns-aliases {nextjournal.devcards nextjournal.devcards-noop}}
-   :compiler-options
-   {:infer-externs :auto
-    :optimizations :advanced}}
+   {:ns-aliases
+    {nextjournal.devcards nextjournal.devcards-noop}}
 
-  :stories
-  {:target :npm-module
    :compiler-options
    {:infer-externs :auto
-    :optimizations :advanced}
-   :ns-regexp  "-stories$"
-   :output-dir "output/js/stories"}}}
+    :optimizations :advanced
+
+    ;; Note that this silences warnings about string continuations from Mathbox.
+    :closure-warnings {:no-line-continuations :off}}
+   :modules {:main
+             {:entries
+              [nextjournal.clerk.static-app
+               mathbox.clerk-ui]}}
+   :js-options
+   {:output-feature-set :es8}}}}

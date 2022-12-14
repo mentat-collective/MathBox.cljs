@@ -3,7 +3,7 @@
  :no-cache true
  :visibility :hide-ns}
 (ns mathbox.notebook
-  (:require [mathbox.clerk-ui :refer [cljs]]))
+  (:require [mentat.clerk-utils :refer [cljs]]))
 
 ;; # MathBox.cljs
 ;;
@@ -27,12 +27,7 @@
 ;; > page](https://cljdoc.org/d/org.mentat/mathbox.cljs/CURRENT/doc/readme) for
 ;; > detailed API documentation.
 ;;
-;; > More detailed examples live
-;; > at [Storybook](https://mentat-collective.github.io/mathbox.cljs/storybook).
-;;
 ;; ## What is MathBox?
-;;
-;; TODO delete the storybook, port to here.
 ;;
 ;; TODO description and demo.
 ^{:nextjournal.clerk/visibility {:code :fold}}

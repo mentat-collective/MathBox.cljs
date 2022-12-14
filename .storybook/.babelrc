@@ -1,5 +1,0 @@
-{
-  "ignore": [
-    "output/js/stories/**/*.js"
-  ]
-}
