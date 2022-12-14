@@ -13,10 +13,9 @@
   "dev/mathbox/notebook.clj")
 
 (def build-target
-  {#_#_:index index
-   :pages
-   ["dev/mathbox/examples/index.md"
-    "dev/mathbox/examples/dataviz/scatter.clj"]})
+  {:index index
+   :paths
+   ["dev/mathbox/examples/**"]})
 
 (def ^{:doc "static site defaults for local and github-pages modes."}
   defaults
