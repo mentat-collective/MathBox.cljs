@@ -11,10 +11,7 @@
 
    :compiler-options
    {:infer-externs :auto
-    :optimizations :advanced
-
-    ;; Note that this silences warnings about string continuations from Mathbox.
-    :closure-warnings {:no-line-continuations :off}}
+    :optimizations :advanced}
    :modules {:main
              {:entries
               [nextjournal.clerk.static-app

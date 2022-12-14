@@ -12,6 +12,12 @@
 (def index
   "dev/mathbox/notebook.clj")
 
+(def build-target
+  {#_#_:index index
+   :pages
+   ["dev/mathbox/examples/index.md"
+    "dev/mathbox/examples/dataviz/scatter.clj"]})
+
 (def ^{:doc "static site defaults for local and github-pages modes."}
   defaults
   {:out-path   "public"
@@ -84,8 +90,10 @@
     (swap! config/!resource->url assoc
            "/js/viewer.js"
            (str cas-prefix "js/" cas))
+    (println (merge build-target
+                    (assoc opts :out-path out-path)))
     (clerk/build!
-     (merge {:index index}
+     (merge build-target
             (assoc opts :out-path out-path)))
     (replace-sha-template!
      (str out-path "/index.html"))))
