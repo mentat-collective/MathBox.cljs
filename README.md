@@ -9,15 +9,10 @@ A light ClojureScript wrapper over [mathbox-react][MBR].
 
 - reagent versions of components
 - SCI setup
-- storybook examples
 
 ## Mathbox Examples
 
 - TODO get the examples directory linked
-
-## Storybook
-
-TODO.
 
 ### Publishing to Github Pages
 

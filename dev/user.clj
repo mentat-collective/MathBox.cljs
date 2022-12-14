@@ -1,8 +1,30 @@
 (ns user
-  (:require [hiccup.page :as hiccup]
+  (:require [babashka.fs :as fs]
+            [clojure.java.shell :refer [sh]]
+            [clojure.string]
+            [hiccup.page :as hiccup]
             [nextjournal.clerk :as clerk]
             [nextjournal.clerk.config :as config]
-            [nextjournal.clerk.view]))
+            [nextjournal.clerk.view]
+            [nextjournal.clerk.viewer :as cv]
+            [shadow.cljs.devtools.api :as shadow]))
+
+(def index
+  "dev/mathbox/notebook.clj")
+
+(def build-target
+  {:index index
+   :paths
+   ["dev/mathbox/examples/**"]})
+
+(def ^{:doc "static site defaults for local and github-pages modes."}
+  defaults
+  {:out-path   "public"
+   :cas-prefix "/"})
+
+(def ^{:doc "static site defaults for Clerk's Garden CDN."}
+  garden-defaults
+  {:cas-prefix "/mentat-collective/mathbox.cljs/commit/$GIT_SHA/"})
 
 (defn rebind [^clojure.lang.Var v f]
   (let [old (.getRawRoot v)]
@@ -13,11 +35,11 @@
   (rebind
    #'nextjournal.clerk.view/include-viewer-css
    (fn [old]
-     (fn []
+     (fn [& xs]
        (concat
         (list
          (hiccup/include-css "https://unpkg.com/mathbox@2.2.0/build/mathbox.css"))
-        (old))))))
+        (apply old xs))))))
 
 (defn start! []
   (swap! config/!resource->url
@@ -27,28 +49,62 @@
    {:browse? true
     :watch-paths ["dev"]})
   (Thread/sleep 500)
-  (clerk/show! "dev/mathbox/notebook.clj"))
+  (clerk/show! index))
 
-(defn github-pages! [_]
-  ;; TODO this now defaults to a project page. Do we want to change this?
-  (swap! config/!resource->url merge {"/js/viewer.js" "/mathbox.cljs/js/main.js"})
-  (clerk/build!
-   {:paths ["dev/mathbox/notebook.clj"]
-    :bundle? false
-    :browse? false
-    :out-path "public"}))
+(defn replace-sha-template!
+  "Given some `path`, modifies the file at `path` replaces any occurence of the
+  string `$GIT_SHA` with the actual current sha of the repo."
+  [path]
+  (let [sha (-> (sh "git" "rev-parse" "HEAD")
+                (:out)
+                (clojure.string/trim))]
+    (-> (slurp path)
+        (clojure.string/replace "$GIT_SHA" sha)
+        (->> (spit path)))))
 
-(defn publish-local!
-  ([] (publish-local! nil))
-  ([_]
-   (swap! config/!resource->url merge {"/js/viewer.js" "/js/main.js"})
-   (clerk/build!
-    {:index "dev/mathbox/notebook.clj"
-     :bundle? false
-     :browse? false
-     :out-path "public"})))
+(defn static-build!
+  "This task is used to generate static sites for local use, github pages
+  deployment and Clerk's Garden CDN.
 
-(comment
-  (start!)
-  (clerk/serve! {:browse? true})
-  (publish-local!))
+  Accepts a map of options `opts` and runs the following tasks:
+
+  - Slurps the output of the shadow-cljs `:clerk` build from `public/js/main.js`
+    and pushes it into a CAS located at `(str (:out-path opts) \"/js/_data\")`.
+
+  - Configures Clerk to generate files that load the js from the generated name
+    above, stored in `(str (:cas-prefix opts) \"/js/_data\")`
+
+  - Creates a static build of the single namespace [[index]] at `(str (:out-path
+    opts) \"/index.html\")`
+
+  - Replaces all instances of the string $GIT_SHA in `index.html` with the
+    actual sha of the library.
+
+  All `opts` are forwarded to [[nextjournal.clerk/build!]]."
+  [opts]
+  (let [{:keys [out-path cas-prefix]} (merge defaults opts)
+        cas (cv/store+get-cas-url!
+             {:out-path (str out-path "/js") :ext "js"}
+             (fs/read-all-bytes "public/js/main.js"))]
+    (swap! config/!resource->url assoc
+           "/js/viewer.js"
+           (str cas-prefix "js/" cas))
+    (println (merge build-target
+                    (assoc opts :out-path out-path)))
+    (clerk/build!
+     (merge build-target
+            (assoc opts :out-path out-path)))
+    (replace-sha-template!
+     (str out-path "/index.html"))))
+
+(defn garden!
+  "Standalone executable function that runs [[static-build!]] configured for
+  Clerk's Garden. See [[garden-defaults]] for customizations
+  to [[static-build!]]."
+  [opts]
+  (println "Running npm install...")
+  (println
+   (sh "npm" "install"))
+  (shadow/release! :clerk)
+  (static-build!
+   (merge garden-defaults opts)))
