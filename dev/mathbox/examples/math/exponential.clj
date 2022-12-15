@@ -17,6 +17,29 @@
     :surface "#ffffff"
     :line "#4169e1"}))
 
+;; This slider CAN update the server side state.
+
+(cljs
+ (defn square [x]
+   (* x x))
+
+ (let [!state mathbox.examples.math.exponential/!state]
+   [:<>
+    [:div
+     [:input
+      {:type :range :min 0 :max 10 :step 1
+       :value (:projectionAngle @!state)
+       :on-change
+       (fn [target]
+         (let [v (.. target -target -value)]
+           (swap! !state assoc :projectionAngle (js/parseInt v))))}]
+     " " (:projectionAngle @!state)]
+    [v/inspect
+     (v/tex
+      (str (:projectionAngle @!state)
+           "^2 = "
+           (square (:projectionAngle @!state))))]]))
+
 ;; UI:
 
 (cljs
