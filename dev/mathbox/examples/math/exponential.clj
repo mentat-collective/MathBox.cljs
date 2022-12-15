@@ -11,7 +11,7 @@
 ;; Some helpful state.
 
 ^{::clerk/sync true}
-(def !state
+(defonce !state
   (atom
    {:projectionAngle 90
     :surface "#ffffff"
