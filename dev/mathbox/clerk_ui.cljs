@@ -40,7 +40,6 @@
 ;; https://github.com/pmndrs/leva/blob/main/docs/configuration.md, see storybook
 ;; for more options
 
-
 (defn Panel* [opts]
   (when-not (:state opts)
     (throw

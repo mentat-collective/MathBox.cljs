@@ -8,45 +8,26 @@
 
 ;; # Exponential
 ;;
-;; Some helpful state.
-
-^{::clerk/sync true}
-(defonce !state
-  (atom
-   {:projectionAngle 90
-    :surface "#ffffff"
-    :line "#4169e1"}))
-
-;; This slider CAN update the server side state.
+;; Some helpful state. This demos live properties.
 
 (cljs
- (defn square [x]
-   (* x x))
-
- (let [!state mathbox.examples.math.exponential/!state]
-   [:<>
-    [:div
-     [:input
-      {:type :range :min 0 :max 10 :step 1
-       :value (:projectionAngle @!state)
-       :on-change
-       (fn [target]
-         (let [v (.. target -target -value)]
-           (swap! !state assoc :projectionAngle (js/parseInt v))))}]
-     " " (:projectionAngle @!state)]
-    [v/inspect
-     (v/tex
-      (str (:projectionAngle @!state)
-           "^2 = "
-           (square (:projectionAngle @!state))))]]))
+ (defonce !state
+   (atom
+    {:projectionAngle 90
+     :surface "#ffffff"
+     :line "#4169e1"})))
 
 ;; UI:
+
+(cljs
+ (defn update-atom [s]
+   (reset! s (assoc @s :projectionAngle 100))))
 
 (cljs
  [:<>
   [leva/PanelOptions {:drag true}]
   [leva/Panel
-   {:state mathbox.examples.math.exponential/!state
+   {:state !state
     :options
     {:projectionAngle
      {:label "angle"
@@ -75,7 +56,7 @@
              "matrix"
              (fn []
                (let [a (/ (* (:projectionAngle
-                              (.-state mathbox.examples.math.exponential/!state)) 2 Math/PI)
+                              (.-state !state)) 2 Math/PI)
                           360.0)]
                  (js/Array 1 0 0 (Math/cos a)
                            0 1 0 0
@@ -95,16 +76,13 @@
                 y)))
       :channels 4}]
     [mb/Surface
-     {:color (:surface @mathbox.examples.math.exponential/!state)
+     {:color (:surface @!state)
       :zBias -0.25}]
     [mb/Line
-     {:color (:line @mathbox.examples.math.exponential/!state)
+     {:color (:line @!state)
       :width 4}]
     [mb/Transpose
      {:order "yxzw"}]
     [mb/Line
-     {:color (:line @mathbox.examples.math.exponential/!state)
+     {:color (:line @!state)
       :width 4}]]]])
-
-(cljs @mathbox.examples.math.exponential/!state)
-@!state
