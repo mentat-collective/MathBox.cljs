@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html class="overflow-hidden min-h-screen"><head><title>Helitorus</title><meta charset="UTF-8"><meta content="width=device-width, initial-scale=1" name="viewport"><meta content="TODO document that we are super slow now with sci and ask what they think Ishould do." property="og:description"><meta content="Helitorus" property="og:title"><meta content="article:clerk" property="og:type"><meta content="summary_large_image" name="twitter:card"><link href="https://unpkg.com/mathbox@2.2.0/build/mathbox.css" rel="stylesheet" type="text/css"><script src="https://cdn.tailwindcss.com?plugins=typography" type="text/javascript"></script><script>tailwind.config = {
+  darkMode: "class",
+  content: ["./tw/viewer.js", "./tw/**/*.edn"],
+  safelist: ['dark'],
+  theme: {
+    extend: {},
+    fontFamily: {
+      sans: ["Fira Sans", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+      serif: ["PT Serif", "serif"],
+      mono: ["Fira Mono", "monospace"]
+    }
+  },
+  variants: {
+    extend: {},
+  },
+  plugins: [],
+}
+</script><style type="text/tailwindcss">@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-size: 18px;
+  }
+  @media (max-width: 600px) {
+    html {
+      font-size: 16px;
+    }
+  }
+  .font-condensed { font-family: "Fira Sans Condensed", sans-serif; }
+  .font-inter     { font-family: "Inter", sans-serif; }
+  body {
+    @apply font-serif antialiased text-gray-900 sm:overscroll-y-none;
+  }
+  code, .code {
+    @apply font-mono text-sm text-gray-900 bg-slate-50 px-0.5 py-px rounded dark:bg-gray-800;
+  }
+  code::before, code::after { @apply content-none !important; }
+  h1, h3, h4, h5, h6 {
+    @apply font-condensed font-bold mt-8 first:mt-0;
+  }
+  h2 {
+    /*We cannot collapse margins due to nesting but we want to*/
+    /*keep the h2’s large margin visible*/
+    @apply font-condensed font-bold mt-8 first:mt-2;
+  }
+  h1 { @apply text-4xl; }
+  h2 { @apply text-3xl; }
+  h3 { @apply text-2xl; }
+
+  button { @apply focus:outline-none; }
+  strong { @apply font-bold; }
+  em     { @apply italic; }
+  pre    { @apply m-0 font-mono; }
+}
+
+/* Compatibility */
+/* --------------------------------------------------------------- */
+/* TODO: Verify which colors are in use and replace with Tailwind
+   colors accordingly. Move Nj-specific styles out of here. */
+
+:root {
+  --teal-color: #31afd0;
+  --dark-teal-color: #095960;
+  --near-black-color: #2e2e2c;
+  --red-color: #d64242;
+  --dark-blue-color: #1f2937;
+  --dark-blue-60-color: rgba(28, 42, 56, 0.6);
+  --gray-panel-color: rgba(239, 241, 245, 1.000);
+  --brand-color: var(--dark-blue-color);
+  --link-color: #5046e4;
+  --command-bar-selected-color: var(--teal-color);
+}
+
+.serif      { @apply font-serif; }
+.sans-serif { @apply font-sans; }
+.monospace  { @apply font-mono; }
+.inter      { @apply font-inter; }
+
+.border-color-teal { border-color: var(--dark-teal-color); }
+.teal { color: var(--teal-color); }
+.bg-dark-blue { background: var(--dark-blue-color); }
+.bg-dark-blue-60 { background: rgba(28, 42, 56, 0.6); }
+.bg-gray-panel { background: var(--gray-panel-color); }
+.text-dark-blue  { color: var(--dark-blue-color); }
+.text-dark-blue-60 { color: var(--dark-blue-60-color); }
+.border-dark-blue-30 { border-color: rgba(28, 42, 56, 0.6); }
+.text-brand { color: var(--dark-blue-color); }
+.bg-brand { background: var(--dark-blue-color); }
+.text-selected { color: white; }
+.red { color: var(--red-color); }
+
+/* Disclose Button */
+/* --------------------------------------------------------------- */
+
+.disclose {
+  @apply content-none border-solid cursor-pointer inline-block relative mr-[3px] top-[-2px] transition-all;
+  border-color: var(--near-black-color) transparent;
+  border-width: 6px 4px 0;
+}
+.disclose:hover {
+  border-color: var(--near-black-color) transparent;
+}
+.dark .disclose,
+.dark .disclose:hover {
+  border-color: white transparent;
+}
+.disclose.collapsed {
+  @apply rotate-[-90deg];
+}
+
+/* Layout */
+/* --------------------------------------------------------------- */
+
+.page {
+  @apply max-w-5xl mx-auto px-12 box-border flex-shrink-0;
+}
+.max-w-prose { @apply max-w-[46rem] !important; }
+.max-w-wide  { @apply max-w-3xl !important; }
+
+/* List Styles */
+/* --------------------------------------------------------------- */
+
+.task-list-item + .task-list-item,
+.viewer-markdown ul ul {
+  @apply mt-1 mb-0;
+}
+
+/* compact TOC */
+.viewer-markdown .toc ul {
+  list-style: none;
+  @apply my-1;
+}
+
+/* Code Viewer */
+/* --------------------------------------------------------------- */
+
+.viewer-code {
+  @apply font-mono bg-slate-100 rounded-sm text-sm overflow-x-auto dark:bg-gray-800;
+}
+.viewer-code .cm-content {
+  @apply py-4 px-8;
+}
+@media (min-width: 960px){
+  .viewer-notebook .viewer-code .cm-content {
+    @apply py-4 pl-12;
+  }
+}
+/* Don’t show focus outline when double-clicking cell in Safari */
+.cm-scroller { @apply focus:outline-none; }
+
+/* Syntax Highlighting */
+/* --------------------------------------------------------------- */
+
+.inspected-value { @apply text-xs font-mono leading-[1.25rem]; }
+.cmt-strong, .cmt-heading { @apply font-bold; }
+.cmt-italic, .cmt-emphasis { @apply italic; }
+.cmt-strikethrough { @apply line-through; }
+.cmt-link { @apply underline; }
+.untyped-value { @apply whitespace-nowrap; }
+
+.cm-editor, .cmt-default, .viewer-result {
+  @apply text-slate-800 dark:text-slate-300;
+}
+.cmt-keyword {
+  @apply text-purple-800 dark:text-pink-400;
+}
+.cmt-atom, .cmt-bool, .cmt-url, .cmt-contentSeparator, .cmt-labelName {
+  @apply text-blue-900 dark:text-blue-300;
+}
+.cmt-inserted, .cmt-literal {
+  @apply text-emerald-700 dark:text-emerald-200;
+}
+.cmt-string, .cmt-deleted {
+  @apply text-rose-700 dark:text-sky-300;
+}
+.cmt-italic.cmt-string {
+  @apply dark:text-sky-200;
+}
+.cmt-regexp, .cmt-escape {
+  @apply text-orange-500 dark:text-orange-300;
+}
+.cmt-variableName {
+  @apply text-blue-800 dark:text-sky-300;
+}
+.cmt-typeName, .cmt-namespace {
+  @apply text-emerald-600 dark:text-emerald-300;
+}
+.cmt-className {
+  @apply text-teal-600 dark:text-teal-200;
+}
+.cmt-macroName {
+  @apply text-teal-700 dark:text-teal-200;
+}
+.cmt-propertyName {
+  @apply text-blue-700 dark:text-blue-200;
+}
+.cmt-comment {
+  @apply text-slate-500 dark:text-slate-400;
+}
+.cmt-meta {
+  @apply text-slate-600 dark:text-slate-400;
+}
+.cmt-invalid {
+  @apply text-red-500 dark:text-red-300;
+}
+
+.result-data {
+  @apply font-mono text-sm overflow-x-auto whitespace-nowrap leading-normal;
+}
+.result-data::-webkit-scrollbar, .path-nav::-webkit-scrollbar {
+  @apply h-0;
+}
+.result-data-collapsed {
+  @apply whitespace-nowrap;
+}
+.result-data-field {
+  @apply ml-4 whitespace-nowrap;
+}
+.result-data-field-link{
+  @apply ml-4 whitespace-nowrap cursor-pointer;
+}
+.result-data-field-link:hover {
+  @apply text-black bg-black/5;
+}
+.result-text-empty {
+  color: rgba(0,0,0,.3);
+}
+.browsify-button:hover {
+  box-shadow: -2px 0 0 2px #edf2f7;
+}
+
+/* Prose */
+/* --------------------------------------------------------------- */
+
+.viewer-notebook,
+.viewer-markdown {
+  @apply prose
+    dark:prose-invert
+    prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
+    dark:prose-a:text-blue-300
+    prose-p:mt-4 prose-p:leading-snug
+    prose-ol:mt-4 prose-ol:mb-6 prose-ol:leading-snug
+    prose-ul:mt-4 prose-ul:mb-6 prose-ul:leading-snug
+    prose-blockquote:mt-4 prose-blockquote:leading-snug
+    prose-hr:mt-6 prose-hr:border-t-2 prose-hr:border-solid prose-hr:border-slate-200
+    prose-figure:mt-4
+    prose-figcaption:mt-2 prose-figcaption:text-xs
+    prose-headings:mb-4
+    prose-table:mt-0
+    prose-th:mb-0
+    prose-img:my-0
+    prose-code:font-medium prose-code:bg-slate-100
+    max-w-none;
+}
+.viewer-markdown blockquote p:first-of-type:before,
+.viewer-markdown blockquote p:last-of-type:after {
+  @apply content-none;
+}
+
+/* Images */
+/* --------------------------------------------------------------- */
+
+
+/* Todo Lists */
+/* --------------------------------------------------------------- */
+
+.contains-task-list {
+  @apply pl-6 list-none;
+}
+.contains-task-list input[type="checkbox"] {
+  @apply appearance-none h-4 w-4 rounded border border-slate-200 relative mr-[0.3rem] ml-[-1.5rem] top-[0.15rem];
+}
+.contains-task-list input[type="checkbox"]:checked {
+  @apply border-indigo-600 bg-indigo-600 bg-no-repeat bg-contain;
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+}
+
+/* Markdown TOC */
+/* --------------------------------------------------------------- */
+
+.viewer-markdown .toc      { @apply mt-4; }
+.viewer-markdown h1 + .toc { @apply mt-8; }
+
+.viewer-markdown .toc h1,
+.viewer-markdown .toc h2,
+.viewer-markdown .toc h3,
+.viewer-markdown .toc h4,
+.viewer-markdown .toc h5,
+.viewer-markdown .toc h6 {
+  @apply text-base text-indigo-600 font-sans my-0;
+}
+.viewer-markdown .toc a {
+  @apply text-indigo-600 font-normal no-underline hover:underline;
+}
+.viewer-markdown .toc li    { @apply m-0; }
+.viewer-markdown .toc ul ul { @apply pl-4; }
+
+/* Notebook Spacing */
+/* --------------------------------------------------------------- */
+
+.viewer-notebook { @apply py-16; }
+#clerk-static-app .viewer-notebook { @apply pt-[0.8rem] pb-16; }
+.viewer-markdown *:first-child:not(.viewer-code):not(li):not(h2) { @apply mt-0; }
+/*.viewer + .viewer { @apply mt-6; }*/
+.viewer + .viewer-result { @apply mt-0; }
+.viewer-code + .viewer-result { @apply mt-3; }
+.viewer-markdown + .viewer-markdown { @apply mt-0; }
+
+/* Sidenotes */
+/* --------------------------------------------------------------- */
+
+.sidenote-ref {
+  @apply top-[-3px] inline-flex justify-center items-center w-[18px] h-[18px]
+    rounded-full bg-slate-100 border border-slate-300 hover:bg-slate-200 hover:border-slate-300
+    m-0 ml-[4px] cursor-pointer;
+}
+.sidenote {
+  @apply hidden float-left clear-both mx-[2.5%] my-4 text-xs relative w-[95%];
+}
+.sidenote-ref.expanded + .sidenote {
+  @apply block;
+}
+@media (min-width: 860px) {
+  .sidenote-ref {
+    @apply top-[-0.5em] w-auto h-auto inline border-0 bg-transparent m-0 pointer-events-none;
+  }
+  .sidenote sup { @apply inline; }
+  .viewer-markdown .contains-sidenotes p { @apply max-w-[65%]; }
+  .viewer-markdown p .sidenote {
+    @apply mr-[-54%] mt-[0.2rem] w-1/2 float-right clear-right relative block;
+  }
+}
+.viewer-code + .viewer:not(.viewer-markdown):not(.viewer-code):not(.viewer-code-folded),
+.viewer-code-folded + .viewer:not(.viewer-markdown):not(.viewer-code):not(.viewer-code-folded),
+.viewer-result + .viewer-result {
+  @apply mt-2;
+}
+.viewer-code + .viewer-code-folded {
+  @apply mt-4;
+}
+.viewer-result {
+  @apply leading-tight mb-6;
+}
+.viewer-result figure {
+  @apply mt-0 !important;
+}
+@media (min-width: 768px) {
+  .devcard-desc > div {
+    @apply max-w-full m-0;
+  }
+}
+
+/* Command Palette */
+/* --------------------------------------------------------------- */
+
+.nj-commands-input {
+  @apply bg-transparent text-white;
+}
+.nj-context-menu-item:hover:not([disabled]) {
+  @apply cursor-pointer;
+  background-color: rgba(255,255,255,.14);
+}
+
+/* Devdocs */
+/* --------------------------------------------------------------- */
+
+.logo, .logo-white {
+  @apply block indent-[-999em];
+  background: url(/images/nextjournal-logo.svg) center center no-repeat;
+}
+.devdocs-body {
+  @apply font-inter;
+}
+
+/* Workarounds */
+/* --------------------------------------------------------------- */
+
+/* Fixes vega viewer resizing into infinity */
+.vega-embed .chart-wrapper { @apply h-auto !important; }
+/* fixes fraction separators being overridden by tw’s border-color */
+.katex * { @apply border-black; }
+</style><script src="/js/_data/8VxBy5NMhR9m3G5YVKfvFExhwrWBgqTi1dTuyTrd8YgopY2tw6jzyWEVjRPE7RUBTpFSBy7gXWJoqCKYYn8LFGEvXq.js" type="module"></script><link href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css" rel="stylesheet" type="text/css"><link href="https://fonts.bunny.net" rel="preconnect"><link href="https://fonts.bunny.net/css?family=fira-code:400,700%7Cfira-mono:400,700%7Cfira-sans:400,400i,500,500i,700,700i%7Cfira-sans-condensed:700,700i%7Cpt-serif:400,400i,700,700i" rel="stylesheet" type="text/css"></head><body><div id="clerk-static-app"></div><script type="module">let viewer = nextjournal.clerk.sci_env
+let app = nextjournal.clerk.static_app
+let opts = viewer.read_string("{:out-path \"public\", :path->doc {\"dev/mathbox/examples/math/helitorus.clj\" {:path [], :nextjournal/value {:toc {:type :toc, :children [{:type :toc, :content [{:type :text, :text \"Helitorus\"}], :heading-level 1, :children [{:type :toc, :content [{:type :text, :text \"UI\"}], :heading-level 2} {:type :toc, :content [{:type :text, :text \"Helpers\"}], :heading-level 2} {:type :toc, :content [{:type :text, :text \"Helitorus Component\"}], :heading-level 2}]}]}, :toc-visibility true, :atom-var-name->state #viewer-eval (nextjournal.clerk.render/intern-atoms! {}), :auto-expand-results? nil, :scope {:namespace :mathbox.examples.math.helitorus}, :open-graph {:type \"article:clerk\", :title \"Helitorus\", :description \"TODO document that we are super slow now with sci and ask what they think Ishould do.\"}, :title \"Helitorus\", :blocks [{:nextjournal/value [:div.viewer-markdown [\"h1\" {:id \"helitorus\"} [:span \"Helitorus\"]] [\"h2\" {:id \"ui\"} [:span \"UI\"]]], :nextjournal/viewer {:name :html-, :render-fn #viewer-fn identity, :hash \"5dsKyVZX2dPvsyoeg6dNrfeuqAh5UK\"}} {:nextjournal/value \"(cljs\\n (defonce !state\\n   (reagent/atom\\n    {:n 16\\n     :r1 1\\n     :r2 0.3\\n     :r3 0.1\\n     :compiled? true}))\\n\\n [:<>\\n  [leva/PanelOptions {:drag true}]\\n  [leva/Panel\\n   {:state !state\\n    :options\\n    {:n {:min 0 :max 32 :step 1}\\n     :r1 {:min 0 :max 3 :step 0.01}\\n     :r2 {:min 0.1 :max 0.5 :step 0.01}\\n     :r3 {:min 0.1 :max 0.2 :step 0.01}}}]])\", :nextjournal/opts {:loc {:line 13, :column 1}}, :nextjournal/viewer {:name :code, :render-fn #viewer-fn nextjournal.clerk.render/render-code, :hash \"5duGVW4Xoi1QoW73J5wMRghqm9uVoW\"}} {:path [], :nextjournal/value {:nextjournal/presented {:path [], :nextjournal/value {}, :nextjournal/viewer {:render-fn #viewer-fn (clojure.core/fn [___29367__auto__] (clojure.core/let [result__29368__auto__ (do (defonce !state (reagent/atom {:n 16, :r1 1, :r2 0.3, :r3 0.1, :compiled? true})) [:<> [leva/PanelOptions {:drag true}] [leva/Panel {:state !state, :options {:n {:min 0, :max 32, :step 1}, :r1 {:min 0, :max 3, :step 0.01}, :r2 {:min 0.1, :max 0.5, :step 0.01}, :r3 {:min 0.1, :max 0.2, :step 0.01}}}]])] (v/html (if (clojure.core/vector? result__29368__auto__) result__29368__auto__ [v/inspect result__29368__auto__])))), :hash \"5dszuXzUXgfBVyjHS8zqAHkBjyLxW1\"}}}, :nextjournal/viewer {:name :clerk/result, :render-fn #viewer-fn nextjournal.clerk.render/render-result, :hash \"5drtBjvRGKwhUFrDTtWvTAduWDETV1\"}} {:nextjournal/value [:div.viewer-markdown [\"h2\" {:id \"helpers\"} [:span \"Helpers\"]] [:p [:span \"TODO document that we are super slow now with sci and ask what they think I\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"should do.\"]]], :nextjournal/viewer {:name :html-, :render-fn #viewer-fn identity, :hash \"5dsKyVZX2dPvsyoeg6dNrfeuqAh5UK\"}} {:nextjournal/value \"(cljs\\n (let [vs (mathbox/Vector3)\\n       cos Math/cos\\n       sin Math/sin]\\n   (defn spine [theta {:keys [n r1 r2 r3]}]\\n     (let [a (* theta n)\\n           b theta\\n           s (sin a)\\n           c (cos a)\\n           r (+ r2 r3)\\n           x (+ 1 (* c r))\\n           z (* s r)\\n\\n           s (sin b)\\n           c (cos b)\\n           r r1\\n           x2 (* x c r)\\n           y2 (* x s r)\\n           z2 (* z r)]\\n       (.set vs x2 y2 z2)))\\n\\n   (defn circle [r1 theta]\\n     (let [b theta\\n           s (sin b)\\n           c (cos b)\\n           x (* c r1)\\n           y (* s r1)\\n           z 0]\\n       (.set vs x y z)))\\n\\n   (let [vo   (mathbox/Vector3)\\n         vt   (mathbox/Vector3)\\n         vb   (mathbox/Vector3)\\n         vn   (mathbox/Vector3)\\n         mtbn (mathbox/Matrix4)\\n         e 0.001]\\n     (defn tbn [theta {:keys [n r1] :as state}]\\n       (doto vt\\n         (.copy (.copy vo (spine theta state)))\\n         (.sub (spine (+ theta e) state))\\n         (.multiplyScalar (/ 1.0 e))\\n         (.normalize))\\n       (if n\\n         (doto vb\\n           (.copy (circle r1 theta))\\n           (.sub (circle r1 (+ theta e)))\\n           (.multiplyScalar (/ 1 e)))\\n         (.copy vb vo))\\n       (.normalize vb)\\n\\n       (.crossVectors vn vt vb)\\n       (.normalize vn)\\n\\n       (.crossVectors vb vt vn)\\n       (.normalize vb)\\n\\n       (doto mtbn\\n         (.set\\n          (.-x vt) (.-x vb) (.-x vn) (.-x vo)\\n          (.-y vt) (.-y vb) (.-y vn) (.-y vo)\\n          (.-z vt) (.-z vb) (.-z vn) (.-z vo)\\n          0        0        0        1))))\\n\\n   (defn area-expr [emit theta phi !state]\\n     (let [{:keys [r3] :as state} (.-state !state)\\n           m (tbn theta state)\\n           c (cos phi)\\n           s (sin phi)]\\n       (doto vs\\n         (.set 0 (* c r3) (* s r3))\\n         (.applyMatrix4 m))\\n       (emit (.-x vs)\\n             (.-y vs)\\n             (.-z vs))))))\", :nextjournal/opts {:loc {:line 36, :column 1}}, :nextjournal/viewer {:name :code, :render-fn #viewer-fn nextjournal.clerk.render/render-code, :hash \"5duGVW4Xoi1QoW73J5wMRghqm9uVoW\"}} {:path [], :nextjournal/value {:nextjournal/presented {:path [], :nextjournal/value {}, :nextjournal/viewer {:render-fn #viewer-fn (clojure.core/fn [___29367__auto__] (clojure.core/let [result__29368__auto__ (do (let [vs (mathbox/Vector3) cos Math/cos sin Math/sin] (defn spine [theta {:keys [n r1 r2 r3]}] (let [a (* theta n) b theta s (sin a) c (cos a) r (+ r2 r3) x (+ 1 (* c r)) z (* s r) s (sin b) c (cos b) r r1 x2 (* x c r) y2 (* x s r) z2 (* z r)] (.set vs x2 y2 z2))) (defn circle [r1 theta] (let [b theta s (sin b) c (cos b) x (* c r1) y (* s r1) z 0] (.set vs x y z))) (let [vo (mathbox/Vector3) vt (mathbox/Vector3) vb (mathbox/Vector3) vn (mathbox/Vector3) mtbn (mathbox/Matrix4) e 0.001] (defn tbn [theta {:keys [n r1], :as state}] (doto vt (.copy (.copy vo (spine theta state))) (.sub (spine (+ theta e) state)) (.multiplyScalar (/ 1.0 e)) (.normalize)) (if n (doto vb (.copy (circle r1 theta)) (.sub (circle r1 (+ theta e))) (.multiplyScalar (/ 1 e))) (.copy vb vo)) (.normalize vb) (.crossVectors vn vt vb) (.normalize vn) (.crossVectors vb vt vn) (.normalize vb) (doto mtbn (.set (.-x vt) (.-x vb) (.-x vn) (.-x vo) (.-y vt) (.-y vb) (.-y vn) (.-y vo) (.-z vt) (.-z vb) (.-z vn) (.-z vo) 0 0 0 1)))) (defn area-expr [emit theta phi !state] (let [{:keys [r3], :as state} (.-state !state) m (tbn theta state) c (cos phi) s (sin phi)] (doto vs (.set 0 (* c r3) (* s r3)) (.applyMatrix4 m)) (emit (.-x vs) (.-y vs) (.-z vs))))))] (v/html (if (clojure.core/vector? result__29368__auto__) result__29368__auto__ [v/inspect result__29368__auto__])))), :hash \"5duLEbY5vFXktvo47RXpDhW6rrP56x\"}}}, :nextjournal/viewer {:name :clerk/result, :render-fn #viewer-fn nextjournal.clerk.render/render-result, :hash \"5drtBjvRGKwhUFrDTtWvTAduWDETV1\"}} {:nextjournal/value [:div.viewer-markdown [\"h2\" {:id \"helitorus_component\"} [:span \"Helitorus Component\"]]], :nextjournal/viewer {:name :html-, :render-fn #viewer-fn identity, :hash \"5dsKyVZX2dPvsyoeg6dNrfeuqAh5UK\"}} {:nextjournal/value \"(cljs\\n (defn Helitorus [expr]\\n   [mathbox/Mathbox\\n    {:style {:height \\\"500px\\\" :width \\\"100%\\\"}\\n     :options\\n     {:plugins [\\\"core\\\", \\\"controls\\\", \\\"cursor\\\", \\\"mathbox\\\" \\\"stats\\\"]\\n      :controls {:klass mathbox/Trackball}}\\n     :init {:background-color 0xffffff\\n            :camera-proxy true\\n            :camera-position [1 1 3]\\n            :scale 500 :focus 3}}\\n    [mb/Clock {:speed (/ 1 16)}]\\n    [mb/Cartesian {:range [[-1 1] [-1 1] [-1 1]]\\n                   :scale [1 1 1]\\n                   :quaternion [0.7 0 0 0.7]}\\n\\n     ;; Compute helitoroidal surface\\n     [mb/Area\\n      {:rangeX [(- Math/PI) Math/PI]\\n       :rangeY [(- Math/PI) Math/PI]\\n       :width 512\\n       :height 16\\n       :channels 3\\n       :expr expr}]\\n     ;; // Draw spine curve\\n     [mb/Surface\\n      {:shaded true\\n       :color 0xcc0040\\n       :lineY true\\n       :width 1}]\\n\\n     [mb/Resample {:height 5}]\\n     [mb/Line\\n      {:color 0xffffff\\n       :width 2}]]]))\", :nextjournal/opts {:loc {:line 113, :column 1}}, :nextjournal/viewer {:name :code, :render-fn #viewer-fn nextjournal.clerk.render/render-code, :hash \"5duGVW4Xoi1QoW73J5wMRghqm9uVoW\"}} {:path [], :nextjournal/value {:nextjournal/presented {:path [], :nextjournal/value {}, :nextjournal/viewer {:render-fn #viewer-fn (clojure.core/fn [___29367__auto__] (clojure.core/let [result__29368__auto__ (do (defn Helitorus [expr] [mathbox/Mathbox {:style {:height \"500px\", :width \"100%\"}, :options {:plugins [\"core\" \"controls\" \"cursor\" \"mathbox\" \"stats\"], :controls {:klass mathbox/Trackball}}, :init {:background-color 16777215, :camera-proxy true, :camera-position [1 1 3], :scale 500, :focus 3}} [mb/Clock {:speed (/ 1 16)}] [mb/Cartesian {:range [[-1 1] [-1 1] [-1 1]], :scale [1 1 1], :quaternion [0.7 0 0 0.7]} [mb/Area {:rangeX [(- Math/PI) Math/PI], :rangeY [(- Math/PI) Math/PI], :width 512, :height 16, :channels 3, :expr expr}] [mb/Surface {:shaded true, :color 13369408, :lineY true, :width 1}] [mb/Resample {:height 5}] [mb/Line {:color 16777215, :width 2}]]]))] (v/html (if (clojure.core/vector? result__29368__auto__) result__29368__auto__ [v/inspect result__29368__auto__])))), :hash \"5dtHdUyapVGR9bc9coHQBnoLMNdnK6\"}}}, :nextjournal/viewer {:name :clerk/result, :render-fn #viewer-fn nextjournal.clerk.render/render-result, :hash \"5drtBjvRGKwhUFrDTtWvTAduWDETV1\"}} {:nextjournal/value [:div.viewer-markdown [:p [:span \"Animation\"]]], :nextjournal/viewer {:name :html-, :render-fn #viewer-fn identity, :hash \"5dsKyVZX2dPvsyoeg6dNrfeuqAh5UK\"}} {:nextjournal/value \"^{::clerk/width :wide\\n  ::clerk/visibility {:code :fold}}\\n(cljs\\n [Helitorus\\n  (if (:compiled? @!state)\\n    (fn [emit theta phi i j t]\\n      (mathbox/area-expr emit theta phi !state))\\n    (fn [emit theta phi i j t]\\n      (area-expr emit theta phi !state)))])\", :nextjournal/opts {:loc {:line 151, :column 1}}, :nextjournal/viewer {:name :code-folded, :render-fn #viewer-fn nextjournal.clerk.render/render-folded-code, :hash \"5dqxn3akuEMwMuR49nVx1Xvqr1jYQM\"}} {:path [], :nextjournal/value {:nextjournal/presented {:path [], :nextjournal/value {}, :nextjournal/viewer {:render-fn #viewer-fn (clojure.core/fn [___29367__auto__] (clojure.core/let [result__29368__auto__ (do [Helitorus (if (:compiled? (clojure.core/deref !state)) (fn [emit theta phi i j t] (mathbox/area-expr emit theta phi !state)) (fn [emit theta phi i j t] (area-expr emit theta phi !state)))])] (v/html (if (clojure.core/vector? result__29368__auto__) result__29368__auto__ [v/inspect result__29368__auto__])))), :hash \"5dsdfXBcCj1nfHjYRsDHJ77nmPUQNE\"}}}, :nextjournal/width :wide, :nextjournal/viewer {:name :clerk/result, :render-fn #viewer-fn nextjournal.clerk.render/render-result, :hash \"5drtBjvRGKwhUFrDTtWvTAduWDETV1\"}}], :css-class nil}, :nextjournal/viewer {:name :clerk/notebook, :render-fn #viewer-fn nextjournal.clerk.render/render-notebook, :hash \"5dt1qwFEn2BQwdEM84VqwY4LR6p4YV\"}}}, :index \"dev/mathbox/notebook.clj\", :browse? false, :paths [\"dev/mathbox/examples/dataviz/scatter.clj\" \"dev/mathbox/examples/math/hopf.clj\" \"dev/mathbox/examples/math/exponential.clj\" \"dev/mathbox/examples/math/helitorus.clj\" \"dev/mathbox/examples/math/field_lines.clj\" \"dev/mathbox/examples/index.md\" \"dev/mathbox/notebook.clj\"], :current-path \"dev/mathbox/examples/math/helitorus.clj\", :bundle? false, :path->url {\"dev/mathbox/examples/dataviz/scatter.clj\" \"dev/mathbox/examples/dataviz/scatter.html\", \"dev/mathbox/examples/math/hopf.clj\" \"dev/mathbox/examples/math/hopf.html\", \"dev/mathbox/examples/math/exponential.clj\" \"dev/mathbox/examples/math/exponential.html\", \"dev/mathbox/examples/math/helitorus.clj\" \"dev/mathbox/examples/math/helitorus.html\", \"dev/mathbox/examples/math/field_lines.clj\" \"dev/mathbox/examples/math/field_lines.html\", \"dev/mathbox/examples/index.md\" \"dev/mathbox/examples/\", \"dev/mathbox/notebook.clj\" \"\"}, :expanded-paths [\"dev/mathbox/examples/dataviz/scatter.clj\" \"dev/mathbox/examples/math/hopf.clj\" \"dev/mathbox/examples/math/exponential.clj\" \"dev/mathbox/examples/math/helitorus.clj\" \"dev/mathbox/examples/math/field_lines.clj\" \"dev/mathbox/examples/index.md\" \"dev/mathbox/notebook.clj\"], :report-fn #object[nextjournal.clerk.builder$stdout_reporter 0x4ade94f4 \"nextjournal.clerk.builder$stdout_reporter@4ade94f4\"]}")
+app.init(opts)
+</script></body></html>

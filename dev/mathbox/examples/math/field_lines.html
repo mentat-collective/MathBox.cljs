@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html class="overflow-hidden min-h-screen"><head><title>Field Lines</title><meta charset="UTF-8"><meta content="width=device-width, initial-scale=1" name="viewport"><meta content="// Number of samples on each 3D axisvar SAMPLES = 10;" property="og:description"><meta content="Field Lines" property="og:title"><meta content="article:clerk" property="og:type"><meta content="summary_large_image" name="twitter:card"><link href="https://unpkg.com/mathbox@2.2.0/build/mathbox.css" rel="stylesheet" type="text/css"><script src="https://cdn.tailwindcss.com?plugins=typography" type="text/javascript"></script><script>tailwind.config = {
+  darkMode: "class",
+  content: ["./tw/viewer.js", "./tw/**/*.edn"],
+  safelist: ['dark'],
+  theme: {
+    extend: {},
+    fontFamily: {
+      sans: ["Fira Sans", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+      serif: ["PT Serif", "serif"],
+      mono: ["Fira Mono", "monospace"]
+    }
+  },
+  variants: {
+    extend: {},
+  },
+  plugins: [],
+}
+</script><style type="text/tailwindcss">@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-size: 18px;
+  }
+  @media (max-width: 600px) {
+    html {
+      font-size: 16px;
+    }
+  }
+  .font-condensed { font-family: "Fira Sans Condensed", sans-serif; }
+  .font-inter     { font-family: "Inter", sans-serif; }
+  body {
+    @apply font-serif antialiased text-gray-900 sm:overscroll-y-none;
+  }
+  code, .code {
+    @apply font-mono text-sm text-gray-900 bg-slate-50 px-0.5 py-px rounded dark:bg-gray-800;
+  }
+  code::before, code::after { @apply content-none !important; }
+  h1, h3, h4, h5, h6 {
+    @apply font-condensed font-bold mt-8 first:mt-0;
+  }
+  h2 {
+    /*We cannot collapse margins due to nesting but we want to*/
+    /*keep the h2’s large margin visible*/
+    @apply font-condensed font-bold mt-8 first:mt-2;
+  }
+  h1 { @apply text-4xl; }
+  h2 { @apply text-3xl; }
+  h3 { @apply text-2xl; }
+
+  button { @apply focus:outline-none; }
+  strong { @apply font-bold; }
+  em     { @apply italic; }
+  pre    { @apply m-0 font-mono; }
+}
+
+/* Compatibility */
+/* --------------------------------------------------------------- */
+/* TODO: Verify which colors are in use and replace with Tailwind
+   colors accordingly. Move Nj-specific styles out of here. */
+
+:root {
+  --teal-color: #31afd0;
+  --dark-teal-color: #095960;
+  --near-black-color: #2e2e2c;
+  --red-color: #d64242;
+  --dark-blue-color: #1f2937;
+  --dark-blue-60-color: rgba(28, 42, 56, 0.6);
+  --gray-panel-color: rgba(239, 241, 245, 1.000);
+  --brand-color: var(--dark-blue-color);
+  --link-color: #5046e4;
+  --command-bar-selected-color: var(--teal-color);
+}
+
+.serif      { @apply font-serif; }
+.sans-serif { @apply font-sans; }
+.monospace  { @apply font-mono; }
+.inter      { @apply font-inter; }
+
+.border-color-teal { border-color: var(--dark-teal-color); }
+.teal { color: var(--teal-color); }
+.bg-dark-blue { background: var(--dark-blue-color); }
+.bg-dark-blue-60 { background: rgba(28, 42, 56, 0.6); }
+.bg-gray-panel { background: var(--gray-panel-color); }
+.text-dark-blue  { color: var(--dark-blue-color); }
+.text-dark-blue-60 { color: var(--dark-blue-60-color); }
+.border-dark-blue-30 { border-color: rgba(28, 42, 56, 0.6); }
+.text-brand { color: var(--dark-blue-color); }
+.bg-brand { background: var(--dark-blue-color); }
+.text-selected { color: white; }
+.red { color: var(--red-color); }
+
+/* Disclose Button */
+/* --------------------------------------------------------------- */
+
+.disclose {
+  @apply content-none border-solid cursor-pointer inline-block relative mr-[3px] top-[-2px] transition-all;
+  border-color: var(--near-black-color) transparent;
+  border-width: 6px 4px 0;
+}
+.disclose:hover {
+  border-color: var(--near-black-color) transparent;
+}
+.dark .disclose,
+.dark .disclose:hover {
+  border-color: white transparent;
+}
+.disclose.collapsed {
+  @apply rotate-[-90deg];
+}
+
+/* Layout */
+/* --------------------------------------------------------------- */
+
+.page {
+  @apply max-w-5xl mx-auto px-12 box-border flex-shrink-0;
+}
+.max-w-prose { @apply max-w-[46rem] !important; }
+.max-w-wide  { @apply max-w-3xl !important; }
+
+/* List Styles */
+/* --------------------------------------------------------------- */
+
+.task-list-item + .task-list-item,
+.viewer-markdown ul ul {
+  @apply mt-1 mb-0;
+}
+
+/* compact TOC */
+.viewer-markdown .toc ul {
+  list-style: none;
+  @apply my-1;
+}
+
+/* Code Viewer */
+/* --------------------------------------------------------------- */
+
+.viewer-code {
+  @apply font-mono bg-slate-100 rounded-sm text-sm overflow-x-auto dark:bg-gray-800;
+}
+.viewer-code .cm-content {
+  @apply py-4 px-8;
+}
+@media (min-width: 960px){
+  .viewer-notebook .viewer-code .cm-content {
+    @apply py-4 pl-12;
+  }
+}
+/* Don’t show focus outline when double-clicking cell in Safari */
+.cm-scroller { @apply focus:outline-none; }
+
+/* Syntax Highlighting */
+/* --------------------------------------------------------------- */
+
+.inspected-value { @apply text-xs font-mono leading-[1.25rem]; }
+.cmt-strong, .cmt-heading { @apply font-bold; }
+.cmt-italic, .cmt-emphasis { @apply italic; }
+.cmt-strikethrough { @apply line-through; }
+.cmt-link { @apply underline; }
+.untyped-value { @apply whitespace-nowrap; }
+
+.cm-editor, .cmt-default, .viewer-result {
+  @apply text-slate-800 dark:text-slate-300;
+}
+.cmt-keyword {
+  @apply text-purple-800 dark:text-pink-400;
+}
+.cmt-atom, .cmt-bool, .cmt-url, .cmt-contentSeparator, .cmt-labelName {
+  @apply text-blue-900 dark:text-blue-300;
+}
+.cmt-inserted, .cmt-literal {
+  @apply text-emerald-700 dark:text-emerald-200;
+}
+.cmt-string, .cmt-deleted {
+  @apply text-rose-700 dark:text-sky-300;
+}
+.cmt-italic.cmt-string {
+  @apply dark:text-sky-200;
+}
+.cmt-regexp, .cmt-escape {
+  @apply text-orange-500 dark:text-orange-300;
+}
+.cmt-variableName {
+  @apply text-blue-800 dark:text-sky-300;
+}
+.cmt-typeName, .cmt-namespace {
+  @apply text-emerald-600 dark:text-emerald-300;
+}
+.cmt-className {
+  @apply text-teal-600 dark:text-teal-200;
+}
+.cmt-macroName {
+  @apply text-teal-700 dark:text-teal-200;
+}
+.cmt-propertyName {
+  @apply text-blue-700 dark:text-blue-200;
+}
+.cmt-comment {
+  @apply text-slate-500 dark:text-slate-400;
+}
+.cmt-meta {
+  @apply text-slate-600 dark:text-slate-400;
+}
+.cmt-invalid {
+  @apply text-red-500 dark:text-red-300;
+}
+
+.result-data {
+  @apply font-mono text-sm overflow-x-auto whitespace-nowrap leading-normal;
+}
+.result-data::-webkit-scrollbar, .path-nav::-webkit-scrollbar {
+  @apply h-0;
+}
+.result-data-collapsed {
+  @apply whitespace-nowrap;
+}
+.result-data-field {
+  @apply ml-4 whitespace-nowrap;
+}
+.result-data-field-link{
+  @apply ml-4 whitespace-nowrap cursor-pointer;
+}
+.result-data-field-link:hover {
+  @apply text-black bg-black/5;
+}
+.result-text-empty {
+  color: rgba(0,0,0,.3);
+}
+.browsify-button:hover {
+  box-shadow: -2px 0 0 2px #edf2f7;
+}
+
+/* Prose */
+/* --------------------------------------------------------------- */
+
+.viewer-notebook,
+.viewer-markdown {
+  @apply prose
+    dark:prose-invert
+    prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
+    dark:prose-a:text-blue-300
+    prose-p:mt-4 prose-p:leading-snug
+    prose-ol:mt-4 prose-ol:mb-6 prose-ol:leading-snug
+    prose-ul:mt-4 prose-ul:mb-6 prose-ul:leading-snug
+    prose-blockquote:mt-4 prose-blockquote:leading-snug
+    prose-hr:mt-6 prose-hr:border-t-2 prose-hr:border-solid prose-hr:border-slate-200
+    prose-figure:mt-4
+    prose-figcaption:mt-2 prose-figcaption:text-xs
+    prose-headings:mb-4
+    prose-table:mt-0
+    prose-th:mb-0
+    prose-img:my-0
+    prose-code:font-medium prose-code:bg-slate-100
+    max-w-none;
+}
+.viewer-markdown blockquote p:first-of-type:before,
+.viewer-markdown blockquote p:last-of-type:after {
+  @apply content-none;
+}
+
+/* Images */
+/* --------------------------------------------------------------- */
+
+
+/* Todo Lists */
+/* --------------------------------------------------------------- */
+
+.contains-task-list {
+  @apply pl-6 list-none;
+}
+.contains-task-list input[type="checkbox"] {
+  @apply appearance-none h-4 w-4 rounded border border-slate-200 relative mr-[0.3rem] ml-[-1.5rem] top-[0.15rem];
+}
+.contains-task-list input[type="checkbox"]:checked {
+  @apply border-indigo-600 bg-indigo-600 bg-no-repeat bg-contain;
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+}
+
+/* Markdown TOC */
+/* --------------------------------------------------------------- */
+
+.viewer-markdown .toc      { @apply mt-4; }
+.viewer-markdown h1 + .toc { @apply mt-8; }
+
+.viewer-markdown .toc h1,
+.viewer-markdown .toc h2,
+.viewer-markdown .toc h3,
+.viewer-markdown .toc h4,
+.viewer-markdown .toc h5,
+.viewer-markdown .toc h6 {
+  @apply text-base text-indigo-600 font-sans my-0;
+}
+.viewer-markdown .toc a {
+  @apply text-indigo-600 font-normal no-underline hover:underline;
+}
+.viewer-markdown .toc li    { @apply m-0; }
+.viewer-markdown .toc ul ul { @apply pl-4; }
+
+/* Notebook Spacing */
+/* --------------------------------------------------------------- */
+
+.viewer-notebook { @apply py-16; }
+#clerk-static-app .viewer-notebook { @apply pt-[0.8rem] pb-16; }
+.viewer-markdown *:first-child:not(.viewer-code):not(li):not(h2) { @apply mt-0; }
+/*.viewer + .viewer { @apply mt-6; }*/
+.viewer + .viewer-result { @apply mt-0; }
+.viewer-code + .viewer-result { @apply mt-3; }
+.viewer-markdown + .viewer-markdown { @apply mt-0; }
+
+/* Sidenotes */
+/* --------------------------------------------------------------- */
+
+.sidenote-ref {
+  @apply top-[-3px] inline-flex justify-center items-center w-[18px] h-[18px]
+    rounded-full bg-slate-100 border border-slate-300 hover:bg-slate-200 hover:border-slate-300
+    m-0 ml-[4px] cursor-pointer;
+}
+.sidenote {
+  @apply hidden float-left clear-both mx-[2.5%] my-4 text-xs relative w-[95%];
+}
+.sidenote-ref.expanded + .sidenote {
+  @apply block;
+}
+@media (min-width: 860px) {
+  .sidenote-ref {
+    @apply top-[-0.5em] w-auto h-auto inline border-0 bg-transparent m-0 pointer-events-none;
+  }
+  .sidenote sup { @apply inline; }
+  .viewer-markdown .contains-sidenotes p { @apply max-w-[65%]; }
+  .viewer-markdown p .sidenote {
+    @apply mr-[-54%] mt-[0.2rem] w-1/2 float-right clear-right relative block;
+  }
+}
+.viewer-code + .viewer:not(.viewer-markdown):not(.viewer-code):not(.viewer-code-folded),
+.viewer-code-folded + .viewer:not(.viewer-markdown):not(.viewer-code):not(.viewer-code-folded),
+.viewer-result + .viewer-result {
+  @apply mt-2;
+}
+.viewer-code + .viewer-code-folded {
+  @apply mt-4;
+}
+.viewer-result {
+  @apply leading-tight mb-6;
+}
+.viewer-result figure {
+  @apply mt-0 !important;
+}
+@media (min-width: 768px) {
+  .devcard-desc > div {
+    @apply max-w-full m-0;
+  }
+}
+
+/* Command Palette */
+/* --------------------------------------------------------------- */
+
+.nj-commands-input {
+  @apply bg-transparent text-white;
+}
+.nj-context-menu-item:hover:not([disabled]) {
+  @apply cursor-pointer;
+  background-color: rgba(255,255,255,.14);
+}
+
+/* Devdocs */
+/* --------------------------------------------------------------- */
+
+.logo, .logo-white {
+  @apply block indent-[-999em];
+  background: url(/images/nextjournal-logo.svg) center center no-repeat;
+}
+.devdocs-body {
+  @apply font-inter;
+}
+
+/* Workarounds */
+/* --------------------------------------------------------------- */
+
+/* Fixes vega viewer resizing into infinity */
+.vega-embed .chart-wrapper { @apply h-auto !important; }
+/* fixes fraction separators being overridden by tw’s border-color */
+.katex * { @apply border-black; }
+</style><script src="/js/_data/8VxBy5NMhR9m3G5YVKfvFExhwrWBgqTi1dTuyTrd8YgopY2tw6jzyWEVjRPE7RUBTpFSBy7gXWJoqCKYYn8LFGEvXq.js" type="module"></script><link href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css" rel="stylesheet" type="text/css"><link href="https://fonts.bunny.net" rel="preconnect"><link href="https://fonts.bunny.net/css?family=fira-code:400,700%7Cfira-mono:400,700%7Cfira-sans:400,400i,500,500i,700,700i%7Cfira-sans-condensed:700,700i%7Cpt-serif:400,400i,700,700i" rel="stylesheet" type="text/css"></head><body><div id="clerk-static-app"></div><script type="module">let viewer = nextjournal.clerk.sci_env
+let app = nextjournal.clerk.static_app
+let opts = viewer.read_string("{:out-path \"public\", :path->doc {\"dev/mathbox/examples/math/field_lines.clj\" {:path [], :nextjournal/value {:toc {:type :toc, :children [{:type :toc, :content [{:type :text, :text \"Field Lines\"}], :heading-level 1}]}, :toc-visibility true, :atom-var-name->state #viewer-eval (nextjournal.clerk.render/intern-atoms! {}), :auto-expand-results? nil, :scope {:namespace :mathbox.examples.math.field-lines}, :open-graph {:type \"article:clerk\", :title \"Field Lines\", :description \"// Number of samples on each 3D axisvar SAMPLES = 10;\"}, :title \"Field Lines\", :blocks [{:nextjournal/value [:div.viewer-markdown [\"h1\" {:id \"field_lines\"} [:span \"Field Lines\"]] [:p [:span \"// Number of samples on each 3D axis\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var SAMPLES = 10;\"]] [:p [:span \"// Accuracy of integration steps\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var DIVIDE = 8;\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var STEP = 1 / 32 / DIVIDE;\"]] [:p [:span \"// Jitter range\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var JITTER = 1 / SAMPLES;\"]] [:p [:span \"// Maximum integration steps drawn\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var MAX_STEPS = 16;\"]] [:p [:span \"// Bootstrap MathBox\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var mathbox = MathBox.mathBox({\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"plugins: [\\\"core\\\", \\\"controls\\\", \\\"cursor\\\", \\\"mathbox\\\"],\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"controls: {\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"// Trackball controls, i.e. Free quaternion rotation\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"klass: THREE.TrackballControls,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"},\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"});\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"if (mathbox.fallback) throw \\\"WebGL not supported\\\";\"]] [:p [:span \"var three = mathbox.three;\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"three.renderer.setClearColor(new THREE.Color(0x000000), 1.0);\"]] [:p [:span \"// Dat GUI\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var gui = new dat.GUI();\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var props = {\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"speed: 1,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"x: 0,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"y: 0,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"z: 0,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"jitter: 1,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"steps: 8,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"respawn: 0.0005,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"fixed: false,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"field1: true,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"field2: true,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"rotate: true,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"};\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"gui.add(props, \\\"rotate\\\");\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"gui.add(props, \\\"speed\\\").min(0.5).max(10).step(0.5);\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"gui.add(props, \\\"x\\\").min(-1).max(1).step(0.05);\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"gui.add(props, \\\"y\\\").min(-1).max(1).step(0.05);\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"gui.add(props, \\\"z\\\").min(-1).max(1).step(0.05);\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"gui.add(props, \\\"steps\\\").min(2).max(MAX_STEPS).step(1);\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"gui.add(props, \\\"fixed\\\");\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"gui.add(props, \\\"respawn\\\").min(0).max(0.01).step(0.0005);\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"gui.add(props, \\\"jitter\\\").min(0).max(4).step(0.05);\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"gui.add(props, \\\"field1\\\");\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"gui.add(props, \\\"field2\\\");\"]] [:p [:span \"// DOM\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"mathbox.set(\\\"focus\\\", 3);\"]] [:p [:span \"var camera = mathbox.camera({\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"proxy: true,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"position: [0.5, 1, 1],\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"});\"]] [:p [:span \"var view = mathbox\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \".clock(\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"{},\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"{\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"speed: function () {\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"return props.rotate ? 1 / 16 : 0;\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"},\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"}\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \")\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \".cartesian(\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"{\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"range: [\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"[-2, 2],\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"[-2, 2],\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"[-2, 2],\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"],\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"scale: [1, 1, 1],\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"},\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"{\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"quaternion: function (t) {\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"return [Math.cos(t), 0, 0, Math.sin(t)];\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"},\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"}\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \");\"]] [:p [:span \"// Scratch vector\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var v = new THREE.Vector3();\"]] [:p [:span \"// Vector field 1\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var field = function (x, y, z) {\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"x += props.x;\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"y += props.y;\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"z += props.z;\"]] [:p [:span \"var rad = Math.sqrt(x * x + z * z);\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var offset = rad - 1;\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var torus = 1 / (0.1 + offset * offset + y * y);\"]] [:p [:span \"v.set(z * torus, 0, -x * torus);\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"return v;\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"};\"]] [:p [:span \"// Vector field 2\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var field2 = function (x, y, z) {\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"x += props.x;\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"y += props.y;\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"z += props.z;\"]] [:p [:span \"var rad = Math.sqrt(x * x + z * z);\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var offset = rad - 1;\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var torus = 1 / (0.1 + offset * offset + y * y);\"]] [:p [:span \"v.set(x * y * torus, -offset * torus, z * y * torus);\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"return v;\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"};\"]] [:p [:span \"// Random deterministic jitter\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var rand = function (seed) {\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var seed =\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"(Math.abs(\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"Math.sin(\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"seed * seed * seed * 319.1981313 +\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"seed * seed * 131.8455733 +\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"seed * 473.3914129\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \")\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \") *\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"10631.1318791821) %\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"1;\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"return seed * 2 - 1;\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"};\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var jitter = function (i) {\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"v.set(rand(i), rand(i * i), rand(i * i * i));\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"v.multiplyScalar(props.jitter);\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"return v;\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"};\"]] [:p [:span \"// RK4 scratch vectors\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var va = new THREE.Vector3();\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var vb = new THREE.Vector3();\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var vc = new THREE.Vector3();\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var vd = new THREE.Vector3();\"]] [:p [:span \"// Compute a 3D volume of integrated field lines\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var previous = new Float32Array(SAMPLES * SAMPLES * SAMPLES * 3);\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var data = view.volume({\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"expr: function (emit, x, y, z, i, j, k, t) {\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var f;\"]] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:div.viewer-code [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value \" var x1, y1, z1, x2, y2, z2, x3, y3, z3;\\n var delta = STEP * props.speed;\\n\\n // Point index\\n var l = (i + (j + k * SAMPLES) * SAMPLES) * 3;\\n\\n if (!props.fixed && Math.random() > props.respawn) {\\n   // Keep integrating along same field line with X% probability.\\n   x = previous[l] || x;\\n   y = previous[l + 1] || y;\\n   z = previous[l + 2] || z;\\n\\n   // Take 1 step (Runge-Kutta 4)\\n   f = field(x, y, z);\\n   va.copy(f);\\n\\n   x1 = x + f.x * delta * 0.5;\\n   y1 = y + f.y * delta * 0.5;\\n   z1 = z + f.z * delta * 0.5;\\n\\n   f = field(x1, y1, z1);\\n   vb.copy(f);\\n\\n   x2 = x + f.x * delta * 0.5;\\n   y2 = y + f.y * delta * 0.5;\\n   z2 = z + f.z * delta * 0.5;\\n\\n   f = field(x2, y2, z2);\\n   vc.copy(f);\\n\\n   x3 = x + f.x * delta;\\n   y3 = y + f.y * delta;\\n   z3 = z + f.z * delta;\\n\\n   f = field(x3, y3, z3);\\n   vd.copy(f);\\n\\n   va.multiplyScalar(1 / 6);\\n   vb.multiplyScalar(2 / 6);\\n   vc.multiplyScalar(2 / 6);\\n   vd.multiplyScalar(1 / 6);\\n\\n   va.add(vb);\\n   vc.add(vd);\\n   f.addVectors(va, vc);\\n\\n   x += f.x * delta;\\n   y += f.y * delta;\\n   z += f.z * delta;\\n } else {\\n   if (props.fixed) t = 0;\\n\\n   // Start at jittered home position\\n   f = jitter(l + t);\\n   x += f.x * JITTER;\\n   y += f.y * JITTER;\\n   z += f.z * JITTER;\\n }\\n\\n previous[l] = x;\\n previous[l + 1] = y;\\n previous[l + 2] = z;\\n\\n // Emit MAX_STEPS points ahead\\n for (var i = 0; i < MAX_STEPS; ++i) {\\n   emit(x, y, z);\\n\\n   // Only take selected number of steps\\n   delta = i >= MAX_STEPS - props.steps ? STEP : 0.0001;\\n\\n   // Take DIVIDE steps (Euler)\\n   for (var j = 0; j < DIVIDE; ++j) {\\n     f = field(x, y, z);\\n     x += f.x * delta;\\n     y += f.y * delta;\\n     z += f.z * delta;\\n   }\\n }\\n\", :nextjournal/viewer {:name :code, :render-fn #viewer-fn nextjournal.clerk.render/render-code, :hash \"5duGVW4Xoi1QoW73J5wMRghqm9uVoW\"}}]], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:p [:span \"},\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"width: SAMPLES,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"height: SAMPLES,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"depth: SAMPLES,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"items: MAX_STEPS,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"channels: 3,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"});\"]] [:p [:span \"// Draw polyarrows\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var vectors = view.vector(\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"{\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"color: 0x4098ff,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"width: 1,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"zBias: 3,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"end: true,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"},\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"{\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"visible: function () {\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"return props.field1;\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"},\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"}\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \");\"]] [:p [:span \"// Compute a 3D volume of integrated field lines\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var previous2 = new Float32Array(SAMPLES * SAMPLES * SAMPLES * 3);\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var data2 = view.volume({\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"expr: function (emit, x, y, z, i, j, k, t) {\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var f;\"]] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:div.viewer-code [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value \" var x1, y1, z1, x2, y2, z2, x3, y3, z3;\\n var delta = STEP * props.speed;\\n\\n // Point index\\n var l = (i + (j + k * SAMPLES) * SAMPLES) * 3;\\n\\n if (!props.fixed && Math.random() > props.respawn) {\\n   // Keep integrating along same field line with X% probability.\\n   x = previous2[l] || x;\\n   y = previous2[l + 1] || y;\\n   z = previous2[l + 2] || z;\\n\\n   // Take 1 step (Runge-Kutta 4)\\n   f = field2(x, y, z);\\n   va.copy(f);\\n\\n   x1 = x + f.x * delta * 0.5;\\n   y1 = y + f.y * delta * 0.5;\\n   z1 = z + f.z * delta * 0.5;\\n\\n   f = field2(x1, y1, z1);\\n   vb.copy(f);\\n\\n   x2 = x + f.x * delta * 0.5;\\n   y2 = y + f.y * delta * 0.5;\\n   z2 = z + f.z * delta * 0.5;\\n\\n   f = field2(x2, y2, z2);\\n   vc.copy(f);\\n\\n   x3 = x + f.x * delta;\\n   y3 = y + f.y * delta;\\n   z3 = z + f.z * delta;\\n\\n   f = field2(x3, y3, z3);\\n   vd.copy(f);\\n\\n   va.multiplyScalar(1 / 6);\\n   vb.multiplyScalar(2 / 6);\\n   vc.multiplyScalar(2 / 6);\\n   vd.multiplyScalar(1 / 6);\\n\\n   va.add(vb);\\n   vc.add(vd);\\n   f.addVectors(va, vc);\\n\\n   x += f.x * delta;\\n   y += f.y * delta;\\n   z += f.z * delta;\\n } else {\\n   if (props.fixed) t = 0;\\n\\n   // Start at jittered home position\\n   f = jitter(l + t);\\n   x += f.x * JITTER;\\n   y += f.y * JITTER;\\n   z += f.z * JITTER;\\n }\\n\\n previous2[l] = x;\\n previous2[l + 1] = y;\\n previous2[l + 2] = z;\\n\\n // Emit MAX_STEPS points ahead\\n for (var i = 0; i < MAX_STEPS; ++i) {\\n   emit(x, y, z);\\n\\n   // Only take selected number of steps\\n   delta = i >= MAX_STEPS - props.steps ? STEP : 0.0001;\\n\\n   // Take DIVIDE steps (Euler)\\n   for (var j = 0; j < DIVIDE; ++j) {\\n     f = field2(x, y, z);\\n     x += f.x * delta;\\n     y += f.y * delta;\\n     z += f.z * delta;\\n   }\\n }\\n\", :nextjournal/viewer {:name :code, :render-fn #viewer-fn nextjournal.clerk.render/render-code, :hash \"5duGVW4Xoi1QoW73J5wMRghqm9uVoW\"}}]], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:p [:span \"},\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"width: SAMPLES,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"height: SAMPLES,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"depth: SAMPLES,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"items: MAX_STEPS,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"channels: 3,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"});\"]] [:p [:span \"// Draw polyarrows\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"var vectors2 = view.vector(\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"{\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"color: 0xa00040,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"width: 1,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"zBias: 3,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"end: true,\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"},\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"{\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"visible: function () {\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"return props.field2;\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"},\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \"}\"] [#viewer-eval nextjournal.clerk.render/inspect-presented {:nextjournal/value [:span \" \"], :nextjournal/viewer {:name :html, :render-fn #viewer-fn identity, :hash \"5dqwbRQVFnHkdooT8QV8nfPHBGVWtj\"}}] [:span \");\"]]], :nextjournal/viewer {:name :html-, :render-fn #viewer-fn identity, :hash \"5dsKyVZX2dPvsyoeg6dNrfeuqAh5UK\"}}], :css-class nil}, :nextjournal/viewer {:name :clerk/notebook, :render-fn #viewer-fn nextjournal.clerk.render/render-notebook, :hash \"5dt1qwFEn2BQwdEM84VqwY4LR6p4YV\"}}}, :index \"dev/mathbox/notebook.clj\", :browse? false, :paths [\"dev/mathbox/examples/dataviz/scatter.clj\" \"dev/mathbox/examples/math/hopf.clj\" \"dev/mathbox/examples/math/exponential.clj\" \"dev/mathbox/examples/math/helitorus.clj\" \"dev/mathbox/examples/math/field_lines.clj\" \"dev/mathbox/examples/index.md\" \"dev/mathbox/notebook.clj\"], :current-path \"dev/mathbox/examples/math/field_lines.clj\", :bundle? false, :path->url {\"dev/mathbox/examples/dataviz/scatter.clj\" \"dev/mathbox/examples/dataviz/scatter.html\", \"dev/mathbox/examples/math/hopf.clj\" \"dev/mathbox/examples/math/hopf.html\", \"dev/mathbox/examples/math/exponential.clj\" \"dev/mathbox/examples/math/exponential.html\", \"dev/mathbox/examples/math/helitorus.clj\" \"dev/mathbox/examples/math/helitorus.html\", \"dev/mathbox/examples/math/field_lines.clj\" \"dev/mathbox/examples/math/field_lines.html\", \"dev/mathbox/examples/index.md\" \"dev/mathbox/examples/\", \"dev/mathbox/notebook.clj\" \"\"}, :expanded-paths [\"dev/mathbox/examples/dataviz/scatter.clj\" \"dev/mathbox/examples/math/hopf.clj\" \"dev/mathbox/examples/math/exponential.clj\" \"dev/mathbox/examples/math/helitorus.clj\" \"dev/mathbox/examples/math/field_lines.clj\" \"dev/mathbox/examples/index.md\" \"dev/mathbox/notebook.clj\"], :report-fn #object[nextjournal.clerk.builder$stdout_reporter 0x4ade94f4 \"nextjournal.clerk.builder$stdout_reporter@4ade94f4\"]}")
+app.init(opts)
+</script></body></html>
