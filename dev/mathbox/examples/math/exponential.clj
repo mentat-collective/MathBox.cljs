@@ -8,22 +8,15 @@
 
 ;; # Exponential
 ;;
-;; Some helpful state. This demos live properties.
+;; ### UI
 
 (cljs
  (defonce !state
-   (atom
+   (reagent/atom
     {:projectionAngle 90
      :surface "#ffffff"
-     :line "#4169e1"})))
+     :line "#4169e1"}))
 
-;; UI:
-
-(cljs
- (defn update-atom [s]
-   (reset! s (assoc @s :projectionAngle 100))))
-
-(cljs
  [:<>
   [leva/PanelOptions {:drag true}]
   [leva/Panel
@@ -47,34 +40,26 @@
           :scale 500}}
   [mb/Cartesian {}
    [mb/Transform4
-    {:ref
-     (fn [x]
-       (when (and x (not (.-created x)))
-         (set! (.-created x) true)
-         (.bind
-          x (js-obj
-             "matrix"
-             (fn []
-               (let [a (/ (* (:projectionAngle
-                              (.-state !state)) 2 Math/PI)
-                          360.0)]
-                 (js/Array 1 0 0 (Math/cos a)
-                           0 1 0 0
-                           0 0 1 (Math/sin a)
-                           0 0 0 1)))))))}
+    {:matrix
+     (let [a (/ (* (:projectionAngle @!state) 2 Math/PI)
+                360.0)]
+       [1 0 0 (Math/cos a)
+        0 1 0 0
+        0 0 1 (Math/sin a)
+        0 0 0 1])}
     [mb/Area
      {:rangeX [-3 1]
       :rangeY [(* -2 Math/PI) (* 2 Math/PI)]
       :width 129
       :height 65
+      :channels 4
       :expr
       (fn [emit, x y _i _j]
         (let [r (Math/exp x)]
           (emit (* r (Math/cos y))
                 (* r (Math/sin y))
                 x
-                y)))
-      :channels 4}]
+                y)))}]
     [mb/Surface
      {:color (:surface @!state)
       :zBias -0.25}]
