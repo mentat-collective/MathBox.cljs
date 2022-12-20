@@ -50,20 +50,18 @@
 ;; ## Helpers
 
 (show-cljs
- (let [vs (three/Vector3.)
-       cos Math/cos
-       sin Math/sin]
+ (let [vs (three/Vector3.)]
    (defn spine [theta {:keys [n r1 r2 r3]}]
      (let [a (* theta n)
            b theta
-           s (sin a)
-           c (cos a)
+           s (Math/sin a)
+           c (Math/cos a)
            r (+ r2 r3)
            x (+ 1 (* c r))
            z (* s r)
 
-           s (sin b)
-           c (cos b)
+           s (Math/sin b)
+           c (Math/cos b)
            r r1
            x2 (* x c r)
            y2 (* x s r)
@@ -72,8 +70,8 @@
 
    (defn circle [r1 theta]
      (doto vs
-       (.set (* r1 (cos theta))
-             (* r1 (sin theta))
+       (.set (* r1 (Math/cos theta))
+             (* r1 (Math/sin theta))
              0)))
 
    (let [vo   (three/Vector3.)
@@ -107,19 +105,7 @@
           (.-x vt) (.-x vb) (.-x vn) (.-x vo)
           (.-y vt) (.-y vb) (.-y vn) (.-y vo)
           (.-z vt) (.-z vb) (.-z vn) (.-z vo)
-          0        0        0        1))))
-
-   (defn area-expr [emit theta phi !state]
-     (let [{:keys [r3] :as state} (.-state !state)
-           m (tbn theta state)]
-       (doto vs
-         (.set 0
-               (* r3 (cos phi))
-               (* r3 (sin phi)))
-         (.applyMatrix4 m))
-       (emit (.-x vs)
-             (.-y vs)
-             (.-z vs))))))
+          0        0        0        1))))))
 
 ;; ## Helitorus Component
 
@@ -164,9 +150,19 @@
 ;; that we can document.
 
 ;; Then we can do this, only on the clj side for now:
+
 ^{::clerk/width :wide
   ::clerk/visibility {:code :fold}}
 (show-cljs
  [Helitorus
   (fn [emit theta phi _i _j _t]
-    (area-expr emit theta phi !state))])
+    (let [{:keys [r3] :as state} (.-state !state)
+          m (tbn theta state)]
+      (doto vs
+        (.set 0
+              (* r3 (Math/cos phi))
+              (* r3 (Math/sin phi)))
+        (.applyMatrix4 m))
+      (emit (.-x vs)
+            (.-y vs)
+            (.-z vs))))])
