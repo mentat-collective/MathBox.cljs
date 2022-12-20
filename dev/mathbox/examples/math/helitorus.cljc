@@ -3,16 +3,16 @@
  :no-cache true
  :visibility :hide-ns}
 (ns mathbox.examples.math.helitorus
-  (:require [nextjournal.clerk :as-alias clerk]
-            #?(:cljs [mathbox])
-            #?(:cljs [mathbox.primitives :as mb])
-            #?(:cljs ["three" :as three])
-            #?(:cljs [reagent.core :as reagent])
-            #?(:cljs [leva.core :as leva])
-            #?(:cljs
-               ["three/examples/jsm/controls/TrackballControls.js"
-                :as TrackballControls])
-            [mentat.clerk-utils.show :refer [#?(:clj show-sci) show-cljs]]))
+  (:require
+   #?@(:cljs [[mathbox]
+              [mathbox.primitives :as mb]
+              ["three" :as three]
+              ["three/examples/jsm/controls/TrackballControls.js"
+               :as TrackballControls]])
+   [nextjournal.clerk :as-alias clerk]
+   ;; TODO this only for now, since `show-sci` does not behave well on the cljs
+   ;; side.
+   [mentat.clerk-utils.show :refer [#?(:clj show-sci) show-cljs]]))
 
 ;; # Helitorus
 ;;
