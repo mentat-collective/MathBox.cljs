@@ -29,20 +29,19 @@
 
 ;; ## UI
 
-^{::clerk/sync true}
-(defonce !state
-  (atom
-   {:n 16
-    :r1 1
-    :r2 0.3
-    :r3 0.1}))
-
 #?(:clj
    (show-sci
+    (defonce !state
+      (atom
+       {:n 16
+        :r1 1
+        :r2 0.3
+        :r3 0.1}))
+
     [:<>
      [leva/PanelOptions {:drag true}]
      [leva/Panel
-      {:state mathbox.examples.math.helitorus/!state
+      {:state !state
        :options
        {:n {:min 0 :max 32 :step 1}
         :r1 {:min 0 :max 3 :step 0.01}
@@ -110,9 +109,8 @@
         (.-z vt) (.-z vb) (.-z vn) (.-z vo)
         0        0        0        1)))
 
-   (defn ^:export area-expr [emit theta phi !state]
-     (let [{:keys [r3] :as state} (.-state !state)
-           m (tbn theta state)]
+   (defn area-expr [emit theta phi {:keys [r3] :as state}]
+     (let [m (tbn theta state)]
        (doto vs
          (.set 0
                (* r3 (Math/cos phi))
@@ -125,7 +123,7 @@
 ;; ## Helitorus Component
 
 (show-cljs
- (defn ^:export Helitorus [expr]
+ (defn ^:export Helitorus [!state]
    [mathbox/Mathbox
     {:style {:height "500px" :width "100%"}
      :options
@@ -146,7 +144,8 @@
        :width 512
        :height 16
        :channels 3
-       :expr expr}]
+       :expr (fn [emit theta phi _i _j _t]
+               (area-expr emit theta phi (.-state !state)))}]
      ;; // Draw spine curve
      [mb/Surface
       {:shaded true
@@ -164,18 +163,14 @@
 ;; Note that you can't drop back INTO sci land unless you do some extra work
 ;; that we can document.
 
-;; Then we can do this, only on the clj side for now:
+;; Then we can jump back to SCI, to get access to our shared state. Define the
+;; full component that you need on the cljs side!
 
 #?(:clj
    ^{::clerk/width :wide
      ::clerk/visibility {:code :fold}}
    (show-sci
-    (let [!state mathbox.examples.math.helitorus/!state
-          f (fn [emit theta phi _i _j _t]
-              (js/mathbox.examples.math.helitorus.area_expr
-               emit theta phi !state))]
-      [js/mathbox.examples.math.helitorus.Helitorus f])))
+    [js/mathbox.examples.math.helitorus.Helitorus !state]))
 
-;; Server side:
-
-@!state
+;; TODO get the server syncing working once we stop failing on send on
+;; connecting.
