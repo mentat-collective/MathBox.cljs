@@ -1,4 +1,7 @@
 {:config-in-call
- {mentat.clerk-utils/cljs
+ {mentat.clerk-utils.show/show-sci
+  {:linters {:unresolved-symbol {:level :off}
+             :unresolved-namespace {:level :off}}}
+  mentat.clerk-utils.show/show-cljs
   {:linters {:unresolved-symbol {:level :off}
              :unresolved-namespace {:level :off}}}}}

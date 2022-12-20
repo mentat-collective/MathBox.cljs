@@ -4,7 +4,7 @@
  :visibility :hide-ns}
 (ns mathbox.examples.math.hopf
   #_(:require [nextjournal.clerk :as clerk]
-              [mentat.clerk-utils :refer [cljs]]))
+              [mentat.clerk-utils.show :refer [show-sci]]))
 
 ;; mathbox = MathBox.mathBox({
 ;;   plugins: ["core", "controls", "cursor"],

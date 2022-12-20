@@ -3,7 +3,7 @@
  :no-cache true
  :visibility :hide-ns}
 (ns mathbox.notebook
-  (:require [mentat.clerk-utils :refer [cljs]]))
+  (:require [mentat.clerk-utils.show :refer [show-sci]]))
 
 ;; # MathBox.cljs
 ;;
@@ -31,7 +31,7 @@
 ;;
 ;; TODO description and demo.
 ^{:nextjournal.clerk/visibility {:code :fold}}
-(cljs
+(show-sci
  [:div "demo."])
 
 ;; ## Quickstart
@@ -465,7 +465,7 @@
 ;; ### Color Cube
 
 ^{:nextjournal.clerk/width :wide}
-(cljs
+(show-sci
  [mathbox/Mathbox
   {:style {:height "400px" :width "100%"}
    :init {:background-color 0xeeeeee

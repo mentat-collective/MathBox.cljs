@@ -4,13 +4,13 @@
  :visibility :hide-ns}
 (ns mathbox.examples.math.exponential
   (:require [nextjournal.clerk :as clerk]
-            [mentat.clerk-utils :refer [cljs]]))
+            [mentat.clerk-utils.show :refer [show-sci]]))
 
 ;; # Exponential
 ;;
 ;; ### UI
 
-(cljs
+(show-sci
  (defonce !state
    (reagent/atom
     {:projectionAngle 90
@@ -32,7 +32,7 @@
 
 ^{::clerk/width :wide
   ::clerk/visibility {:code :fold}}
-(cljs
+(show-sci
  [mathbox/Mathbox
   {:style {:height "500px" :width "100%"}
    :init {:background-color 0xffffff

@@ -3,12 +3,12 @@
  :no-cache true
  :visibility :hide-ns}
 (ns mathbox.examples.dataviz.scatter
-  (:require [mentat.clerk-utils :refer [cljs]]))
+  (:require [mentat.clerk-utils.show :refer [show-sci]]))
 
 ;; # Iris Data
 
 ^{:nextjournal.clerk/visibility {:code :fold}}
-(cljs
+(show-sci
  (def ^{:doc "http://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"}
    iris-data
    [[5.1 3.5 1.4 0.2]
@@ -163,7 +163,7 @@
     [5.9 3.0 5.1 1.8]]))
 
 ^{:nextjournal.clerk/visibility {:code :fold}}
-(cljs
+(show-sci
  (defn interpolate [lo hi n]
    (let [n      (dec n)
          spread (- hi lo)]
@@ -328,6 +328,6 @@
             :colors colors))))
 
 ^{:nextjournal.clerk/width :wide}
-(cljs
+(show-sci
  [Scatter
   (assoc dataset :colors colors)])

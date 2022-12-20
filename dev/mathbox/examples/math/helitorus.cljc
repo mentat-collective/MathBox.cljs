@@ -3,8 +3,16 @@
  :no-cache true
  :visibility :hide-ns}
 (ns mathbox.examples.math.helitorus
-  (:require [nextjournal.clerk :as clerk]
-            [mentat.clerk-utils :refer [cljs]]))
+  (:require [nextjournal.clerk :as-alias clerk]
+            #?(:cljs [mathbox])
+            #?(:cljs [mathbox.primitives :as mb])
+            #?(:cljs ["three" :as three])
+            #?(:cljs [reagent.core :as reagent])
+            #?(:cljs [leva.core :as leva])
+            #?(:cljs
+               ["three/examples/jsm/controls/TrackballControls.js"
+                :as TrackballControls])
+            [mentat.clerk-utils.show :refer [#?(:clj show-sci) show-cljs]]))
 
 ;; # Helitorus
 ;;
@@ -21,14 +29,13 @@
 
 ;; ## UI
 
-(cljs
+(show-cljs
  (defonce !state
    (reagent/atom
     {:n 16
      :r1 1
      :r2 0.3
-     :r3 0.1
-     :compiled? true}))
+     :r3 0.1}))
 
  [:<>
   [leva/PanelOptions {:drag true}]
@@ -42,8 +49,8 @@
 
 ;; ## Helpers
 
-(cljs
- (let [vs (mathbox/Vector3)
+(show-cljs
+ (let [vs (three/Vector3.)
        cos Math/cos
        sin Math/sin]
    (defn spine [theta {:keys [n r1 r2 r3]}]
@@ -69,12 +76,12 @@
              (* r1 (sin theta))
              0)))
 
-   (let [vo   (mathbox/Vector3)
-         vt   (mathbox/Vector3)
-         vb   (mathbox/Vector3)
-         vn   (mathbox/Vector3)
-         mtbn (mathbox/Matrix4)
-         e 0.001]
+   (let [vo   (three/Vector3.)
+         vt   (three/Vector3.)
+         vb   (three/Vector3.)
+         vn   (three/Vector3.)
+         mtbn (three/Matrix4.)
+         e    0.001]
      (defn tbn [theta {:keys [n r1] :as state}]
        (doto vt
          (.copy (.copy vo (spine theta state)))
@@ -116,13 +123,13 @@
 
 ;; ## Helitorus Component
 
-(cljs
+(show-cljs
  (defn Helitorus [expr]
    [mathbox/Mathbox
     {:style {:height "500px" :width "100%"}
      :options
      {:plugins ["core", "controls", "cursor", "mathbox" "stats"]
-      :controls {:klass mathbox/Trackball}}
+      :controls {:klass TrackballControls/TrackballControls}}
      :init {:background-color 0xffffff
             :camera-proxy true
             :camera-position [1 1 3]
@@ -151,14 +158,14 @@
       {:color 0xffffff
        :width 2}]]]))
 
-;; Animation
+;; ## Animation
+;;
+;; Note that you can't drop back INTO sci land unless you do some extra work
+;; that we can document.
 
 ^{::clerk/width :wide
   ::clerk/visibility {:code :fold}}
-(cljs
+(show-cljs
  [Helitorus
-  (if (:compiled? @!state)
-    (fn [emit theta phi i j t]
-      (mathbox/area-expr emit theta phi !state))
-    (fn [emit theta phi i j t]
-      (area-expr emit theta phi !state)))])
+  (fn [emit theta phi _i _j _t]
+    (area-expr emit theta phi !state))])
