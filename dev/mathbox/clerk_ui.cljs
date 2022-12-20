@@ -8,8 +8,6 @@
 
 ;; ## SCI Customization
 
-(js/console.log mathbox.examples.math.helitorus)
-
 (sci.ctx-store/swap-ctx!
  sci/merge-opts
  {:classes    {'Math js/Math}
