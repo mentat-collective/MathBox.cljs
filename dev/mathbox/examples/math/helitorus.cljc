@@ -163,6 +163,7 @@
 ;; Note that you can't drop back INTO sci land unless you do some extra work
 ;; that we can document.
 
+;; Then we can do this, only on the clj side for now:
 ^{::clerk/width :wide
   ::clerk/visibility {:code :fold}}
 (show-cljs
