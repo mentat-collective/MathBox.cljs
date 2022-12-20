@@ -26,7 +26,7 @@
     "markdown-it-sidenote": "github:gerwitz/markdown-it-sidenote#aa5de8ce3168b7d41cb33c3aed071a5f41ce0083",
     "markdown-it-texmath": "0.9.7",
     "markdown-it-toc-done-right": "4.2.0",
-    "mathbox-react": "0.0.10",
+    "mathbox-react": "0.0.11-rc",
     "punycode": "2.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -34,8 +34,8 @@
     "w3c-keyname": "2.2.4"
   },
   "peerDependencies": {
-    "mathbox": "^2.2.0",
-    "three": "^0.137.5"
+    "mathbox": "2.2.1",
+    "three": "0.147.0"
   },
   "devDependencies": {
     "gh-pages": "^3.2.3",

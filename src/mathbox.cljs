@@ -7,7 +7,7 @@
 
 ;; TODO take a key for orbitcontrols, trackballcontrols.
 (def default-options
-  {:plugins ["core" "controls" "cursor" ]
+  {:plugins ["core" "controls" "cursor"]
    :controls {:klass OrbitControls/OrbitControls}
    :camera {}})
 

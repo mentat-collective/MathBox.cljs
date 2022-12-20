@@ -7,6 +7,17 @@
             [mentat.clerk-utils :refer [cljs]]))
 
 ;; # Helitorus
+;;
+;; BOOM this describes what to do! we'll see if we can get rid of the vector4
+;; etc and do it more simply, maybe there is some speed we can get from
+;; compiling with sicmutils.
+;; https://math.stackexchange.com/questions/324527/do-these-equations-create-a-helix-wrapped-into-a-torus
+;;
+;; https://search.brave.com/search?q=helical+toroid&source=desktop
+;;
+;; https://mathtourist.blogspot.com/2016/09/airport-helical-toroid.html
+
+;; https://www.laetusinpraesens.org/docs10s/helixtor.php
 
 ;; ## UI
 
@@ -31,8 +42,6 @@
 
 ;; ## Helpers
 
-;; TODO document that we are super slow now with sci and ask what they think I
-;; should do.
 (cljs
  (let [vs (mathbox/Vector3)
        cos Math/cos
