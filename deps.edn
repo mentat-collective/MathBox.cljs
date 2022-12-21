@@ -18,7 +18,7 @@
      :deps/root "render"}
     org.mentat/clerk-utils {:mvn/version "0.2.0-SNAPSHOT"}
     io.github.mentat-collective/leva.cljs
-    {:git/sha "2ac50fc39a30f2b90b5f96b479f3acd4b952dbe5"}}
+    {:git/sha "5ed1214ef6fbf824090cb3c134ae41da70510f38"}}
    :exec-fn user/garden!}
 
   :build

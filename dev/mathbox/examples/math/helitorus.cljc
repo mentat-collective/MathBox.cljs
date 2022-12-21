@@ -29,19 +29,20 @@
 
 ;; ## UI
 
+^{::clerk/sync true}
+(defonce !state
+  (atom
+   {:n 16
+    :r1 1
+    :r2 0.3
+    :r3 0.1}))
+
 #?(:clj
    (show-sci
-    (defonce !state
-      (atom
-       {:n 16
-        :r1 1
-        :r2 0.3
-        :r3 0.1}))
-
     [:<>
      [leva/PanelOptions {:drag true}]
      [leva/Panel
-      {:state !state
+      {:state mathbox.examples.math.helitorus/!state
        :options
        {:n {:min 0 :max 32 :step 1}
         :r1 {:min 0 :max 3 :step 0.01}
@@ -170,7 +171,9 @@
    ^{::clerk/width :wide
      ::clerk/visibility {:code :fold}}
    (show-sci
-    [js/mathbox.examples.math.helitorus.Helitorus !state]))
+    [js/mathbox.examples.math.helitorus.Helitorus
+     mathbox.examples.math.helitorus/!state]))
 
-;; TODO get the server syncing working once we stop failing on send on
-;; connecting.
+;; Server state:
+
+@!state
