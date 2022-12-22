@@ -53,16 +53,18 @@
 (show-cljs
  (def vs (three/Vector3.))
 
- (defn spine [n r1 r2 r3 theta]
-   (let [r (+ r2 r3)
-         a (* n theta)
-         x (+ 1 (* r (Math/cos a)))
-         z (* r (Math/sin a))
-         xr (* x r1)]
+ (defn spine [R r n theta]
+   ;; torus https://en.wikipedia.org/wiki/Torus
+   ;;
+   ;; https://math.stackexchange.com/questions/324527/do-these-equations-create-a-helix-wrapped-into-a-torus
+
+   ;; r2+r3 minor radius, r1 major
+   (let [n*theta (* n theta)
+         xr (+ R (* r (Math/cos n*theta)))]
      (doto vs
        (.set (* xr (Math/cos theta))
              (* xr (Math/sin theta))
-             (* r1 z)))))
+             (* r (Math/sin n*theta))))))
 
  (defn circle [r1 theta]
    (doto vs
@@ -75,24 +77,25 @@
        vb   (three/Vector3.)
        vn   (three/Vector3.)
        mtbn (three/Matrix4.)
-       e    0.001]
+       e    0.001
+       inv-e (/ 1.0 e)]
    (defn tbn
      "Compute tangent, biTangent, normal matrix:
      https://learnopengl.com/Advanced-Lighting/Normal-Mapping"
      [n r1 r2 r3 theta]
-     (let [inv-e (/ 1.0 e)]
+     (let [minor-r (+ r2 r3)]
        (doto vt
-         (.copy (.copy vo (spine n r1 r2 r3 theta)))
-         (.sub (spine n r1 r2 r3 (+ theta e)))
+         (.copy (.copy vo (spine r1 minor-r n theta)))
+         (.sub (spine r1 minor-r n (+ theta e)))
          (.multiplyScalar inv-e)
          (.normalize))
 
        (doto vb
          (.copy (circle r1 theta))
          (.sub (circle r1 (+ theta e)))
-         (.multiplyScalar inv-e)))
+         (.multiplyScalar inv-e)
+         (.normalize)))
 
-     (.normalize vb)
      (.crossVectors vn vt vb)
      (.normalize vn)
      (.crossVectors vb vt vn)
