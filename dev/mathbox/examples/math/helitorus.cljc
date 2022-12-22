@@ -53,22 +53,16 @@
 (show-cljs
  (def vs (three/Vector3.))
 
- (defn spine [theta {:keys [n r1 r2 r3]}]
-   (let [a (* theta n)
-         b theta
-         s (Math/sin a)
-         c (Math/cos a)
-         r (+ r2 r3)
-         x (+ 1 (* c r))
-         z (* s r)
-
-         s (Math/sin b)
-         c (Math/cos b)
-         r r1
-         x2 (* x c r)
-         y2 (* x s r)
-         z2 (* z r)]
-     (.set vs x2 y2 z2)))
+ (defn spine [n r1 r2 r3 theta]
+   (let [r (+ r2 r3)
+         a (* n theta)
+         x (+ 1 (* r (Math/cos a)))
+         z (* r (Math/sin a))
+         xr (* x r1)]
+     (doto vs
+       (.set (* xr (Math/cos theta))
+             (* xr (Math/sin theta))
+             (* r1 z)))))
 
  (defn circle [r1 theta]
    (doto vs
@@ -82,23 +76,25 @@
        vn   (three/Vector3.)
        mtbn (three/Matrix4.)
        e    0.001]
-   (defn tbn [theta {:keys [n r1] :as state}]
-     (doto vt
-       (.copy (.copy vo (spine theta state)))
-       (.sub (spine (+ theta e) state))
-       (.multiplyScalar (/ 1.0 e))
-       (.normalize))
-     (if n
+   (defn tbn
+     "Compute tangent, biTangent, normal matrix:
+     https://learnopengl.com/Advanced-Lighting/Normal-Mapping"
+     [n r1 r2 r3 theta]
+     (let [inv-e (/ 1.0 e)]
+       (doto vt
+         (.copy (.copy vo (spine n r1 r2 r3 theta)))
+         (.sub (spine n r1 r2 r3 (+ theta e)))
+         (.multiplyScalar inv-e)
+         (.normalize))
+
        (doto vb
          (.copy (circle r1 theta))
          (.sub (circle r1 (+ theta e)))
-         (.multiplyScalar (/ 1 e)))
-       (.copy vb vo))
-     (.normalize vb)
+         (.multiplyScalar inv-e)))
 
+     (.normalize vb)
      (.crossVectors vn vt vb)
      (.normalize vn)
-
      (.crossVectors vb vt vn)
      (.normalize vb)
 
@@ -109,8 +105,10 @@
         (.-z vt) (.-z vb) (.-z vn) (.-z vo)
         0        0        0        1)))
 
-   (defn area-expr [emit theta phi {:keys [r3] :as state}]
-     (let [m (tbn theta state)]
+   (defn area-expr
+     "So phi gets you around the smaller circle, and then theta is the big circle."
+     [emit theta phi {:keys [n r1 r2 r3]}]
+     (let [m (tbn n r1 r2 r3 theta)]
        (doto vs
          (.set 0
                (* r3 (Math/cos phi))
