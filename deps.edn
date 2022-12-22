@@ -16,7 +16,8 @@
     {:git/url "https://github.com/nextjournal/clerk"
      :git/sha "ec666210f11763fce4fec74072acca1e6525d29f"
      :deps/root "render"}
-    org.mentat/clerk-utils {:mvn/version "0.2.0-SNAPSHOT"}
+    io.github.mentat-collective/clerk-utils
+    {:git/sha "09d9f94ecf089c2d7a2a905598b154beb0b5e72f"}
     io.github.mentat-collective/leva.cljs
     {:git/sha "5ed1214ef6fbf824090cb3c134ae41da70510f38"}}
    :exec-fn user/garden!}

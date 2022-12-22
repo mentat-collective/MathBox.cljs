@@ -12,7 +12,7 @@
    [nextjournal.clerk :as-alias clerk]
    ;; TODO this only for now, since `show-sci` does not behave well on the cljs
    ;; side.
-   [mentat.clerk-utils.show :refer [#?(:clj show-sci) show-cljs]]))
+   [mentat.clerk-utils.show :refer [show-sci show-cljs]]))
 
 ;; # Helitorus
 ;;
@@ -37,17 +37,16 @@
     :r2 0.3
     :r3 0.1}))
 
-#?(:clj
-   (show-sci
-    [:<>
-     [leva/PanelOptions {:drag true}]
-     [leva/Panel
-      {:state mathbox.examples.math.helitorus/!state
-       :options
-       {:n {:min 0 :max 32 :step 1}
-        :r1 {:min 0 :max 3 :step 0.01}
-        :r2 {:min 0.1 :max 0.5 :step 0.01}
-        :r3 {:min 0.1 :max 0.2 :step 0.01}}}]]))
+(show-sci
+ [:<>
+  [leva/PanelOptions {:drag true}]
+  [leva/Panel
+   {:state mathbox.examples.math.helitorus/!state
+    :options
+    {:n {:min 0 :max 32 :step 1}
+     :r1 {:min 0 :max 3 :step 0.01}
+     :r2 {:min 0.1 :max 0.5 :step 0.01}
+     :r3 {:min 0.1 :max 0.2 :step 0.01}}}]])
 
 ;; ## Helpers
 
@@ -139,14 +138,16 @@
                    :quaternion [0.7 0 0 0.7]}
 
      ;; Compute helitoroidal surface
-     [mb/Area
-      {:rangeX [(- Math/PI) Math/PI]
-       :rangeY [(- Math/PI) Math/PI]
-       :width 512
-       :height 16
-       :channels 3
-       :expr (fn [emit theta phi _i _j _t]
-               (area-expr emit theta phi (.-state !state)))}]
+     [:div {:state @!state}
+      [mb/Area
+       {:rangeX [(- Math/PI) Math/PI]
+        :rangeY [(- Math/PI) Math/PI]
+        :width 512
+        :height 16
+        :channels 3
+        :live false
+        :expr (fn [emit theta phi _i _j _t]
+                (area-expr emit theta phi (.-state !state)))}]]
      ;; // Draw spine curve
      [mb/Surface
       {:shaded true
@@ -167,12 +168,11 @@
 ;; Then we can jump back to SCI, to get access to our shared state. Define the
 ;; full component that you need on the cljs side!
 
-#?(:clj
-   ^{::clerk/width :wide
-     ::clerk/visibility {:code :fold}}
-   (show-sci
-    [js/mathbox.examples.math.helitorus.Helitorus
-     mathbox.examples.math.helitorus/!state]))
+^{::clerk/width :wide
+  ::clerk/visibility {:code :fold}}
+(show-sci
+ [js/mathbox.examples.math.helitorus.Helitorus
+  mathbox.examples.math.helitorus/!state])
 
 ;; Server state:
 
