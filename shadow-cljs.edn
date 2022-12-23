@@ -15,7 +15,6 @@
    :modules {:main
              {:entries
               [nextjournal.clerk.static-app
-               mathbox.examples.math.helitorus
                mathbox.clerk-ui]}}
    :js-options
    {:output-feature-set :es8}}}}

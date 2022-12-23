@@ -2,6 +2,8 @@
   (:require [leva.core]
             [mathbox]
             [mathbox.primitives]
+            [mathbox.examples.math.helitorus]
+            [mathbox.examples.math.pq-knot]
             [nextjournal.clerk.sci-env]
             [sci.ctx-store]
             [sci.core :as sci]))
