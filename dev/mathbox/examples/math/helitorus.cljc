@@ -27,6 +27,9 @@
 
 ;; https://www.laetusinpraesens.org/docs10s/helixtor.php
 
+#?(:clj
+   (clerk/tex
+    "\\begin{pmatrix}\\displaystyle{\\left(R + r\\,\\cos\\left(n\\,\\theta\\right)\\right)\\,\\cos\\left(\\theta\\right)} \\cr \\cr \\displaystyle{\\left(R + r\\,\\cos\\left(n\\,\\theta\\right)\\right)\\,\\sin\\left(\\theta\\right)} \\cr \\cr \\displaystyle{r\\,\\sin\\left(n\\,\\theta\\right)}\\end{pmatrix}"))
 ;; ## UI
 
 ^{::clerk/sync true}
@@ -44,82 +47,299 @@
    {:state mathbox.examples.math.helitorus/!state
     :options
     {:n {:min 0 :max 32 :step 1}
-     :r1 {:min 0 :max 3 :step 0.01}
-     :r2 {:min 0.1 :max 0.5 :step 0.01}
-     :r3 {:min 0.1 :max 0.2 :step 0.01}}}]])
+     :r1 {:min 0 :max 3 :step 0.001}
+     :r2 {:min 0.0 :max 0.5 :step 0.01}
+     :r3 {:min 0.0 :max 0.2 :step 0.01}}}]])
 
 ;; ## Helpers
 
 (show-cljs
- (def vs (three/Vector3.))
-
- (defn spine [R r n theta]
+ (defn spine [out R r n theta]
    ;; torus https://en.wikipedia.org/wiki/Torus
    ;;
    ;; https://math.stackexchange.com/questions/324527/do-these-equations-create-a-helix-wrapped-into-a-torus
+   ;;
+   ;; Notes on how to get the next thing going https://stackoverflow.com/questions/13223115/rendering-a-toroidal-helix
 
    ;; r2+r3 minor radius, r1 major
+   ;;
+   ;; HECK YES, so I can SIMPLY take the derivative here of this with respect to
+   ;; `t`, to theta, to get the tangent along the curve at that point. note that
+   ;; x and y wiggle in and out, and z wiggles up and down.
    (let [n*theta (* n theta)
          xr (+ R (* r (Math/cos n*theta)))]
-     (doto vs
+     (doto out
        (.set (* xr (Math/cos theta))
              (* xr (Math/sin theta))
-             (* r (Math/sin n*theta))))))
+             (* r  (Math/sin n*theta))))))
 
- (defn circle [r1 theta]
-   (doto vs
-     (.set (* r1 (Math/cos theta))
-           (* r1 (Math/sin theta))
+ (let [e     0.001
+       inv-e (/ 1.0 e)]
+   ;; TODO we should really be using the derivative here.
+   (defn spine-tangent [out R r n t]
+     (doto out
+       (.set
+        ;; sin(t) (-(r cos(n t) + R)) - n r cos(t) sin(n t)
+        (- (* (Math/sin t) (- (+ R (* r (Math/cos (* n t))))))
+           (* n r (Math/cos t) (Math/sin (* n t))))
+
+        (- (* (Math/cos t) (+ R (* r (Math/cos (* n t)))))
+           (* n r (Math/sin t) (Math/sin (* n t))))
+        (* n r (Math/cos (* n t)))
+
+        ))
+     #_(doto ^js out
+         (spine R r n (+ theta e))
+         (.sub v)
+         (.multiplyScalar inv-e)
+         (.normalize))))
+
+ (defn circle-tangent [out theta]
+   (doto out
+     (.set (- (Math/sin theta))
+           (Math/cos theta)
            0)))
 
- (let [vo   (three/Vector3.)
-       vt   (three/Vector3.)
-       vb   (three/Vector3.)
-       vn   (three/Vector3.)
-       mtbn (three/Matrix4.)
-       e    0.001
-       inv-e (/ 1.0 e)]
+ (let [vn (three/Vector3.)]
+   (defn ->tbn
+     "Augmented matrix https://en.wikipedia.org/wiki/Affine_transformation#Representation"
+     [out v t translation]
+     (doto vn
+       (.crossVectors v t)
+       (.normalize))
+
+     ;; keep v, get the other one.
+     (doto ^js t
+       (.crossVectors v vn)
+       (.normalize))
+
+     ;; turn that into a tbn matrix...
+     (doto out
+       (.set
+        (.-x v) (.-x t) (.-x vn) (.-x translation)
+        (.-y v) (.-y t) (.-y vn) (.-y translation)
+        (.-z v) (.-z t) (.-z vn) (.-z translation)
+        0        0        0        1))))
+
+ (let [vo    (three/Vector3.)
+       vt    (three/Vector3.)
+       vb    (three/Vector3.)
+       mtbn (three/Matrix4.)]
    (defn tbn
      "Compute tangent, biTangent, normal matrix:
      https://learnopengl.com/Advanced-Lighting/Normal-Mapping"
-     [n r1 r2 r3 theta]
-     (let [minor-r (+ r2 r3)]
-       (doto vt
-         (.copy (.copy vo (spine r1 minor-r n theta)))
-         (.sub (spine r1 minor-r n (+ theta e)))
-         (.multiplyScalar inv-e)
-         (.normalize))
+     [n R r theta]
+     ;; major is r1, r2 is center to the edge of the torus??
 
-       (doto vb
-         (.copy (circle r1 theta))
-         (.sub (circle r1 (+ theta e)))
-         (.multiplyScalar inv-e)
-         (.normalize)))
+     ;; populate vo to point to the spine at this location.
 
-     (.crossVectors vn vt vb)
-     (.normalize vn)
-     (.crossVectors vb vt vn)
-     (.normalize vb)
+     (spine vo R r n theta)
 
-     (doto mtbn
-       (.set
-        (.-x vt) (.-x vb) (.-x vn) (.-x vo)
-        (.-y vt) (.-y vb) (.-y vn) (.-y vo)
-        (.-z vt) (.-z vb) (.-z vn) (.-z vo)
-        0        0        0        1)))
+     ;; vt <- tangent pointing along the spine of the torus.
+     (spine-tangent vt R r n theta)
 
-   (defn area-expr
-     "So phi gets you around the smaller circle, and then theta is the big circle."
-     [emit theta phi {:keys [n r1 r2 r3]}]
-     (let [m (tbn n r1 r2 r3 theta)]
-       (doto vs
-         (.set 0
-               (* r3 (Math/cos phi))
-               (* r3 (Math/sin phi)))
-         (.applyMatrix4 m))
-       (emit (.-x vs)
-             (.-y vs)
-             (.-z vs))))))
+     ;; vb <- tangent to the circular cross section at that point, looking
+     ;; down.
+     (circle-tangent vb theta)
+
+     ;; get rotate + translate matrix
+     (->tbn mtbn vt vb vo))
+
+
+   (let [vs (three/Vector3.)]
+     (defn area-expr
+       "So phi gets you around the smaller circle, and then theta is the big circle."
+       [emit theta phi {:keys [n r1 r2 r3]}]
+       (let [r (+ r2 r3)
+             m (tbn n r1 r theta)]
+         ;; and then here, rotate the circle around to the spine, pointing in the
+         ;; tangent direction.
+         (doto vs
+           (.set 0
+                 (* r3 (Math/cos phi))
+                 ;; along circle radius
+                 (* r3 (Math/sin phi)))
+           (.applyMatrix4 m))
+         (emit (.-x vs)
+               (.-y vs)
+               (.-z vs)))))
+
+   (def big-cake
+     (js/Function.
+      "emit"
+      "x51275"
+      "x51276"
+      "x51277"
+      "x51278"
+      "x51279"
+      "x51280"
+      "let G000000000000009e = Math.pow(x51278, 2.0);\n
+ let G000000000000009f = Math.sin(x51279);\n
+ let G00000000000000a2 = Math.pow(x51275, 2.0);\n
+ let G00000000000000a6 = Math.pow(x51277, 2.0);\n
+ let G00000000000000a7 = x51278 * x51279;\n
+ let G00000000000000a8 = Math.cos(x51279);\n
+ let G00000000000000a9 = Math.sin(x51280);\n
+ let G00000000000000aa = Math.pow(x51276, 2.0);\n
+ let G00000000000000b0 = Math.cos(x51280);\n
+ let G00000000000000b5 = 2.0 * x51276 * x51277 * G000000000000009e;\n
+ let G00000000000000b6 = G00000000000000a6 * G000000000000009e;\n
+ let G00000000000000ba = Math.sin(G00000000000000a7);\n
+ let G00000000000000bc = G00000000000000aa * G000000000000009e;\n
+ let G00000000000000be = Math.cos(G00000000000000a7);\n
+ let G00000000000000c2 = Math.pow(G00000000000000be, 2.0);\n
+ let G00000000000000c5 = 2.0 * x51275 * x51277 * G00000000000000be;\n
+ let G00000000000000c6 = 2.0 * x51275 * x51276 * G00000000000000be;\n
+ let G00000000000000c9 = 2.0 * x51276 * x51277 * G00000000000000c2;\n
+ let G00000000000000ca = G00000000000000a6 * G00000000000000c2;\n
+ let G00000000000000cc = G00000000000000aa * G00000000000000c2;\n
+ let G00000000000000cf = G00000000000000bc + G00000000000000cc + G00000000000000b5 + G00000000000000c9 + G00000000000000b6 + G00000000000000ca + G00000000000000c6 + G00000000000000c5 + G00000000000000a2;\n
+ let G00000000000000d0 = Math.sqrt(G00000000000000cf);\n
+emit((-1.0 * x51276 * x51277 * x51278 * G00000000000000be * G00000000000000a8 * G00000000000000a9 -1.0 * G00000000000000a6 * x51278 * G00000000000000be * G00000000000000a8 * G00000000000000a9 + x51276 * G00000000000000be * G00000000000000a8 * G00000000000000d0 + x51277 * G00000000000000be * G00000000000000a8 * G00000000000000d0 -1.0 * x51277 * G000000000000009f * G00000000000000b0 * G00000000000000d0 + x51275 * G00000000000000a8 * G00000000000000d0) / G00000000000000d0, (-1.0 * x51276 * x51277 * x51278 * G00000000000000be * G00000000000000a9 * G000000000000009f -1.0 * G00000000000000a6 * x51278 * G00000000000000be * G00000000000000a9 * G000000000000009f + x51276 * G00000000000000be * G000000000000009f * G00000000000000d0 + x51277 * G00000000000000be * G000000000000009f * G00000000000000d0 + x51277 * G00000000000000a8 * G00000000000000b0 * G00000000000000d0 + x51275 * G000000000000009f * G00000000000000d0) / G00000000000000d0, (-1.0 * x51276 * x51277 * x51278 * G00000000000000a9 * G00000000000000ba -1.0 * G00000000000000a6 * x51278 * G00000000000000a9 * G00000000000000ba + x51276 * G00000000000000ba * G00000000000000d0 + x51277 * G00000000000000ba * G00000000000000d0) / G00000000000000d0);"))
+
+   (defn cake [emit x51275 x51276 x51277 x51278 x51279 x51280]
+     (let
+         [G000000000000009e
+          (Math/pow x51278 2.0)
+          G000000000000009f
+          (Math/sin x51279)
+          G00000000000000a2
+          (Math/pow x51275 2.0)
+          G00000000000000a6
+          (Math/pow x51277 2.0)
+          G00000000000000a7
+          (* x51278 x51279)
+          G00000000000000a8
+          (Math/cos x51279)
+          G00000000000000a9
+          (Math/sin x51280)
+          G00000000000000aa
+          (Math/pow x51276 2.0)
+          G00000000000000b0
+          (Math/cos x51280)
+          G00000000000000b5
+          (* 2.0 x51276 x51277 G000000000000009e)
+          G00000000000000b6
+          (* G00000000000000a6 G000000000000009e)
+          G00000000000000ba
+          (Math/sin G00000000000000a7)
+          G00000000000000bc
+          (* G00000000000000aa G000000000000009e)
+          G00000000000000be
+          (Math/cos G00000000000000a7)
+          G00000000000000c2
+          (Math/pow G00000000000000be 2.0)
+          G00000000000000c5
+          (* 2.0 x51275 x51277 G00000000000000be)
+          G00000000000000c6
+          (* 2.0 x51275 x51276 G00000000000000be)
+          G00000000000000c9
+          (* 2.0 x51276 x51277 G00000000000000c2)
+          G00000000000000ca
+          (* G00000000000000a6 G00000000000000c2)
+          G00000000000000cc
+          (* G00000000000000aa G00000000000000c2)
+          G00000000000000cf
+          (+
+           G00000000000000bc
+           G00000000000000cc
+           G00000000000000b5
+           G00000000000000c9
+           G00000000000000b6
+           G00000000000000ca
+           G00000000000000c6
+           G00000000000000c5
+           G00000000000000a2)
+          G00000000000000d0
+          (Math/sqrt G00000000000000cf)]
+       (emit
+        (/
+         (+
+          (*
+           -1.0
+           x51276
+           x51277
+           x51278
+           G00000000000000be
+           G00000000000000a8
+           G00000000000000a9)
+          (*
+           -1.0
+           G00000000000000a6
+           x51278
+           G00000000000000be
+           G00000000000000a8
+           G00000000000000a9)
+          (*
+           x51276
+           G00000000000000be
+           G00000000000000a8
+           G00000000000000d0)
+          (*
+           x51277
+           G00000000000000be
+           G00000000000000a8
+           G00000000000000d0)
+          (*
+           -1.0
+           x51277
+           G000000000000009f
+           G00000000000000b0
+           G00000000000000d0)
+          (* x51275 G00000000000000a8 G00000000000000d0))
+         G00000000000000d0)
+        (/
+         (+
+          (*
+           -1.0
+           x51276
+           x51277
+           x51278
+           G00000000000000be
+           G00000000000000a9
+           G000000000000009f)
+          (*
+           -1.0
+           G00000000000000a6
+           x51278
+           G00000000000000be
+           G00000000000000a9
+           G000000000000009f)
+          (*
+           x51276
+           G00000000000000be
+           G000000000000009f
+           G00000000000000d0)
+          (*
+           x51277
+           G00000000000000be
+           G000000000000009f
+           G00000000000000d0)
+          (*
+           x51277
+           G00000000000000a8
+           G00000000000000b0
+           G00000000000000d0)
+          (* x51275 G000000000000009f G00000000000000d0))
+         G00000000000000d0)
+        (/
+         (+
+          (*
+           -1.0
+           x51276
+           x51277
+           x51278
+           G00000000000000a9
+           G00000000000000ba)
+          (*
+           -1.0
+           G00000000000000a6
+           x51278
+           G00000000000000a9
+           G00000000000000ba)
+          (* x51276 G00000000000000ba G00000000000000d0)
+          (* x51277 G00000000000000ba G00000000000000d0))
+         G00000000000000d0))))))
 
 ;; ## Helitorus Component
 
@@ -137,8 +357,6 @@
     [mb/Cartesian {:range [[-1 1] [-1 1] [-1 1]]
                    :scale [1 1 1]
                    :quaternion [0.7 0 0 0.7]}
-
-     ;; Compute helitoroidal surface
      [:div {:state @!state}
       [mb/Area
        {:rangeX [(- Math/PI) Math/PI]
@@ -148,8 +366,11 @@
         :channels 3
         :live false
         :expr (fn [emit theta phi _i _j _t]
-                (area-expr emit theta phi (.-state !state)))}]]
-     ;; // Draw spine curve
+                (let [{:keys [r1 r2 r3 n]} (.-state !state)]
+                  (big-cake emit r1 r2 r3 n theta phi))
+                ;; 'r1 'r2 'r3 'n 'theta 'phi
+                #_(area-expr
+                   emit theta phi (.-state !state)))}]]
      [mb/Surface
       {:shaded true
        :color 0xcc0040
