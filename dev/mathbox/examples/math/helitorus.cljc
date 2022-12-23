@@ -15,6 +15,15 @@
    [mentat.clerk-utils.show :refer [show-sci show-cljs]]))
 
 ;; # Helitorus
+
+;; woah, Frenet-Serret?? https://en.wikipedia.org/wiki/Frenet%E2%80%93Serret_formulas
+;;
+;; https://www.sciencepublishinggroup.com/journal/paperinfo?journalid=148&doi=10.11648/j.ajam.20140206.12
+;;
+;; So I kind of think it's cheating to pick the circle normal, and that we
+;; should really be taking another derivative here.
+;;
+;; https://search.brave.com/search?q=Frenet-Serretmovingtrihedro&source=desktop
 ;;
 ;; BOOM this describes what to do! we'll see if we can get rid of the vector4
 ;; etc and do it more simply, maybe there is some speed we can get from
@@ -50,6 +59,65 @@
      :r1 {:min 0 :max 3 :step 0.001}
      :r2 {:min 0.0 :max 0.5 :step 0.01}
      :r3 {:min 0.0 :max 0.2 :step 0.01}}}]])
+
+;; ## SICMUtils Code
+
+(comment
+  (defn make-unit
+    "TODO get this over to vectors!!"
+    [v]
+    (/ v (abs v)))
+
+  (defn spine
+    "Parametric equation for a helix with `n` twists wrapped around a torus (donut)
+  with major radius `R` and minor radius `r`.
+
+  Given those parameters and an angle `theta` around the torus, returns a
+  3-vector of the XYZ coordinates of the helix."
+    [R r n theta]
+    (let [xr (+ R (* r (cos (* n theta))))]
+      [(* xr (cos theta))
+       (* xr (sin theta))
+       (* r  (sin (* n theta)))]))
+
+  (defn circle
+    "Given some radius `r` and `angle`, returns the x-y-z coordinates of a point at
+  angle `theta` on the unit circle sitting flat in the x-y plane."
+    ([angle] (circle 1 angle))
+    ([r angle]
+     [(* r (cos angle))
+      (* r (sin angle))
+      0]))
+
+  (defn helitorus
+    "Given:
+
+  `R` - the major radius of a torus
+  `r2` - minor radius of a torus
+  `r3` - radius of a helitorus cross-section
+  `n`  - the number of helitorus windings
+
+  Returns a function that generates the x-y-z coordinates of a point on the
+  helitoroidal manifold at angle `theta` around the torus and `phi` around the
+  shell of the fattened helix."
+    [R r2 r3 n]
+    (fn [theta phi]
+      (let [;; minor radius of the torus
+            r (+ r2 r3)
+
+            ;; normalized vector pointing along the helix
+            t (make-unit
+               (((partial 3) spine) R r n theta))
+
+            ;; vector tangent to the unit circle
+            b (make-unit
+               ((D circle) theta))]
+        ;; - generate a point along the helitorus cross-section at angle phi
+        ;; - rotate it to point along the helical path at this theta
+        ;; - translate the circle from the origin to spine
+        (+ (spine R r n theta)
+           (* (matrix-by-cols b (cross-product t b) t)
+              (circle r3 phi)))))))
 
 ;; ## Helpers
 
