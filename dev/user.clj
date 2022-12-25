@@ -89,8 +89,6 @@
     (swap! config/!resource->url assoc
            "/js/viewer.js"
            (str cas-prefix "js/" cas))
-    (println (merge build-target
-                    (assoc opts :out-path out-path)))
     (clerk/build!
      (merge build-target
             (assoc opts :out-path out-path)))

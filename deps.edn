@@ -11,13 +11,13 @@
   {:extra-paths ["dev"]
    :extra-deps
    {io.github.nextjournal/clerk
-    {:git/sha "ec666210f11763fce4fec74072acca1e6525d29f"}
+    {:git/sha "5cf3982b29c25a6fe70ee4d4444293c5320ff697"}
     io.github.nextjournal/clerk.render
     {:git/url "https://github.com/nextjournal/clerk"
-     :git/sha "ec666210f11763fce4fec74072acca1e6525d29f"
+     :git/sha "5cf3982b29c25a6fe70ee4d4444293c5320ff697"
      :deps/root "render"}
     io.github.mentat-collective/clerk-utils
-    {:git/sha "09d9f94ecf089c2d7a2a905598b154beb0b5e72f"}
+    {:git/sha "e40cdf79edf45748f5a2c6752c8156b3d240b087"}
     io.github.mentat-collective/leva.cljs
     {:git/sha "5ed1214ef6fbf824090cb3c134ae41da70510f38"}}
    :exec-fn user/garden!}

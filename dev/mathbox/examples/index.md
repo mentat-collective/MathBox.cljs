@@ -113,5 +113,6 @@ Each example below is marked with one of the these three statuses:
 
 ## VR
 
+
 - ❌ [Surface](vr/surface.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/vr/surface.clj))
 - ❌ [Vector](vr/vector.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/vr/vector.clj))

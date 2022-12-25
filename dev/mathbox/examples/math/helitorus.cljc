@@ -41,6 +41,9 @@
     "\\begin{pmatrix}\\displaystyle{\\left(R + r\\,\\cos\\left(n\\,\\theta\\right)\\right)\\,\\cos\\left(\\theta\\right)} \\cr \\cr \\displaystyle{\\left(R + r\\,\\cos\\left(n\\,\\theta\\right)\\right)\\,\\sin\\left(\\theta\\right)} \\cr \\cr \\displaystyle{r\\,\\sin\\left(n\\,\\theta\\right)}\\end{pmatrix}"))
 ;; ## UI
 
+;; TODO that if you are going to export, this will currently break your code...
+;; having clerk/sync set to true.
+
 ^{::clerk/sync true}
 (defonce !state
   (atom
@@ -736,6 +739,9 @@ emit((-1.0 * x51276 * x51277 * x51278 * G00000000000000be * G00000000000000a8 * 
 
 ;; ## Helitorus Component
 
+;; NOTE that we have to do `cljs` to get back. Exports do not currently make it
+;; through the show-cljs process.
+
 (show-cljs
  (defn ^:export Helitorus [!state]
    [mathbox/Mathbox
@@ -789,7 +795,3 @@ emit((-1.0 * x51276 * x51277 * x51278 * G00000000000000be * G00000000000000a8 * 
 (show-sci
  [js/mathbox.examples.math.helitorus.Helitorus
   mathbox.examples.math.helitorus/!state])
-
-;; Server state:
-
-@!state
