@@ -1,0 +1,4 @@
+import "./cljs_env.js";
+shadow$provide.module$node_modules$leva$node_modules$$radix_ui$react_tooltip$node_modules$$radix_ui$react_use_escape_keydown$node_modules$$radix_ui$react_use_callback_ref$dist$index=function(global,require,module,exports){var e$jscomp$1,r$jscomp$0,t$jscomp$0=(e$jscomp$1={},r$jscomp$0=require("module$node_modules$react$index"),Object.keys(r$jscomp$0).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e$jscomp$1,t,{enumerable:!0,get:function(){return r$jscomp$0[t]}})}),e$jscomp$1);
+exports.useCallbackRef=function(e$jscomp$0){const r=t$jscomp$0.useRef(e$jscomp$0);return t$jscomp$0.useEffect(()=>{r.current=e$jscomp$0}),t$jscomp$0.useMemo(()=>(...e)=>{var t;return null===(t=r.current)||void 0===t?void 0:t.call(r,...e)},[])}}
+//# sourceMappingURL=module$too_long_8B86B5CF8FA3745B6DA403C21A55F4E6.js.map
