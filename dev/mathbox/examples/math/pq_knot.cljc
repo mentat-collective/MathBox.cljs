@@ -14,13 +14,30 @@
    ;; side.
    [mentat.clerk-utils.show :refer [show-sci show-cljs]]))
 
+;; ## (p, q) Torus Knots
+
+;; https://en.wikipedia.org/wiki/Torus_knot
+;;
+;; https://sketchesoftopology.wordpress.com/2011/03/28/pqisqp/
+;; https://core.ac.uk/download/pdf/82119056.pdf
+;;
+;; WOAH really cool!!! http://www.jessebett.com/TorusKnotFibration/torusknot.html this has a particle moving around on the surface too.
+;;
+;; Wow, can I recreate this???? http://www.jessebett.com/TorusKnotFibration/index.html
+;;
+;; Hell yeah, he used mathbox
+;; https://github.com/jessebett/TorusKnotFibration/blob/gh-pages/torusknot.html..
+;; we can totally port this!!!
+
+;; more 3d curves, look at this https://rockey-math.github.io/mathbox/graph3d-curve
+
 ^{::clerk/sync true}
 (defonce !state
   (atom
-   {:n 16
-    :p 1
-    :r1 1
-    :r2 0.3
+   {:p 7
+    :q 8
+    :r1 1.791
+    :r2 0.95
     :r3 0.1}))
 
 (show-sci
@@ -29,28 +46,23 @@
   [leva/Panel
    {:state mathbox.examples.math.pq-knot/!state
     :options
-    {:n {:min 0 :max 32 :step 1}
-     :p {:min 0 :max 32 :step 1}
+    {:p {:min 0 :max 32 :step 1}
+     :q {:min 0 :max 32 :step 1}
      :r1 {:min 0 :max 3 :step 0.001}
-     :r2 {:min 0.0 :max 0.5 :step 0.01}
+     :r2 {:min 0.0 :max 2.5 :step 0.01}
      :r3 {:min 0.0 :max 0.2 :step 0.01}}}]])
 
+^{::clerk/visibility {:code :fold}}
 (show-cljs
  (defn pq-knot
    [emit x69000 x69001 x69002 x69003 x69004 x69005 x69006]
    (let
-       [G000000000000025d
-        (* x69003 x69005)
-        G0000000000000260
-        (Math/sin x69006)
-        G0000000000000265
-        (Math/cos x69006)
-        G0000000000000270
-        (+ x69001 x69002)
-        G000000000000028a
-        (* x69004 x69005)
-        G0000000000000295
-        (Math/sin G000000000000028a)
+       [G000000000000025d (* x69003 x69005)
+        G0000000000000260 (Math/sin x69006)
+        G0000000000000265 (Math/cos x69006)
+        G0000000000000270 (+ x69001 x69002)
+        G000000000000028a (* x69004 x69005)
+        G0000000000000295 (Math/sin G000000000000028a)
         G00000000000002a3
         (Math/cos G000000000000025d)
         G00000000000002aa
@@ -329,10 +341,13 @@
         :width 512
         :height 16
         :channels 3
-        :live false
+        :live true
         :expr (fn [emit theta phi _i _j t]
-                (let [{:keys [r1 r2 r3 n p]} (.-state !state)]
-                  (pq-knot emit r1 r2 r3 n p theta phi)))}]]
+                (let [{:keys [r1 r2 r3 p q]} (.-state !state)
+                      r3 (+ r3 (* r3 0.5 (* (Math/sin (* 2 theta t))
+                                            (Math/sin (* 2 theta t)))))]
+                  (pq-knot emit r1 r2 r3 q p theta phi)))}]]
+
      [mb/Surface
       {:shaded true
        :color 0xcc0040

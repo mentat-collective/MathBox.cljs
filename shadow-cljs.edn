@@ -11,7 +11,9 @@
 
    :compiler-options
    {:infer-externs :auto
-    :optimizations :advanced}
+    :pretty-print true
+    :pseudo-names true
+    :source-map true}
    :modules {:main
              {:entries
               [nextjournal.clerk.static-app
