@@ -17,7 +17,7 @@
      :git/sha "5cf3982b29c25a6fe70ee4d4444293c5320ff697"
      :deps/root "render"}
     io.github.mentat-collective/clerk-utils
-    {:git/sha "e40cdf79edf45748f5a2c6752c8156b3d240b087"}
+    {:git/sha "4c3a7653e24d609e6d04ed575162dd7eccb828c9"}
     io.github.mentat-collective/leva.cljs
     {:git/sha "5ed1214ef6fbf824090cb3c134ae41da70510f38"}}
    :exec-fn user/garden!}
