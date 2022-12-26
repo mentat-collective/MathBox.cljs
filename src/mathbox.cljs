@@ -21,10 +21,13 @@
       (f box))))
 
 (defn opts->setup
-  "Some core options, tidied up."
+  "Some core options, tidied up.
+
+  TODO figure out the camera opts better."
   [{:keys [background-color
            camera-position
            camera-proxy
+           camera-fov
            max-distance
            scale focus]}]
   (setup
@@ -38,6 +41,8 @@
          (-> three .-camera .-position (.set x y z)))
        (when camera-proxy
          (-> three .-camera .-proxy (set! true)))
+       (when camera-fov
+         (-> three .-camera .-fov (set! camera-fov)))
        (when background-color
          (let [color (THREE/Color. background-color)]
            (-> three .-renderer (.setClearColor color 1.0))))))))

@@ -69,6 +69,7 @@
 
 ;; ## SICMUtils Code
 
+#_
 (comment
   (defn make-unit
     "TODO get this over to vectors!!"
