@@ -16,6 +16,10 @@
 
 ;; # Helitorus
 
+;; https://blackpawn.com/texts/pqtorus/
+;;
+;; https://legacy.cs.indiana.edu/ftp/techreports/TR407.pdf optimal tubes and ribbons from curves
+
 ;; woah, Frenet-Serret?? https://en.wikipedia.org/wiki/Frenet%E2%80%93Serret_formulas
 ;;
 ;; https://www.sciencepublishinggroup.com/journal/paperinfo?journalid=148&doi=10.11648/j.ajam.20140206.12
