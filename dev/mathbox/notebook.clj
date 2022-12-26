@@ -46,7 +46,7 @@
 ;;
 ;; ```clj
 ;; ;; deps
-;; {org.mentat/mathbox.cljs
+;; {io.github.mentat-collective/mathbox.cljs
 ;;   {:git/sha "$GIT_SHA"}}
 ;; ```
 
