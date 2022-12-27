@@ -21,9 +21,10 @@
  sci/merge-opts
  {:classes    {'Math js/Math}
   :aliases {'mb    'mathbox.primitives
-            'leva 'leva.core}
+            'leva  'leva.core
+            'three "three"}
   :namespaces
-  {'three     three-ns
+  {"three"     three-ns
    'mathbox   (sci/copy-ns mathbox   (sci/create-ns 'mathbox))
    'leva.core (sci/copy-ns leva.core (sci/create-ns 'leva.core))
    'mathbox.primitives

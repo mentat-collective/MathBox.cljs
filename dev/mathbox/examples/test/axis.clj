@@ -9,22 +9,23 @@
 
 ^{:nextjournal.clerk/width :wide}
 (show-sci
- (js/console.log (type (new three/Color 0xff4136)))
- (let [colors {:x (new three/Color 0xff4136)
-               :y (new three/Color 0x2ecc40)
-               :z (new three/Color 0x0074d9)}
-       axis (fn [m]
-              [mb/Axis
-               (merge {:end true
-                       :width 5
-                       :liveProps
-                       ;; TODO ask Chris, what is this doing?? send mathbox
-                       ;; example.
-                       {:depth
-                        (fn [t]
-                          (+ 0.5 (* 0.5 (Math/sin (* t 0.5)))))}
-                       :color (:y colors)}
-                      m)])]
+ (reagent/with-let
+   [colors {:x (new three/Color 0xff4136)
+            :y (new three/Color 0x2ecc40)
+            :z (new three/Color 0x0074d9)}
+    axis (fn [m]
+           [mb/Axis
+            (merge
+             {:end true
+              :width 5
+              :liveProps
+              ;; TODO ask Chris, what is this doing?? send mathbox
+              ;; example.
+              {:depth
+               (fn [t]
+                 (+ 0.5 (* 0.5 (Math/sin (* t 0.5)))))}
+              :color (:y colors)}
+             m)])]
    [mathbox/Mathbox
     {:style {:height "500px" :width "100%"}
      :init {:background-color 0xffffff
@@ -33,12 +34,12 @@
             :scale 720 :focus 1}}
     [mb/Cartesian {:range [[-2 2] [-1 1] [-1 1]]
                    :scale [2 1 1]}
-     ;; TODO why is the threejs color object not working? Look in Mathbox, see
-     ;; what the deal is.
+     ;; TODO there is a bug with mathbox-react that stops the color objects from
+     ;; working.
      [axis {:color (.getHex (:x colors))}]
      [axis {:axis 2 ;; "y" also works
             :color (.getHex (:y colors))}]
-     [axis {:axis 3
+     [axis {:axis "z"
             :color (.getHex (:z colors))}]
      [mb/Array
       {:id "colors"
