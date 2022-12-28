@@ -23,7 +23,7 @@
               ;; example.
               {:depth
                (fn [t]
-                 (+ 0.5 (* 0.5 (Math/sin (* t 0.5)))))}
+                 (+ 0.5 (* 0.5 (Math/sin (* t 5)))))}
               :color (:y colors)}
              m)])]
    [mathbox/Mathbox
