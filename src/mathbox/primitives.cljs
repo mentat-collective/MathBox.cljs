@@ -8,11 +8,8 @@
    Requiring this namespace causes the whole @mui/material package to be
   included in the final bundle... IN THEORY!"
   (:refer-clojure :exclude [Repeat])
-  (:require [mathbox.primitives.base.group]
-            [mathbox.primitives.base.inherit]
-            [mathbox.primitives.base.root]
-            [mathbox.primitives.base.unit]
-            [mathbox.primitives.camera.camera]
+  (:require [mathbox.primitives.base]
+            [mathbox.primitives.camera]
             [mathbox.primitives.data.area]
             [mathbox.primitives.data.array]
             [mathbox.primitives.data.interval]
@@ -74,11 +71,13 @@
             [mathbox.primitives.view.stereographic4]
             [mathbox.primitives.view.view]))
 
-(def Group mathbox.primitives.base.group/Group)
-(def Inherit mathbox.primitives.base.inherit/Inherit)
-(def Root mathbox.primitives.base.root/Root)
-(def Unit mathbox.primitives.base.unit/Unit)
-(def Camera mathbox.primitives.camera.camera/Camera)
+;; TODO write a defprim hook before I convert the rest.
+
+(def Group mathbox.primitives.base/Group)
+(def Inherit mathbox.primitives.base/Inherit)
+#_(def Root mathbox.primitives.base/Root)
+(def Unit mathbox.primitives.base/Unit)
+(def Camera mathbox.primitives.camera/Camera)
 (def Area mathbox.primitives.data.area/Area)
 (def Array mathbox.primitives.data.array/Array)
 (def Interval mathbox.primitives.data.interval/Interval)

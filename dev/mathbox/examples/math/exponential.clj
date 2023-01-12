@@ -34,10 +34,10 @@
   ::clerk/visibility {:code :fold}}
 (show-sci
  [mathbox/Mathbox
-  {:style {:height "500px" :width "100%"}
-   :init {:background-color 0xffffff
-          :camera-position [3 2 5]}
+  {:container {:style {:height "500px" :width "100%"}}
+   :init {:background-color 0xffffff}
    :scale 500}
+  [mb/Camera {:proxy true :position [3 2 5]}]
   [mb/Cartesian {}
    [mb/Transform4
     {:matrix

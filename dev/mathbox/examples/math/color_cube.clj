@@ -11,7 +11,7 @@
 ^{:nextjournal.clerk/width :wide}
 (show-sci
  [mathbox/Mathbox
-  {:style {:height "400px" :width "100%"}
+  {:container {:style {:height "400px" :width "100%"}}
    :init
    {:background-color 0xeeeeee
     :max-distance 4}

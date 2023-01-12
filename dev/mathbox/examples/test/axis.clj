@@ -27,7 +27,7 @@
               :color (:y colors)}
              m)])]
    [mathbox/Mathbox
-    {:style {:height "500px" :width "100%"}
+    {:container {:style {:height "500px" :width "100%"}}
      :init {:background-color 0xffffff}
      :scale 720
      :focus 1}

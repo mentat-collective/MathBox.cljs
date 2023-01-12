@@ -1,10 +1,39 @@
 (ns mathbox.primitives.base
-  (:require [mathbox.primitives.base.group]
-            [mathbox.primitives.base.inherit]
-            [mathbox.primitives.base.root]
-            [mathbox.primitives.base.unit]))
+  (:require ["mathbox-react" :as box]
+            [mathbox.macros :refer [defprim]]))
 
-(def Group mathbox.primitives.base.group/Group)
-(def Inherit mathbox.primitives.base.inherit/Inherit)
-(def Root mathbox.primitives.base.root/Root)
-(def Unit mathbox.primitives.base.unit/Unit)
+(defprim box/Group
+  "*Group elements for visibility and activity*
+
+:active `true` (bool) - Updates continuously
+:classes `[]` (string array) - Custom classes, e.g. `[\"big\"]`
+:id `null` (nullable string) - Unique ID, e.g. `\"sampler\"`
+:visible `true` (bool) - Visibility for rendering")
+
+(defprim box/Inherit
+  "*Inherit and inject a trait from another element*
+
+:classes `[]` (string array) - Custom classes, e.g. `[\"big\"]`
+:id `null` (nullable string) - Unique ID, e.g. `\"sampler\"`")
+
+#_
+(defprim box/Root
+  "*Tree root*
+
+  :camera `\"[camera]\"` (select) - Active camera
+  :classes `[]` (string array) - Custom classes, e.g. `[\"big\"]`
+  :focus `1` (nullable number) - Camera focus distance in world units
+  :fov `null` (nullable number) - (Vertical) Field-of-view to calibrate units for (degrees), e.g. `60`
+  :id `null` (nullable string) - Unique ID, e.g. `\"sampler\"`
+  :pass `\"view\"` (vertexPass) - Vertex pass (data, view, world, eye)
+  :scale `null` (nullable number) - (Vertical) Reference scale of viewport in pixels, e.g. `720`
+  :speed `1` (number) - Global speed")
+
+(defprim box/Unit
+  "*Change unit sizing for drawing ops*
+
+  :classes `[]` (string array) - Custom classes, e.g. `[\"big\"]`
+  :focus `1` (nullable number) - Camera focus distance in world units
+  :fov `null` (nullable number) - (Vertical) Field-of-view to calibrate units for (degrees), e.g. `60`
+  :id `null` (nullable string) - Unique ID, e.g. `\"sampler\"`
+  :scale `null` (nullable number) - (Vertical) Reference scale of viewport in pixels, e.g. `720`")

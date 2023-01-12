@@ -42,7 +42,7 @@
 
              (emit x y z w)))]
    [mathbox/Mathbox
-    {:style {:height "500px" :width "100%"}
+    {:container {:style {:height "500px" :width "100%"}}
      :init {:background-color 0xffffff}}
     [mb/Camera {:proxy true
                 :position [2.3 1 2]}]

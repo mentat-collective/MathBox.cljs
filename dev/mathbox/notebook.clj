@@ -102,9 +102,10 @@
 ;; We also set `proxy` to true: this allows interactive camera controls to
 ;; override our given position.
 
+^{:nextjournal.clerk/width :wide}
 (show-sci
  [mathbox/Mathbox
-  {:style {:height "400px" :width "100%"}}
+  {:container {:style {:height "400px" :width "100%"}}}
   [mb/Camera
    {:position [0 0 3]
     :proxy true}]])
@@ -136,9 +137,10 @@
 ;; Now we're going to set up a simple 2D cartesian coordinate system. We'll make
 ;; it twice as wide as high.
 
+^{:nextjournal.clerk/width :wide}
 (show-sci
  [mathbox/Mathbox
-  {:style {:height "400px" :width "100%"}}
+  {:container {:style {:height "400px" :width "100%"}}}
   [mb/Camera {:position [0 0 3]
               :proxy true}]
   [mb/Cartesian
@@ -160,9 +162,10 @@
 
 ;; We'll immediately add two axes and a grid so we can finally see something:
 
+^{:nextjournal.clerk/width :wide}
 (show-sci
  [mathbox/Mathbox
-  {:style {:height "400px" :width "100%"}}
+  {:container {:style {:height "400px" :width "100%"}}}
   [mb/Camera {:position [0 0 3]
               :proxy true}]
   [mb/Cartesian
@@ -190,9 +193,10 @@
 ;; You could make your axes black by giving them a `color: "black"`, either by
 ;; adding the property above, or by setting it after the fact:
 
+^{:nextjournal.clerk/width :wide}
 (show-sci
  [mathbox/Mathbox
-  {:style {:height "400px" :width "100%"}}
+  {:container {:style {:height "400px" :width "100%"}}}
   [mb/Camera {:position [0 0 3]
               :proxy true}]
   [mb/Cartesian
@@ -207,10 +211,10 @@
 ;; can calibrate our units by setting the `focus` on the `<root>` to match the
 ;; camera distance:
 
-;; TODO can we use a root component to do that?
+^{:nextjournal.clerk/width :wide}
 (show-sci
  [mathbox/Mathbox
-  {:style {:height "400px" :width "100%"}
+  {:container {:style {:height "400px" :width "100%"}}
    :focus 3}
   [mb/Camera {:position [0 0 3]
               :proxy true}]
@@ -272,9 +276,10 @@
     [mb/Line {:width 5
               :color "#3090FF"}]]))
 
+^{:nextjournal.clerk/width :wide}
 (show-sci
  [mathbox/Mathbox
-  {:style {:height "400px" :width "100%"}
+  {:container {:style {:height "400px" :width "100%"}}
    :focus 3}
   [mb/Camera {:position [0 0 3]
               :proxy true}]
@@ -312,9 +317,10 @@
 ;; The nice thing about separating data from shape is that you can draw the same
 ;; data multiple ways. For example, add on `<point />` to draw points as well:
 
+^{:nextjournal.clerk/width :wide}
 (show-sci
  [mathbox/Mathbox
-  {:style {:height "400px" :width "100%"}
+  {:container {:style {:height "400px" :width "100%"}}
    :focus 3}
   [mb/Camera {:position [0 0 3]
               :proxy true}]
@@ -353,9 +359,10 @@
       :width 5
       :color "#50A000"}]]))
 
+^{:nextjournal.clerk/width :wide}
 (show-sci
  [mathbox/Mathbox
-  {:style {:height "400px" :width "100%"}
+  {:container {:style {:height "400px" :width "100%"}}
    :focus 3}
   [mb/Camera {:position [0 0 3]
               :proxy true}]
@@ -393,21 +400,18 @@
 ;; </root>
 ;; ```
 
-;; *Alternatively, you can also supply an array of `data`, either constant or
-;; *changing, flat or nested. MathBox will iterate over it and emit it for you,
-;; *picking up any live data. If your data does not change, you can set `live:
-;; *false` to optimize.*
+;; > Alternatively, you can also supply an array of `data`, either constant or
+;; > changing, flat or nested. MathBox will iterate over it and emit it for you,
+;; > picking up any live data. If your data does not change, you can set `live:
+;; > false` to optimize.
 
 ;; ### Add some floating labels
 
 ;; Finally we'll label our coordinate system. First we need to establish a
 ;; `<scale />`, which will divide our view into nice intervals.
 
-;; ```javascript
-;; var scale =
-;;   view.scale({
-;;     divide: 10,
-;;   });
+;; ```clj
+;; [mb/Scale {:divide 10}]
 ;; ```
 
 ;; We can draw our scale as tick marks with `<ticks />`:
@@ -441,6 +445,31 @@
 ;;   });
 ;; ```
 
+^{:nextjournal.clerk/width :wide}
+(show-sci
+ [mathbox/Mathbox
+  {:container {:style {:height "400px" :width "100%"}}
+   :focus 3}
+  [mb/Camera {:position [0 0 3]
+              :proxy true}]
+  [mb/Cartesian
+   {:range [[-2 2] [-1 1]]
+    :scale [2 1]}
+
+   [mb/Axis {:axis 1 :width 3 :color "black"}]
+   [mb/Axis {:axis 2 :width 3 :color "black"}]
+   [mb/Grid {:width 2 :divideX 20 :divideY 10}]
+   [Curve]
+   [mb/Point {:size 8 :color "#3090FF"}]
+
+   [Vector]
+
+   [mb/Scale {:divide 10}]
+   [mb/Ticks {:width 5 :size 15 :color "black"}]
+   [mb/Format {:digits 2 :weight "bold"}]
+   [mb/Label {:color "red"
+              :zIndex 1}]]])
+
 ;; Here we apply `zIndex` similar to CSS to ensure the labels overlap in 2D
 ;; rather than being placed in 3D. It specifies a layer index, with 0 being the
 ;; default, and layers 1...n stacking on top. Negative zIndex is not allowed.
@@ -452,6 +481,41 @@
 ;; ### Make it move
 
 ;; Finally we'll add on a little bit of animation by adding a `<play />` block.
+
+^{:nextjournal.clerk/width :wide}
+(show-sci
+ [mathbox/Mathbox
+  {:container {:style {:height "400px" :width "100%"}}
+   :focus 3}
+  [mb/Camera {:position [0 0 3]
+              :proxy true}]
+  [mb/Cartesian
+   {:range [[-2 2] [-1 1]]
+    :scale [2 1]}
+
+   [mb/Axis {:axis 1 :width 3 :color "black"}]
+   [mb/Axis {:axis 2 :width 3 :color "black"}]
+   [mb/Grid {:width 2 :divideX 20 :divideY 10}]
+   [Curve]
+   [mb/Point {:size 8 :color "#3090FF"}]
+
+   [Vector]
+
+   [mb/Scale {:divide 10}]
+   [mb/Ticks {:width 5 :size 15 :color "black"}]
+   [mb/Format {:digits 2 :weight "bold"}]
+   [mb/Label {:color "red"
+              :zIndex 1}]
+   ]
+  [mb/Play
+   {:target "cartesian"
+    :pace 5
+    :to 2
+    :loop true
+    :script
+    [{:props {:range [[-2 2] [-1 1]]}}
+     {:props {:range [[-4 4] [-2 2]]}}
+     {:props {:range [[-2 2] [-1 1]]}}]}]])
 
 ;; ```javascript
 ;; var play = mathbox.play({

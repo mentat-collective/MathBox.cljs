@@ -382,14 +382,14 @@
 (show-cljs
  (defn ^:export PQKnot [!state]
    [mathbox/Mathbox
-    {:style {:height "500px" :width "100%"}
+    {:container {:style {:height "500px" :width "100%"}}
      :options
      {:plugins ["core", "controls", "cursor", "mathbox" "stats"]
       :controls {:klass TrackballControls/TrackballControls}}
-     :init {:background-color 0xffffff
-            :camera-proxy true
-            :camera-position [1 1 3]}
+     :init {:background-color 0xffffff}
      :scale 500 :focus 3}
+    [mb/Camera {:proxy true
+                :position [1 1 3]}]
     [mb/Cartesian {:range [[-1 1] [-1 1] [-1 1]]
                    :scale [1 1 1]
                    :quaternion [0.7 0 0 0.7]}
@@ -401,11 +401,12 @@
         :height 16
         :channels 3
         :live true
-        :expr (fn [emit theta phi _i _j t]
-                (let [{:keys [r1 r2 r3 p q]} (.-state !state)
-                      r3 (+ r3 (* r3 0.5 (* (Math/sin (* 2 theta t))
-                                            (Math/sin (* 2 theta t)))))]
-                  (pq-knot emit r1 r2 r3 p q theta phi)))}]]
+        :expr
+        (fn [emit theta phi _i _j t]
+          (let [{:keys [r1 r2 r3 p q]} (.-state !state)
+                r3 (+ r3 (* r3 0.5 (* (Math/sin (* 2 theta t))
+                                      (Math/sin (* 2 theta t)))))]
+            (pq-knot emit r1 r2 r3 p q theta phi)))}]]
 
      [mb/Surface
       {:shaded true

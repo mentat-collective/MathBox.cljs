@@ -750,14 +750,14 @@ emit((-1.0 * x51276 * x51277 * x51278 * G00000000000000be * G00000000000000a8 * 
 (show-cljs
  (defn ^:export Helitorus [!state]
    [mathbox/Mathbox
-    {:style {:height "500px" :width "100%"}
+    {:container {:style {:height "500px" :width "100%"}}
      :options
      {:plugins ["core", "controls", "cursor", "mathbox" "stats"]
       :controls {:klass TrackballControls/TrackballControls}}
-     :init {:background-color 0xffffff
-            :camera-proxy true
-            :camera-position [1 1 3]}
+     :init {:background-color 0xffffff}
      :scale 500 :focus 3}
+    [mb/Camera {:proxy true
+                :position [1 1 3]}]
     [mb/Cartesian {:range [[-1 1] [-1 1] [-1 1]]
                    :scale [1 1 1]
                    :quaternion [0.7 0 0 0.7]}
