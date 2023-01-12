@@ -13,8 +13,9 @@
   {:style {:height "500px" :width "100%"}
    :options {:plugins ["core"]}
    :init {:background-color 0xffffff}}
-  [mb/Cartesian {:range [[-1 1] [-1 1] [-1 1]]
-                 :scale [1 1 1]}
+  [mb/Cartesian
+   {:range [[-1 1] [-1 1] [-1 1]]
+    :scale [1 1 1]}
    [mb/Camera
     {:lookAt [0 0 0]
      :liveProps

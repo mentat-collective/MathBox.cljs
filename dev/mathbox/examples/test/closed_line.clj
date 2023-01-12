@@ -11,9 +11,10 @@
 (show-sci
  [mathbox/Mathbox
   {:style {:height "500px" :width "100%"}
-   :init {:background-color 0xffffff
-          :camera-position [0 0 3]
-          :scale 720 :focus 3}}
+   :init {:background-color 0xffffff}
+   :scale 720
+   :focus 3}
+  [mb/Camera {:proxy true :position [0 0 3]}]
   [mb/Cartesian
    {:range [[-1 1] [-1 1] [-1 1]]
     :scale [1 1 1]}

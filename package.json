@@ -37,8 +37,8 @@
     "w3c-keyname": "2.2.6"
   },
   "peerDependencies": {
-    "mathbox": "2.2.1",
-    "mathbox-react": "^0.0.11-rc",
+    "mathbox": "2.3.0",
+    "mathbox-react": "0.0.14",
     "three": "0.148.0"
   },
   "devDependencies": {

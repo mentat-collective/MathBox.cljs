@@ -756,8 +756,8 @@ emit((-1.0 * x51276 * x51277 * x51278 * G00000000000000be * G00000000000000a8 * 
       :controls {:klass TrackballControls/TrackballControls}}
      :init {:background-color 0xffffff
             :camera-proxy true
-            :camera-position [1 1 3]
-            :scale 500 :focus 3}}
+            :camera-position [1 1 3]}
+     :scale 500 :focus 3}
     [mb/Cartesian {:range [[-1 1] [-1 1] [-1 1]]
                    :scale [1 1 1]
                    :quaternion [0.7 0 0 0.7]}

@@ -13,8 +13,8 @@
   {:style {:height "500px" :width "100%"}
    :options
    {:plugins ["core" "controls" "cursor" "stats"]}
-   :init {:background-color 0xffffff
-          :camera-position [-3.5 2.2 -3.3]}}
+   :init {:background-color 0xffffff}}
+  [mb/Camera {:proxy true :position [-3.5 2.2 -3.3]}]
   [mb/Cartesian
    {:range [[-1 1] [-1 1] [-1 1]]
     :scale [1 1 1]}]

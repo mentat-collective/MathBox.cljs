@@ -9,7 +9,7 @@
 
 ^{:nextjournal.clerk/width :wide}
 (show-sci
- (letfn [(expr [emit x y i j time]
+ (letfn [(expr [emit x y _i _j time]
            (let [theta
                  (* (/ Math/PI 2)
                     (+ (Math/cos
@@ -43,8 +43,9 @@
              (emit x y z w)))]
    [mathbox/Mathbox
     {:style {:height "500px" :width "100%"}
-     :init {:background-color 0xffffff
-            :camera-position [2.3 1 2]}}
+     :init {:background-color 0xffffff}}
+    [mb/Camera {:proxy true
+                :position [2.3 1 2]}]
     [mb/Transform4
      ;; I think this will translate?
      {:matrix

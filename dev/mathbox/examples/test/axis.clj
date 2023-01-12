@@ -28,10 +28,13 @@
              m)])]
    [mathbox/Mathbox
     {:style {:height "500px" :width "100%"}
-     :init {:background-color 0xffffff
-            :camera-fov 45
-            :camera-position [-0.15 0.15 3.6]
-            :scale 720 :focus 1}}
+     :init {:background-color 0xffffff}
+     :scale 720
+     :focus 1}
+    [mb/Camera
+     {:proxy true
+      :fov 45
+      :position [-0.15 0.15 3.6]}]
     [mb/Cartesian {:range [[-2 2] [-1 1] [-1 1]]
                    :scale [2 1 1]}
      ;; TODO there is a bug with mathbox-react that stops the color objects from

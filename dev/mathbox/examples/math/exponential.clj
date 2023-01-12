@@ -36,8 +36,8 @@
  [mathbox/Mathbox
   {:style {:height "500px" :width "100%"}
    :init {:background-color 0xffffff
-          :camera-position [3 2 5]
-          :scale 500}}
+          :camera-position [3 2 5]}
+   :scale 500}
   [mb/Cartesian {}
    [mb/Transform4
     {:matrix
