@@ -11,8 +11,8 @@
 (show-sci
  [mathbox/Mathbox
   {:container {:style {:height "500px" :width "100%"}}
-   :options {:plugins ["core"]}
-   :init {:background-color 0xffffff}}
+   :options  {:plugins ["core"]}
+   :renderer {:background-color 0xffffff}}
   [mb/Cartesian
    {:range [[-1 1] [-1 1] [-1 1]]
     :scale [1 1 1]}

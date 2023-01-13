@@ -29,10 +29,7 @@
 ;;
 ;; ## What is MathBox?
 ;;
-;; TODO description and demo.
-^{:nextjournal.clerk/visibility {:code :fold}}
-(show-sci
- [:div "demo."])
+;; TODO good Q.
 
 ;; ## Quickstart
 ;;
@@ -256,7 +253,7 @@
 (show-sci
  (defn Data []
    [mb/Interval
-    {:expr (fn [emit x i t]
+    {:expr (fn [emit x _i t]
              (emit x (Math/sin (+ x t))))
      :width 64
      :channels 2}]))
@@ -486,6 +483,9 @@
 (show-sci
  [mathbox/Mathbox
   {:container {:style {:height "400px" :width "100%"}}
+   :ref (fn [box]
+          (when box
+            (set! (.-box js/window) box)))
    :focus 3}
   [mb/Camera {:position [0 0 3]
               :proxy true}]
@@ -505,8 +505,7 @@
    [mb/Ticks {:width 5 :size 15 :color "black"}]
    [mb/Format {:digits 2 :weight "bold"}]
    [mb/Label {:color "red"
-              :zIndex 1}]
-   ]
+              :zIndex 1}]]
   [mb/Play
    {:target "cartesian"
     :pace 5

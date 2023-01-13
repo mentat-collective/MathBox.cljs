@@ -35,8 +35,8 @@
 (show-sci
  [mathbox/Mathbox
   {:container {:style {:height "500px" :width "100%"}}
-   :init {:background-color 0xffffff}
-   :scale 500}
+   :renderer  {:background-color 0xffffff}
+   :scale     500}
   [mb/Camera {:proxy true :position [3 2 5]}]
   [mb/Cartesian {}
    [mb/Transform4

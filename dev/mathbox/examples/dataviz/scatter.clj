@@ -183,8 +183,8 @@
  (defn Scatter [{:keys [data maxes mins ranges scaled-mins colors]}]
    [mathbox/Mathbox
     {:container {:style {:height "500px"}}
-     :init {:background-color 0xfafaf8
-            :max-distance 5}}
+     :renderer  {:background-color 0xfafaf8}
+     :controls  {:max-distance 5}}
     [mb/Camera {:proxy true :position [2.3 1 2]}]
     [Cartesian {:range {:x [0 2] :y [0 1] :z [0 1]}
                 :scale [2 1 1]}

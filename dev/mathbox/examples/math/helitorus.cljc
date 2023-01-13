@@ -754,7 +754,7 @@ emit((-1.0 * x51276 * x51277 * x51278 * G00000000000000be * G00000000000000a8 * 
      :options
      {:plugins ["core", "controls", "cursor", "mathbox" "stats"]
       :controls {:klass TrackballControls/TrackballControls}}
-     :init {:background-color 0xffffff}
+     :renderer {:background-color 0xffffff}
      :scale 500 :focus 3}
     [mb/Camera {:proxy true
                 :position [1 1 3]}]

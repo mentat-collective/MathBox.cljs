@@ -1,8 +1,8 @@
 (ns mathbox
   (:require ["mathbox-react" :as box]
-            [reagent.core :as r]
-            ["three" :as three]
-            ["three/examples/jsm/controls/OrbitControls.js" :as OrbitControls]))
+            ["react" :as react]
+            ["three/examples/jsm/controls/OrbitControls.js" :as OrbitControls]
+            [mathbox.hooks :as hooks]))
 
 ;; The plan for getting this released:
 ;;
@@ -23,81 +23,49 @@
    :controls {:klass OrbitControls/OrbitControls}
    :camera {}})
 
-;; ## Animation
+;; ## Components
 
-(defn setup
-  "Returns a setup function that will only run ONE time. TODO can I recreate
-  this with hooks?"
-  [f]
-  (fn [^js box]
-    (when (and box (not (.-created box)))
-      (set! (.-created box) true)
-      (f box))))
-
-
-#_#_
-(defn doto-controls [box f & xs]
-  (let [controls (.. box -three -controls)]
-    (apply f controls xs)
-    box))
-
-(defn doto-renderer [box f & xs]
-  (let [renderer (.. box -three -renderer)]
-    (apply f renderer xs)
-    box))
-
-(defn opts->setup
-  [{:keys [background-color max-distance]}]
-  (fn [^js box]
-    (let [three (.-three box)]
-      (when max-distance
-        (-> three .-controls .-maxDistance (set! max-distance)))
-      (when background-color
-        (let [color (three/Color. background-color)]
-          (-> three .-renderer (.setClearColor color 1.0)))))))
-
-(defn opts->ref [init ref]
-  (let [f (cond (map? init) (setup (opts->setup init))
-                (fn? init)  (setup init)
-                (nil? init) nil
-                :else       (throw
-                             (ex-info
-                              "Invalid init." {:init init})))
-        double (when (and f ref)
-                 (fn [box]
-                   (f box)
-                   (ref box)))]
-    (or double f ref)))
-
-(defn Mathbox
-  ":container takes :id, :style, :class. This can do a contained or uncontained
-  mathbox."
-  [{:keys [init ref container] :as opts} & children]
-  (let [ref  (opts->ref init ref)
-        opts (-> (dissoc opts :init :container)
-                 (assoc :ref ref)
-                 (update :options (partial merge default-options)))]
+(defn ^:no-doc Rawbox [{:keys [container] :as props} & children]
+  (let [props (dissoc props :container)]
     (cond (nil? container)
-          (into [:> box/ContainedMathbox opts] children)
+          (into [:> box/ContainedMathbox props] children)
 
           (map? container)
-          (let [opts (-> (dissoc opts :init :container)
-                         (assoc
-                          :containerId    (:id container)
-                          :containerStyle (:style container)
-                          :containerClass (:class container)))]
-            (into [:> box/ContainedMathbox opts] children))
+          (let [props (assoc props
+                             :containerId    (:id container)
+                             :containerStyle (:style container)
+                             :containerClass (:class container))]
+            (into [:> box/ContainedMathbox props] children))
 
           (instance? js/HTMLElement container)
-          (into [:> box/Mathbox opts] children)
+          (into [:> box/Mathbox props] children)
 
           :else
           (throw
            (ex-info "Unsupported container : "
                     {:container container})))))
 
-(def BareMathbox
-  (r/adapt-react-class box/Mathbox))
+(defn ^:no-doc Mathbox*
+  "If you want something on creation, use :ref."
+  [props & children]
+  (let [[box set-box]       (react/useState nil)
+        [hook-config props] (hooks/split-config props)
+        props (-> props
+                  (assoc :ref set-box)
+                  (update :options (partial merge default-options)))]
+    (hooks/install-hooks box hook-config)
+    (into [Rawbox props] children)))
 
-(def ContainedMathbox
-  (r/adapt-react-class box/ContainedMathbox))
+
+(defn Mathbox
+  "Supports:
+
+  - :renderer
+  - :controls
+  - :container
+  - :ref
+  - :options
+
+  - all the remaining options from the base/root component"
+  [props & children]
+  (into [:f> Mathbox* props] children))
