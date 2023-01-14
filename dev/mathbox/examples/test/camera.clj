@@ -17,7 +17,8 @@
    {:range [[-1 1] [-1 1] [-1 1]]
     :scale [1 1 1]}
    [mb/Camera
-    {:lookAt [0 0 0]
+    {#_#_:proxy true
+     :lookAt [0 0 0]
      :liveProps
      {:position
       (let [out (js/Array. 0 0 0)]

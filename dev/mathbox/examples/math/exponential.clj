@@ -32,6 +32,7 @@
 
 ^{::clerk/width :wide
   ::clerk/visibility {:code :fold}}
+
 (show-sci
  [mathbox/Mathbox
   {:container {:style {:height "500px" :width "100%"}}

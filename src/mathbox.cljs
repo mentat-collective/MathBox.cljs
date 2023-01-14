@@ -56,7 +56,6 @@
     (hooks/install-hooks box hook-config)
     (into [Rawbox props] children)))
 
-
 (defn Mathbox
   "Supports:
 
@@ -66,6 +65,8 @@
   - :ref
   - :options
 
-  - all the remaining options from the base/root component"
+  - all the remaining options from the base/root component
+
+  TODO rename `:options` to threestrap?"
   [props & children]
   (into [:f> Mathbox* props] children))
