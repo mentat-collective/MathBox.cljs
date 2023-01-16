@@ -16,19 +16,6 @@
 :classes `[]` (string array) - Custom classes, e.g. `[\"big\"]`
 :id `null` (nullable string) - Unique ID, e.g. `\"sampler\"`")
 
-#_
-(defprim box/Root
-  "*Tree root*
-
-  :camera `\"[camera]\"` (select) - Active camera
-  :classes `[]` (string array) - Custom classes, e.g. `[\"big\"]`
-  :focus `1` (nullable number) - Camera focus distance in world units
-  :fov `null` (nullable number) - (Vertical) Field-of-view to calibrate units for (degrees), e.g. `60`
-  :id `null` (nullable string) - Unique ID, e.g. `\"sampler\"`
-  :pass `\"view\"` (vertexPass) - Vertex pass (data, view, world, eye)
-  :scale `null` (nullable number) - (Vertical) Reference scale of viewport in pixels, e.g. `720`
-  :speed `1` (number) - Global speed")
-
 (defprim box/Unit
   "*Change unit sizing for drawing ops*
 

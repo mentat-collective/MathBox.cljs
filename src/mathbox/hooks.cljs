@@ -52,6 +52,15 @@
      js/undefined)
    #js [box color opacity]))
 
+;; ### Controls
+;;
+;; NOTE that these are reactive, but you could easily set them on the
+;; `:threestrap` entry instead. For some reason the basic examples in mathbox
+;; don't do that.
+;;
+;; If I want to set a bunch at once, this is probably the way:
+;; https://github.com/kentcdodds/use-deep-compare-effect/blob/main/src/index.ts#L32
+
 (defn ^:no-doc control-effect [box k v]
   (fn []
     (when (and box v)
@@ -73,7 +82,6 @@
   (react/useEffect
    (control-effect box "rotateSpeed" rotate-speed)
    #js [box rotate-speed]))
-
 
 (defn install-hooks [box config]
   (doto box

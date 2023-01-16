@@ -11,7 +11,7 @@
 (show-sci
  [mathbox/Mathbox
   {:container {:style {:height "500px" :width "100%"}}
-   :options
+   :threestrap
    {:plugins ["core" "controls" "cursor" "stats"]}
    :renderer {:background-color 0xffffff}}
   [mb/Camera {:proxy true :position [-3.5 2.2 -3.3]}]
