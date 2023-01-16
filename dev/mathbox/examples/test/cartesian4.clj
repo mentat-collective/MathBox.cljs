@@ -7,6 +7,10 @@
 
 ;; # Cartesian4
 
+;; https://andrewharvey4.wordpress.com/2008/09/29/xyzw-in-opengldirect3d-homogeneous-coordinates/
+;;
+;; homogeneous coordinates https://www.tomdalling.com/blog/modern-opengl/explaining-homogenous-coordinates-and-projective-geometry/
+
 ^{:nextjournal.clerk/width :wide}
 (show-sci
  (letfn [(expr [emit x y _i _j time]

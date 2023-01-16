@@ -4,7 +4,6 @@
   #?(:cljs
      (:require-macros [mathbox.macros])))
 
-
 (defmacro defprim
   ([sym]
    `(defprim ~sym nil {}))

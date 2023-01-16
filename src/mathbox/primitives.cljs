@@ -1,12 +1,5 @@
-;; Note that, I THINK, we are following this style:
-;; https://github.com/arttuka/reagent-material-ui
-
 (ns mathbox.primitives
-  "Imports all components from Mathbox as Reagent components.
-   Importing components from their own namespaces is preferred due to bundle size.
-
-   Requiring this namespace causes the whole @mui/material package to be
-  included in the final bundle... IN THEORY!"
+  "Imports all components from Mathbox as Reagent components."
   (:refer-clojure :exclude [Repeat])
   (:require [mathbox.primitives.base]
             [mathbox.primitives.camera]
@@ -21,8 +14,6 @@
             [mathbox.primitives.time]
             [mathbox.primitives.transform]
             [mathbox.primitives.view]))
-
-#_(def Root mathbox.primitives.base/Root)
 
 (def Group mathbox.primitives.base/Group)
 (def Inherit mathbox.primitives.base/Inherit)

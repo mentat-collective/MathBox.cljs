@@ -1,22 +1,14 @@
 (ns mathbox
+  "TODO fill in what we have here."
   (:require ["mathbox-react" :as box]
             ["react" :as react]
             ["three/examples/jsm/controls/OrbitControls.js" :as OrbitControls]
             [mathbox.hooks :as hooks]))
 
-;; The plan for getting this released:
+;; TODO for release:
 ;;
-;; 1. Have some way to do an initial configuration of the mathbox instance, and
-;;    ideally re-rerun if the configuration changes at all.
-;;
-;; 2. port the demo notebook over
-;;
-;; 3. there are some annoying things like the camera config etc that it would be
-;;    great to lock down.
-;;
-;; Expose some of the basic annoying things like the various controls classes
-
-;; TODO take a key for orbitcontrols, trackballcontrols.
+;; - better formatting on primitive keyword options
+;; - document these core namespaces
 
 (def threestrap-defaults
   {:plugins  ["core" "controls" "cursor"]
@@ -25,7 +17,10 @@
 
 ;; ## Components
 
-(defn ^:no-doc Rawbox [{:keys [container threestrap] :as props} & children]
+(defn ^:no-doc Rawbox
+  "TODO this is a wrapper around the contained and uncontained ones that switches
+  between the two."
+  [{:keys [container threestrap] :as props} & children]
   (let [props (-> (dissoc props :container :threestrap)
                   (assoc :options threestrap))]
     (cond (nil? container)
@@ -47,7 +42,10 @@
                     {:container container})))))
 
 (defn ^:no-doc Mathbox*
-  "If you want something on creation, use :ref."
+  "If you want something on creation, use :ref.
+
+  Function component wrapping [[Rawbox]] with some hooks for configuring various
+  controls."
   [props & children]
   (let [[box set-box]       (react/useState nil)
         [hook-config props] (hooks/split-config props)
@@ -58,7 +56,9 @@
     (into [Rawbox props] children)))
 
 (defn Mathbox
-  "Supports:
+  "TODO fill in docs.
+
+  Supports:
 
   - :renderer
   - :controls
