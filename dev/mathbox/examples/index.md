@@ -1,6 +1,7 @@
 # Examples Index
 
-This directory contains all demos of Mathbox. Most are not yet implemented, but we're working on it!
+
+This directory contains all demos of MathBox. Most are not yet implemented, but we're working on it!
 
 Each example below is marked with one of the these three statuses:
 
@@ -112,6 +113,7 @@ Each example below is marked with one of the these three statuses:
 - ❌ [Z order](test/zorder.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/test/zorder.clj))
 
 ## VR
+
 
 - ❌ [Surface](vr/surface.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/vr/surface.clj))
 - ❌ [Vector](vr/vector.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/vr/vector.clj))

@@ -1,63 +1,112 @@
 (ns mathbox
+  "Home of the [[MathBox]]"
   (:require ["mathbox-react" :as box]
-            [reagent.core :as r]
-            ["three" :as THREE]
-            ["three/examples/jsm/controls/OrbitControls.js" :as OrbitControls]))
+            ["react" :as react]
+            ["three/examples/jsm/controls/OrbitControls.js" :as OrbitControls]
+            [mathbox.hooks :as hooks]))
 
-;; TODO take a key for orbitcontrols, trackballcontrols.
-(def default-options
-  {:plugins ["core" "controls" "cursor"]
+;; TODO for release:
+;;
+;; - better formatting on primitive keyword options
+;; - document these core namespaces
+;; -
+
+(def
+  ^{:doc "Default `:threestrap` options for the [[MathBox]] component."}
+  threestrap-defaults
+  {:plugins  ["core" "controls" "cursor"]
    :controls {:klass OrbitControls/OrbitControls}
-   :camera {}})
+   :camera   {}})
 
-(defn setup
-  "Returns a setup function that will only run ONE time."
-  [f]
-  (fn [^js box]
-    (when (and box (not (.-created box)))
-      (set! (.-created box) true)
-      (f box))))
+;; ## Components
 
-(defn opts->setup
-  "Some core options, tidied up."
-  [{:keys [background-color
-           camera-position
-           max-distance
-           scale focus]}]
-  (setup
-   (fn [^js box]
-     (when scale (.set box #js {:scale scale}))
-     (when focus (.set box #js {:focus focus}))
-     (let [three (.-three box)]
-       (when max-distance
-         (-> three .-controls .-maxDistance (set! max-distance)))
-       (when-let [[x y z] camera-position]
-         (-> three .-camera .-position (.set x y z)))
-       (when background-color
-         (let [color (THREE/Color. background-color)]
-           (-> three .-renderer (.setClearColor color 1.0))))))))
+(defn ^:no-doc Rawbox
+  "Light wrapper around the `ContainedMathbox` and `Mathbox` components exposed by
+  `mathbox-react.`
 
-(def BareMathbox
-  (r/adapt-react-class box/Mathbox))
+  The main differences are:
 
-(def ContainedMathbox
-  (r/adapt-react-class box/ContainedMathbox))
+  - This component calls `ContainedMathbox` if the `:container` option is a
+    config map (or not present), and `Mathbox` if `:container` references an
+    actual `HTMLElement`. Any other value currently errors.
 
-(defn Mathbox
-  "Same as `ContainedMathBox`, but with setup options.
+  - This component takes a `:threestrap` option instead of `:options`, as the
+  `mathbox-react` components do.
 
-  TODO for NOW, don't supply `:ref`. But obviously we want to allow that too.
+  See [[MathBox]] for a version that installs hooks to allow configuration of
+  the renderer, camera and other settings."
+  [{:keys [container threestrap] :as props} & children]
+  (let [props (-> (dissoc props :container :threestrap)
+                  (assoc :options threestrap))]
+    (cond (nil? container)
+          (into [:> box/ContainedMathbox props] children)
 
-  :style maps to containerStyle."
-  [{:keys [init style] :as opts} & children]
-  (let [ref (cond (map? init) (opts->setup init)
-                  (fn? init)  (setup init)
-                  :else      (throw
-                              (ex-info
-                               "Invalid init." {:init init})))
-        opts (-> opts
-                 (dissoc :init :style)
-                 (update :options (partial merge default-options))
-                 (assoc :ref ref
-                        :containerStyle style))]
-    (into [:> box/ContainedMathbox opts] children)))
+          (map? container)
+          (let [props (assoc props
+                             :containerId    (:id container)
+                             :containerStyle (:style container)
+                             :containerClass (:class container))]
+            (into [:> box/ContainedMathbox props] children))
+
+          (instance? js/HTMLElement container)
+          (into [:> box/Mathbox props] children)
+
+          :else
+          (throw
+           (ex-info "Unsupported container : "
+                    {:container container})))))
+
+(defn ^:no-doc MathBox*
+  "Function component that backs [[MathBox]]. See [[MathBox]] for detailed
+  documentation."
+  [props & children]
+  (let [[box set-box]       (react/useState nil)
+        [hook-config props] (hooks/split-config props)
+        props (-> props
+                  (assoc :ref set-box)
+                  (update :threestrap (partial merge threestrap-defaults)))]
+    (hooks/install-hooks box hook-config)
+    (into [Rawbox props] children)))
+
+(defn MathBox
+  "Component that configures a MathBox-backed canvas and reactively mounts all
+  children into the canvas.
+
+  Supports the following options:
+
+  - `:threestrap`: these options are passed directly to the [mathbox
+    constructor](https://github.com/unconed/mathbox#basic-usage) on instantiation;
+    these are in turn passed along to Threestrap's `Bootstrap` constructor.
+    See [this page](https://github.com/unconed/threestrap#plugins) for an example
+    of what to pass and why.
+
+  - `:renderer`: optional map with `:background-color` and `:background-opacity`
+    keys. Updating these will update the settings without a re-render.
+
+  - `:controls`: optional map with `:max-distance` and `:rotate-speed` keys.
+    Updating these will update the settings on the registered controls without a
+    re-render.
+
+  - `:on`: optional map of type {<event-name> (fn [event three] ,,,)} On mount,
+    each event will be bound via `mathbox.three.on`, as described in [Threestrap's
+    docs](https://github.com/unconed/threestrap#events).
+
+  - `:ref`: a 1-arg function that receives the underlying mathbox instance
+    whenever it changes. Note that you may receive `nil` and should guard against
+    it.
+
+  As well as all options used to configure the [base/root
+  component](https://github.com/unconed/mathbox/blob/master/docs/primitives.md#base/root). (The
+  format of each following line is <keyword>: <default> (<type>) -
+  <description>.)
+
+  - `:camera`: `\"[camera]\"` (select) - Active camera
+  - `:classes`: `[]` (string array) - Custom classes, e.g. `[\"big\"]`
+  - `:focus`: `1` (nullable number) - Camera focus distance in world units
+  - `:fov`: `null` (nullable number) - (Vertical) Field-of-view to calibrate units for (degrees), e.g. `60`
+  - `:id`: `null` (nullable string) - Unique ID, e.g. `\"sampler\"`
+  - `:pass`: `\"view\"` (vertexPass) - Vertex pass (data, view, world, eye)
+  - `:scale`: `null` (nullable number) - (Vertical) Reference scale of viewport in pixels, e.g. `720`
+  - `:speed`: `1` (number) - Global speed"
+  [props & children]
+  (into [:f> MathBox* props] children))

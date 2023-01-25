@@ -10,8 +10,7 @@
     {nextjournal.devcards nextjournal.devcards-noop}}
 
    :compiler-options
-   {:infer-externs :auto
-    :optimizations :advanced}
+   {:infer-externs :auto}
    :modules {:main
              {:entries
               [nextjournal.clerk.static-app

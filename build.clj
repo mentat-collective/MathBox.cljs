@@ -5,7 +5,7 @@
 ;; ## Variables
 
 (def lib 'org.mentat/mathbox.cljs)
-(def version "0.0.1")
+(def version "0.1.0")
 
 (defn- ->version
   ([] version)
@@ -39,16 +39,22 @@
     (b/write-pom {:class-dir class-dir
                   :lib lib
                   :version version
-                  :scm {:tag (str "v" version)}
+                  :scm
+                  {:tag (str "v" version)
+                   :connection "scm:git:git://github.com/mentat-collective/mathbox.cljs.git"
+                   :developConnection "scm:git:ssh://git@github.com/mentat-collective/mathbox.cljs.git"
+                   :url "https://github.com/mentat-collective/mathbox.cljs"}
                   :basis basis
                   :src-pom "template/pom.xml"
-                  :src-dirs ["src/main"]})
+                  :src-dirs ["src"]
+                  :resource-dirs ["resources"]})
     (doseq [f ["README.md" "LICENSE" "deps.edn"]]
       (b/copy-file {:src f :target (format "%s/%s" class-dir f)}))
-    (b/copy-dir {:src-dirs ["src/main"]
+    (b/copy-dir {:src-dirs ["src" "resources"]
                  :target-dir class-dir})
     (b/jar {:class-dir class-dir
             :jar-file jar-file})
+
     (println (str "Created " jar-file "."))
     (assoc opts
            :jar-file jar-file
