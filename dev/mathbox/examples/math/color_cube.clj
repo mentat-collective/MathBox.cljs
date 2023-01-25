@@ -5,7 +5,6 @@
 (ns mathbox.examples.math.color-cube
   (:require [mentat.clerk-utils.show :refer [show-sci]]))
 
-
 ;; ### Color Cube
 
 ^{:nextjournal.clerk/width :wide}
@@ -32,6 +31,3 @@
      :colors "<"
      :color 0xffffff
      :size 20}]]])
-
-(show-sci
- [demo/Cake])

@@ -10,8 +10,6 @@
               ["three/examples/jsm/controls/TrackballControls.js"
                :as TrackballControls]])
    [nextjournal.clerk #?(:clj :as :cljs :as-alias) clerk]
-   ;; TODO this only for now, since `show-sci` does not behave well on the cljs
-   ;; side.
    [mentat.clerk-utils.show :refer [show-sci show-cljs]]))
 
 ;; # Helitorus
@@ -58,10 +56,10 @@
 
 (show-sci
  [:<>
-  [leva/PanelOptions {:drag true}]
-  [leva/Panel
-   {:state mathbox.examples.math.helitorus/!state
-    :options
+  [leva/Config {:drag true}]
+  [leva/Controls
+   {:atom mathbox.examples.math.helitorus/!state
+    :schema
     {:n {:min 0 :max 32 :step 1}
      :r1 {:min 0 :max 3 :step 0.001}
      :r2 {:min 0.0 :max 0.5 :step 0.01}

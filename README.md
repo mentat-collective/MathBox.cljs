@@ -59,7 +59,7 @@ Require `mathbox` and `mathbox.primitives` in your ClojureScript namespace:
 Construct a `MathBox` scene by with the `mathbox/MathBox` component
 initialization options to the `mathBox()` constructor:
 
-```js
+```clj
 [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}}]
 ```

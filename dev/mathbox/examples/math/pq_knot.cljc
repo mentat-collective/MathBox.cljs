@@ -39,10 +39,10 @@
 
 (show-sci
  [:<>
-  [leva/PanelOptions {:drag true}]
-  [leva/Panel
-   {:state mathbox.examples.math.pq-knot/!state
-    :options
+  [leva/Config {:drag true}]
+  [leva/Controls
+   {:atom mathbox.examples.math.pq-knot/!state
+    :schema
     {:p {:min 0 :max 32 :step 1}
      :q {:min 0 :max 32 :step 1}
      :r1 {:min 0 :max 3 :step 0.001}

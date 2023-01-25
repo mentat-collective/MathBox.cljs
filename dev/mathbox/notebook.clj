@@ -6,6 +6,10 @@
   (:require [mentat.clerk-utils.show :refer [show-sci]]))
 
 ;; # MathBox.cljs
+
+;; A [Reagent](https://reagent-project.github.io/) interface to
+;; the [MathBox](https://github.com/unconed/mathbox) mathematical visualization
+;; library.
 ;;
 ;; [![Build Status](https://github.com/mentat-collective/mathbox.cljs/actions/workflows/kondo.yml/badge.svg?branch=main)](https://github.com/mentat-collective/mathbox.cljs/actions/workflows/kondo.yml)
 ;; [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/mentat-collective/mathbox.cljs/blob/main/LICENSE)

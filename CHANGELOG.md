@@ -2,12 +2,6 @@
 
 ## [unreleased]
 
-- Upgrade to latest mathbox, mathbox-react with support for live properties, bug
-  fixes.
-
-- started up on example index, see a couple of these. Performance
-  considerations...
-
 ## 0.1.0
 
 First real release!
