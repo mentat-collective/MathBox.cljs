@@ -23,6 +23,7 @@
     "framer-motion": "7.6.19",
     "katex": "0.12.0",
     "leva": "0.9.34",
+    "lezer-clojure": "1.0.0-rc.2",
     "markdown-it": "12.3.2",
     "markdown-it-block-image": "0.0.3",
     "markdown-it-sidenote": "github:gerwitz/markdown-it-sidenote#aa5de8ce3168b7d41cb33c3aed071a5f41ce0083",
@@ -37,7 +38,7 @@
     "w3c-keyname": "2.2.6"
   },
   "peerDependencies": {
-    "mathbox": "2.3.0",
+    "mathbox": "2.3.1",
     "mathbox-react": "0.0.14",
     "three": "0.148.0"
   },

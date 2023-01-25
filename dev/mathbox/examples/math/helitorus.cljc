@@ -9,7 +9,7 @@
               #_["three" :as three]
               ["three/examples/jsm/controls/TrackballControls.js"
                :as TrackballControls]])
-   [nextjournal.clerk :as clerk]
+   [nextjournal.clerk #?(:clj :as :cljs :as-alias) clerk]
    ;; TODO this only for now, since `show-sci` does not behave well on the cljs
    ;; side.
    [mentat.clerk-utils.show :refer [show-sci show-cljs]]))

@@ -3,6 +3,7 @@
             ["three" :as three]
             [mathbox]
             [mathbox.primitives]
+            [mathbox.examples.test.face]
             [mathbox.examples.math.helitorus]
             [mathbox.examples.math.pq-knot]
             [nextjournal.clerk.sci-env]
@@ -28,4 +29,8 @@
    'mathbox   (sci/copy-ns mathbox   (sci/create-ns 'mathbox))
    'leva.core (sci/copy-ns leva.core (sci/create-ns 'leva.core))
    'mathbox.primitives
-   (sci/copy-ns mathbox.primitives (sci/create-ns 'mathbox.primitives))}})
+   (sci/copy-ns mathbox.primitives (sci/create-ns 'mathbox.primitives))
+
+   'mathbox.examples.test.face
+   (sci/copy-ns mathbox.examples.test.face
+                (sci/create-ns 'mathbox.examples.test.face))}})

@@ -10,10 +10,7 @@
     {nextjournal.devcards nextjournal.devcards-noop}}
 
    :compiler-options
-   {:infer-externs :auto
-    :pretty-print true
-    :pseudo-names true
-    :source-map true}
+   {:infer-externs :auto}
    :modules {:main
              {:entries
               [nextjournal.clerk.static-app

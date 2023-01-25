@@ -18,10 +18,10 @@
      :line "#4169e1"}))
 
  [:<>
-  [leva/PanelOptions {:drag true}]
-  [leva/Panel
-   {:state !state
-    :options
+  [leva/Config {:drag true}]
+  [leva/Controls
+   {:atom !state
+    :schema
     {:projectionAngle
      {:label "angle"
       :min 0

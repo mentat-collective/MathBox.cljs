@@ -12,9 +12,8 @@
 (show-sci
  [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}
-   :init
-   {:background-color 0xeeeeee
-    :max-distance 4}
+   :renderer  {:background-color 0xeeeeee
+               :max-distance 4}
    :scale 720
    :focus 1}
   [mb/Camera
@@ -33,3 +32,6 @@
      :colors "<"
      :color 0xffffff
      :size 20}]]])
+
+(show-sci
+ [demo/Cake])
