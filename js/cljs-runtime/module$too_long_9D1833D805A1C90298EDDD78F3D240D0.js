@@ -1,4 +1,0 @@
-import "./cljs_env.js";
-shadow$provide.module$node_modules$leva$node_modules$$radix_ui$react_tooltip$node_modules$$radix_ui$react_id$node_modules$$radix_ui$react_use_layout_effect$dist$index=function(global,require,module,exports){var e,o;global=(e={},o=require("module$node_modules$react$index"),Object.keys(o).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return o[t]}})}),e);exports.useLayoutEffect=(null===globalThis||void 0===globalThis?0:globalThis.document)?
-global.useLayoutEffect:()=>{}}
-//# sourceMappingURL=module$too_long_9D1833D805A1C90298EDDD78F3D240D0.js.map
