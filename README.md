@@ -138,8 +138,6 @@ Copyright © 2022-2023 Sam Ritchie.
 
 Distributed under the [MIT License](LICENSE). See [LICENSE](LICENSE).
 
-[MIT](LICENSE).
-
 [build-status-url]: https://github.com/mentat-collective/mathbox.cljs/actions/workflows/kondo.yml
 [build-status]: https://github.com/mentat-collective/mathbox.cljs/actions/workflows/kondo.yml/badge.svg?branch=main
 [cljdoc-url]: https://cljdoc.org/d/org.mentat/mathbox.cljs/CURRENT
