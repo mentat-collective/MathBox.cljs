@@ -1,2 +1,9 @@
-{:lint-as
- {mathbox.macros/defprim clojure.core/comment}}
+{:config-in-comment
+ {:linters
+  {:unresolved-symbol {:level :off}}}
+
+ :lint-as
+ {reagent.core/with-let clojure.core/let}
+
+ :config-paths
+ ["../resources/clj-kondo.exports/org.mentat/mathbox.cljs"]}

@@ -181,7 +181,7 @@
      (into [mb/Cartesian opts] children)))
 
  (defn Scatter [{:keys [data maxes mins ranges scaled-mins colors]}]
-   [mathbox/Mathbox
+   [mathbox/MathBox
     {:container {:style {:height "500px"}}
      :renderer  {:background-color 0xfafaf8}
      :controls  {:max-distance 5}}

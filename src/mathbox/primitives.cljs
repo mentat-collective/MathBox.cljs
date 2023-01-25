@@ -1,5 +1,5 @@
 (ns mathbox.primitives
-  "Imports all components from Mathbox as Reagent components."
+  "Imports all components from MathBox as Reagent components."
   (:refer-clojure :exclude [Repeat])
   (:require [mathbox.primitives.base]
             [mathbox.primitives.camera]

@@ -1,5 +1,5 @@
 (ns mathbox
-  "TODO fill in what we have here."
+  "Home of the [[MathBox]]"
   (:require ["mathbox-react" :as box]
             ["react" :as react]
             ["three/examples/jsm/controls/OrbitControls.js" :as OrbitControls]
@@ -9,8 +9,11 @@
 ;;
 ;; - better formatting on primitive keyword options
 ;; - document these core namespaces
+;; -
 
-(def threestrap-defaults
+(def
+  ^{:doc "Default `:threestrap` options for the [[MathBox]] component."}
+  threestrap-defaults
   {:plugins  ["core" "controls" "cursor"]
    :controls {:klass OrbitControls/OrbitControls}
    :camera   {}})
@@ -18,8 +21,20 @@
 ;; ## Components
 
 (defn ^:no-doc Rawbox
-  "TODO this is a wrapper around the contained and uncontained ones that switches
-  between the two."
+  "Light wrapper around the `ContainedMathbox` and `Mathbox` components exposed by
+  `mathbox-react.`
+
+  The main differences are:
+
+  - This component calls `ContainedMathbox` if the `:container` option is a
+    config map (or not present), and `Mathbox` if `:container` references an
+    actual `HTMLElement`. Any other value currently errors.
+
+  - This component takes a `:threestrap` option instead of `:options`, as the
+  `mathbox-react` components do.
+
+  See [[MathBox]] for a version that installs hooks to allow configuration of
+  the renderer, camera and other settings."
   [{:keys [container threestrap] :as props} & children]
   (let [props (-> (dissoc props :container :threestrap)
                   (assoc :options threestrap))]
@@ -41,11 +56,9 @@
            (ex-info "Unsupported container : "
                     {:container container})))))
 
-(defn ^:no-doc Mathbox*
-  "If you want something on creation, use :ref.
-
-  Function component wrapping [[Rawbox]] with some hooks for configuring various
-  controls."
+(defn ^:no-doc MathBox*
+  "Function component that backs [[MathBox]]. See [[MathBox]] for detailed
+  documentation."
   [props & children]
   (let [[box set-box]       (react/useState nil)
         [hook-config props] (hooks/split-config props)
@@ -55,18 +68,37 @@
     (hooks/install-hooks box hook-config)
     (into [Rawbox props] children)))
 
-(defn Mathbox
-  "TODO fill in docs.
+(defn MathBox
+  "Component that configures a MathBox-backed canvas and reactively mounts all
+  children into the canvas.
 
-  Supports:
+  Supports the following options:
 
-  - :renderer
-  - :controls
-  - :container
-  - :ref
-  - :threestrap
-  -
-  - all the remaining options from the base/root component:
+  - `:threestrap`: these options are passed directly to the [mathbox
+    constructor](https://github.com/unconed/mathbox#basic-usage) on instantiation;
+    these are in turn passed along to Threestrap's `Bootstrap` constructor.
+    See [this page](https://github.com/unconed/threestrap#plugins) for an example
+    of what to pass and why.
+
+  - `:renderer`: optional map with `:background-color` and `:background-opacity`
+    keys. Updating these will update the settings without a re-render.
+
+  - `:controls`: optional map with `:max-distance` and `:rotate-speed` keys.
+    Updating these will update the settings on the registered controls without a
+    re-render.
+
+  - `:on`: optional map of type {<event-name> (fn [event three] ,,,)} On mount,
+    each event will be bound via `mathbox.three.on`, as described in [Threestrap's
+    docs](https://github.com/unconed/threestrap#events).
+
+  - `:ref`: a 1-arg function that receives the underlying mathbox instance
+    whenever it changes. Note that you may receive `nil` and should guard against
+    it.
+
+  As well as all options used to configure the [base/root
+  component](https://github.com/unconed/mathbox/blob/master/docs/primitives.md#base/root). (The
+  format of each following line is <keyword>: <default> (<type>) -
+  <description>.)
 
   - `:camera`: `\"[camera]\"` (select) - Active camera
   - `:classes`: `[]` (string array) - Custom classes, e.g. `[\"big\"]`
@@ -77,4 +109,4 @@
   - `:scale`: `null` (nullable number) - (Vertical) Reference scale of viewport in pixels, e.g. `720`
   - `:speed`: `1` (number) - Global speed"
   [props & children]
-  (into [:f> Mathbox* props] children))
+  (into [:f> MathBox* props] children))

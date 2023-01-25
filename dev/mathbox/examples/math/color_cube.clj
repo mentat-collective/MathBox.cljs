@@ -10,7 +10,7 @@
 
 ^{:nextjournal.clerk/width :wide}
 (show-sci
- [mathbox/Mathbox
+ [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}
    :init
    {:background-color 0xeeeeee

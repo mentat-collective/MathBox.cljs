@@ -26,7 +26,7 @@
                  (+ 0.5 (* 0.5 (Math/sin (* t 5)))))}
               :color (:y colors)}
              m)])]
-   [mathbox/Mathbox
+   [mathbox/MathBox
     {:container {:style {:height "500px" :width "100%"}}
      :renderer  {:background-color 0xffffff}
      :scale 720

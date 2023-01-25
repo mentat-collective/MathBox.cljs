@@ -10,7 +10,7 @@ A light ClojureScript wrapper over [mathbox-react][MBR].
 - reagent versions of components
 - SCI setup
 
-## Mathbox Examples
+## MathBox Examples
 
 - TODO get the examples directory linked
 

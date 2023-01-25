@@ -49,6 +49,7 @@
      :r2 {:min 0.0 :max 2.5 :step 0.01}
      :r3 {:min 0.0 :max 0.2 :step 0.01}}}]])
 
+#_
 (comment
   (defn make-unit
     "Given a vector, returns a vector of unit length pointing in the same direction
@@ -381,7 +382,7 @@
 
 (show-cljs
  (defn ^:export PQKnot [!state]
-   [mathbox/Mathbox
+   [mathbox/MathBox
     {:container {:style {:height "500px" :width "100%"}}
      :threestrap
      {:plugins ["core", "controls", "cursor", "mathbox" "stats"]

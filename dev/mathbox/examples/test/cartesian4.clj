@@ -45,7 +45,7 @@
                  w     (* c (Math/sin diff))]
 
              (emit x y z w)))]
-   [mathbox/Mathbox
+   [mathbox/MathBox
     {:container {:style {:height "500px" :width "100%"}}
      :renderer  {:background-color 0xffffff}}
     [mb/Camera {:proxy true

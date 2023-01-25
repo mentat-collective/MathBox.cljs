@@ -34,7 +34,7 @@
   ::clerk/visibility {:code :fold}}
 
 (show-sci
- [mathbox/Mathbox
+ [mathbox/MathBox
   {:container {:style {:height "500px" :width "100%"}}
    :renderer  {:background-color 0xffffff}
    :scale     500}

@@ -94,7 +94,7 @@
 
 ^{:nextjournal.clerk/width :wide}
 (show-sci
- [mathbox/Mathbox
+ [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}}
   [mb/Camera
    {:position [0 0 3]
@@ -129,7 +129,7 @@
 
 ^{:nextjournal.clerk/width :wide}
 (show-sci
- [mathbox/Mathbox
+ [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}}
   [mb/Camera {:position [0 0 3]
               :proxy true}]
@@ -154,7 +154,7 @@
 
 ^{:nextjournal.clerk/width :wide}
 (show-sci
- [mathbox/Mathbox
+ [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}}
   [mb/Camera {:position [0 0 3]
               :proxy true}]
@@ -185,7 +185,7 @@
 
 ^{:nextjournal.clerk/width :wide}
 (show-sci
- [mathbox/Mathbox
+ [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}}
   [mb/Camera {:position [0 0 3]
               :proxy true}]
@@ -203,7 +203,7 @@
 
 ^{:nextjournal.clerk/width :wide}
 (show-sci
- [mathbox/Mathbox
+ [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}
    :focus 3}
   [mb/Camera {:position [0 0 3]
@@ -268,7 +268,7 @@
 
 ^{:nextjournal.clerk/width :wide}
 (show-sci
- [mathbox/Mathbox
+ [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}
    :focus 3}
   [mb/Camera {:position [0 0 3]
@@ -309,7 +309,7 @@
 
 ^{:nextjournal.clerk/width :wide}
 (show-sci
- [mathbox/Mathbox
+ [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}
    :focus 3}
   [mb/Camera {:position [0 0 3]
@@ -351,7 +351,7 @@
 
 ^{:nextjournal.clerk/width :wide}
 (show-sci
- [mathbox/Mathbox
+ [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}
    :focus 3}
   [mb/Camera {:position [0 0 3]
@@ -437,7 +437,7 @@
 
 ^{:nextjournal.clerk/width :wide}
 (show-sci
- [mathbox/Mathbox
+ [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}
    :focus 3}
   [mb/Camera {:position [0 0 3]
@@ -474,11 +474,8 @@
 
 ^{:nextjournal.clerk/width :wide}
 (show-sci
- [mathbox/Mathbox
+ [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}
-   :ref (fn [box]
-          (when box
-            (set! (.-box js/window) box)))
    :focus 3}
   [mb/Camera {:position [0 0 3]
               :proxy true}]
@@ -558,7 +555,7 @@
 
 ;; ## Guides
 
-;; ### Configuring Mathbox
+;; ### Configuring MathBox
 
 ;; Talk about how to configure the mathbox component etc
 
@@ -569,6 +566,8 @@
 ;; ### Supported Primitives
 ;;
 ;; Link to the examples directory, and to the cljdoc.
+
+;; ### Reactivity
 
 ;; ### Examples Directory
 ;;

@@ -9,7 +9,7 @@
 
 ^{:nextjournal.clerk/width :wide}
 (show-sci
- [mathbox/Mathbox
+ [mathbox/MathBox
   {:container  {:style {:height "500px" :width "100%"}}
    :threestrap {:plugins ["core"]}
    :renderer   {:background-color 0xffffff}}
