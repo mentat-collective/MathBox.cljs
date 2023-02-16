@@ -3,7 +3,16 @@
  :no-cache true
  :visibility :hide-ns}
 (ns mathbox.notebook
-  (:require [mentat.clerk-utils.show :refer [show-sci]]))
+  (:require [mentat.clerk-utils.docs :as docs]
+            [mentat.clerk-utils.show :refer [show-sci]]
+            [nextjournal.clerk :as clerk]))
+
+^{::clerk/visibility {:code :hide :result :hide}}
+(clerk/eval-cljs
+ ;; These aliases only apply inside this namespace.
+ '(require '[mathbox.core :as mathbox])
+ '(require '[mathbox.primitives :as mb])
+ '(require '[reagent.core :as reagent]))
 
 ;; # MathBox.cljs
 
@@ -75,18 +84,17 @@
 ;;    Project](https://img.shields.io/clojars/v/org.mentat/mathbox.cljs.svg)](https://clojars.org/org.mentat/mathbox.cljs)
 ;;
 ;; Or grab the most recent code using a Git dependency:
-;;
-;; ```clj
-;; ;; deps
-;; {io.github.mentat-collective/mathbox.cljs
-;;   {:git/sha "$GIT_SHA"}}
-;; ```
 
-;; Require `mathbox.core` in your ClojureScript namespace:
+^{::clerk/visibility {:code :hide}}
+(docs/git-dependency
+ "mentat-collective/mathbox.cljs")
+
+;; Require `mathbox.core` and `mathbox.primitives` in your ClojureScript
+;; namespace:
 
 ;; ```clj
 ;; (ns my-app
-;;   (:require [mathbox]
+;;   (:require [mathbox.core :as mathbox]
 ;;             [mathbox.primitives :as mb]
 ;;             [reagent.core :as reagent]))
 ;; ```

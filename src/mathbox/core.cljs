@@ -1,4 +1,4 @@
-(ns mathbox
+(ns mathbox.core
   "Home of the [[MathBox]]"
   (:require ["mathbox-react" :as box]
             ["react" :as react]
