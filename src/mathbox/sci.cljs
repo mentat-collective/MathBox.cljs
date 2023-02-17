@@ -21,6 +21,9 @@
 (def mathbox-core-namespace
   (sci/copy-ns mathbox.core (sci/create-ns 'mathbox.core)))
 
+(def mathbox-primitives-namespace
+  (sci/copy-ns mathbox.primitives (sci/create-ns 'mathbox.primitives)))
+
 (def mathbox-primitives-base-namespace
   (sci/copy-ns mathbox.primitives.base (sci/create-ns 'mathbox.primitives.base)))
 
@@ -60,12 +63,11 @@
 (def mathbox-primitives-view-namespace
   (sci/copy-ns mathbox.primitives.view (sci/create-ns 'mathbox.primitives.view)))
 
-
-
 (def ^{:doc "Map of symbol to SCI namespace object. This var is usable as the
 `:namespaces` entry in an SCI context config."}
   namespaces
   {'mathbox.core mathbox-core-namespace
+   'mathbox.primitives mathbox-primitives-namespace
    'mathbox.primitives.base mathbox-primitives-base-namespace
    'mathbox.primitives.camera mathbox-primitives-camera-namespace
    'mathbox.primitives.data mathbox-primitives-data-namespace

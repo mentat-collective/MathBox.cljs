@@ -7,8 +7,8 @@
    :extra-deps
    {org.clojure/clojure       {:mvn/version "1.11.1"}
     org.clojure/clojurescript {:mvn/version "1.11.60"}
-    org.mentat/clerk-utils    {:mvn/version "0.3.0"}
-    io.github.mentat-collective/clerk-utils {:git/sha "718c6fa3064909b30a4668e89f3b18fe851f3d28"}
+    org.mentat/clerk-utils    #_{:mvn/version "0.3.0"}
+    {:local/root "../clerk-utils"}
     org.mentat/leva.cljs      {:local/root "../leva.cljs"}
 
     io.github.nextjournal/clerk

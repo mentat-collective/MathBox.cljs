@@ -4,11 +4,10 @@
  :visibility :hide-ns}
 (ns mathbox.examples.test.face
   (:require
-   #?@(:cljs [[mathbox]
+   #?@(:cljs [[mathbox.core :as mathbox]
               [mathbox.primitives :as mb]
               [reagent.core :as reagent]])
    [mentat.clerk-utils.show :refer [show-cljs]]))
-
 
 ^{:nextjournal.clerk/width :wide}
 (show-cljs

@@ -157,13 +157,13 @@
 
 ^{:nextjournal.clerk/width :wide}
 (show-sci
- '[mathbox/MathBox
-   {:container {:style {:height "400px" :width "100%"}}}
-   [mb/Camera {:position [0 0 3]
-               :proxy true}]
-   [mb/Cartesian
-    {:range [[-2 2] [-1 1]]
-     :scale [2 1]}]])
+ [mathbox/MathBox
+  {:container {:style {:height "400px" :width "100%"}}}
+  [mb/Camera {:position [0 0 3]
+              :proxy true}]
+  [mb/Cartesian
+   {:range [[-2 2] [-1 1]]
+    :scale [2 1]}]])
 
 ;; The `:range` specifies the area we're looking at as a vector of pairs: `[-2
 ;; 2]` in the `X` direction, `[-1, 1]` in the `Y` direction.
