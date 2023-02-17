@@ -99,6 +99,18 @@
 ;;             [reagent.core :as reagent]))
 ;; ```
 ;;
+;; You'll also need to include the stylesheets that ship with `MathBox`. If
+;; you're using Clerk
+;; and [`clerk-utils`](https://github.com/mentat-collective/clerk-utils), add
+;; this form to `dev/user.clj`:
+
+;; ```clj
+;; (mentat.clerk-utils.css/set-css!
+;;  "https://unpkg.com/mathbox/build/mathbox.css")
+;; ```
+;;
+;; Otherwise find some way to load this CSS file in your project's header.
+;;
 ;; ## Your First Scene
 
 ;; You create MathBox.cljs scenes by declaring a MathBox component tree, similar
@@ -588,7 +600,7 @@ clojure -Sdeps '{:deps {io.github.mentat-collective/mathbox.cljs {:git/sha \"%s\
 
 ;; If you have an existing Clerk notebook project and are considering adding
 ;; `MathBox.cljs`, you might consider
-;; using [`mathbox/clerk`](https://github.com/mentat-collective/mafs.cljs/tree/main/resources/mafs/clerk)
+;; using [`mathbox/clerk`](https://github.com/mentat-collective/mathbox.cljs/tree/main/resources/mathbox/clerk)
 ;; to get some ideas on how to structure your own project.
 
 ;; ## Guides
