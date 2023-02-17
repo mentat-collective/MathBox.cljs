@@ -514,6 +514,83 @@
 ;; We set the `:pace` of the animation to 5 seconds per step, tell it to play
 ;; till keyframe time `2` and to `:loop` afterwards.
 
+;; ## MathBox.cljs via SCI
+;;
+;; `MathBox.cljs` is compatible with [SCI, the Small Clojure
+;; Interpreter](https://github.com/babashka/sci).
+;;
+;; To install `MathBox.cljs` into your SCI context, require
+;; the [`mathbox.sci`](https://cljdoc.org/d/org.mentat/mathbox.cljs/CURRENT/api/mathbox.sci)
+;; namespace and call `mathbox.sci/install!`:
+
+;; ```clj
+;; (ns myproject.sci-extensions
+;;   (:require [mathbox.sci]))
+
+;; (mathbox.sci/install!)
+;; ```
+;;
+;; If you want more granular control, see the [cljdoc page for
+;; `mathbox.sci`](https://cljdoc.org/d/org.mentat/mathbox.cljs/CURRENT/api/mathbox.sci)
+;; for an SCI config and distinct SCI namespace objects that you can piece
+;; together.
+;;
+;; > Note that `MathBox.cljs` does not ship with a dependency on SCI, so you'll
+;; > need to install your own version.
+;;
+;; ## MathBox.cljs via Clerk
+;;
+;; Using `MathBox.cljs` with Nextjournal's [Clerk](https://clerk.vision/) gives
+;; you the ability to write notebooks like this one with embedded MathBox
+;; constructions.
+;;
+;; Doing this requires that you generate a custom ClojureScript build for your
+;; Clerk project. The easiest way to do this for an existing project is with
+;; the [`clerk-utils` project](https://clerk-utils.mentat.org/). Follow the
+;; instructions on the [`clerk-utils` guide for custom
+;; ClojureScript](https://clerk-utils.mentat.org/#custom-clojurescript-builds).
+;;
+;; If this is your first time using Clerk, use the [`mathbox/clerk` template
+;; described below](#project-template) to generate a new project with all steps
+;; described in ["MathBox.cljs via SCI"](#mathbox.cljs-via-sci) already
+;; completed.
+
+;; ## Project Template
+;;
+;; `MathBox.cljs` includes
+;; a [`deps-new`](https://github.com/seancorfield/deps-new) template called
+;; [`mathbox/clerk`](https://github.com/mentat-collective/mathbox.cljs/tree/main/resources/mathbox/clerk)
+;; that makes it easy to configure a new Clerk project with everything described
+;; in ["MathBox.cljs via SCI"](#mathbox.cljs-via-sci) already configured.
+
+;; First, install the [`deps-new`](https://github.com/seancorfield/deps-new) tool:
+
+;; ```sh
+;; clojure -Ttools install io.github.seancorfield/deps-new '{:git/tag "v0.4.13"}' :as new
+;; ```
+
+;; To create a new Clerk project based on
+;; [`mathbox/clerk`](https://github.com/mentat-collective/mathbox.cljs/tree/main/resources/mathbox/clerk)
+;; in a folder called `my-notebook-project`, run the following command:
+
+^{::clerk/visibility {:code :hide}}
+(clerk/md
+ (format "
+```sh
+clojure -Sdeps '{:deps {io.github.mentat-collective/mathbox.cljs {:git/sha \"%s\"}}}' \\
+-Tnew create \\
+:template mathbox/clerk \\
+:name myusername/my-notebook-project
+```" (docs/git-sha)))
+
+;; The `README.md` file in the generated project contains information on how to
+;; develop within the new project.
+
+;; If you have an existing Clerk notebook project and are considering adding
+;; `MathBox.cljs`, you might consider
+;; using [`mathbox/clerk`](https://github.com/mentat-collective/mafs.cljs/tree/main/resources/mafs/clerk)
+;; to get some ideas on how to structure your own project.
+
 ;; ## Guides
 ;;
 ;; The following sequence of guides is a work in progress. Each section is
