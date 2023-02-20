@@ -1,6 +1,4 @@
-
 # Examples Index
-
 
 This directory contains all demos of MathBox. Most are not yet implemented, but we're working on it!
 
@@ -12,10 +10,11 @@ Each example below is marked with one of the these three statuses:
 
 ## Math
 
-- ❌ [Color Cube](math/colorcube.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/math/colorcube.clj))
-- ❌ [Exponential](math/exponential.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/math/exponential.clj))
+- 🚧 [Color Cube](math/colorcube.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/math/colorcube.clj))
+- 🚧 [Exponential](math/exponential.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/math/exponential.clj))
 - ❌ [Field Lines](math/fieldlines.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/math/fieldlines.clj))
-- ❌ [Helitorus](math/helitorus.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/math/helitorus.clj))
+- 🚧 [Helitorus](math/helitorus.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/math/helitorus.cljc))
+- 🚧 [(p, q) Torus Knot](math/pq_knot.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/math/pq_knot.cljc))
 - ❌ [Hopf](math/hopf.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/math/hopf.clj))
 - ❌ [Hyperbolic](math/hyperbolic.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/math/hyperbolic.clj))
 - ❌ [Ortho](math/ortho.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/math/ortho.clj))
@@ -43,13 +42,13 @@ Each example below is marked with one of the these three statuses:
 
 ## Test
 
-- ❌ [Axis](test/axis.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/test/axis.clj))
-- ❌ [Camera](test/camera.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/test/camera.clj))
-- ❌ [Cartesian4](test/cartesian4.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/test/cartesian4.clj))
-- ❌ [Closed Line](test/closed-line.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/test/closed-line.clj))
-- ❌ [Closed Surface](test/closed-surface.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/test/closed-surface.clj))
-- ❌ [Compose](test/compose.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/test/compose.clj))
-- ❌ [Context](test/context.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/test/context.clj))
+- 🚧 [Axis](test/axis.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/test/axis.clj))
+- 🚧 [Camera](test/camera.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/test/camera.clj))
+- 🚧 [Cartesian4](test/cartesian4.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/test/cartesian4.clj))
+- 🚧 [Closed Line](test/closed-line.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/test/closed-line.clj))
+- 🚧 [Closed Surface](test/closed-surface.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/test/closed-surface.clj))
+- 🚧 [Compose](test/compose.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/test/compose.clj))
+- 🚧 [Context](test/context.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/test/context.clj))
 - ❌ [Curve](test/curve.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/test/curve.clj))
 - ❌ [Curve Dots](test/curvedots.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/test/curvedots.clj))
 - ❌ [Data](test/data.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/test/data.clj))

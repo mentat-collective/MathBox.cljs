@@ -3,24 +3,31 @@
  :no-cache true
  :visibility :hide-ns}
 (ns mathbox.examples.test.axis
-  (:require [mentat.clerk-utils.show :refer [show-sci]]))
+  (:require [mentat.clerk-utils.show :refer [show-sci]]
+            [nextjournal.clerk :as clerk]))
+
+^{::clerk/visibility {:code :hide :result :hide}}
+(clerk/eval-cljs
+ ;; These aliases only apply inside this namespace.
+ '(require '[mathbox.core :as mathbox])
+ '(require '[mathbox.primitives :as mb])
+ '(require '[reagent.core :as reagent])
+ '(require '["three" :as three]))
 
 ;; # Axis
 
 ^{:nextjournal.clerk/width :wide}
 (show-sci
  (reagent/with-let
-   [colors {:x (new three/Color 0xff4136)
-            :y (new three/Color 0x2ecc40)
-            :z (new three/Color 0x0074d9)}
+   [colors {:x (three/Color. 0xff4136)
+            :y (three/Color. 0x2ecc40)
+            :z (three/Color. 0x0074d9)}
     axis (fn [m]
            [mb/Axis
             (merge
              {:end true
               :width 5
               :liveProps
-              ;; TODO ask Chris, what is this doing?? send mathbox
-              ;; example.
               {:depth
                (fn [t]
                  (+ 0.5 (* 0.5 (Math/sin (* t 5)))))}
@@ -37,13 +44,11 @@
       :position [-0.15 0.15 3.6]}]
     [mb/Cartesian {:range [[-2 2] [-1 1] [-1 1]]
                    :scale [2 1 1]}
-     ;; TODO there is a bug with mathbox-react that stops the color objects from
-     ;; working.
-     [axis {:color (.getHex (:x colors))}]
+     [axis {:color (:x colors)}]
      [axis {:axis 2 ;; "y" also works
-            :color (.getHex (:y colors))}]
+            :color (:y colors)}]
      [axis {:axis "z"
-            :color (.getHex (:z colors))}]
+            :color (:z colors)}]
      [mb/Array
       {:id "colors"
        :live false

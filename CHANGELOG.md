@@ -4,21 +4,25 @@
 
 ## [0.2.0]
 
-- #12:
+- #14:
+
+  - Renames the `mathbox` namespace to `mathbox.core` to prevent collisions with
+    the `"mathbox"` package import. I was hesitant to do this, but of course you
+    can always alias `mathbox.core` to `mathbox` when you require it.
 
   - Adds a `deps-new` template that sets up a basic Clerk project with
-    `MathLive.cljs` installed as a dependency. [The template lives
-    here](https://github.com/mentat-collective/MathLive.cljs/tree/main/resources/mathlive/clerk).
+    `MathBox.cljs` installed as a dependency. [The template lives
+    here](https://github.com/mentat-collective/MathBox.cljs/tree/main/resources/mathbox/clerk).
 
   - Adds a `provided` dependency on SCI to `pom.xml`, so that cljdoc builds
     succeed.
 
-  - Adds `mathlive.sci` with SCI namespace objects for all namespaces, plus a
+  - Adds `mathbox.sci` with SCI namespace objects for all namespaces, plus a
     `namespaces` map and a `config` for easy installation into SCI. The
     namespaces follows the patterns set by the
     https://github.com/babashka/sci.configs repo.
 
-    - `mathlive.sci/install!` allows the user to install `MathLive.cljs` into
+    - `mathbox.sci/install!` allows the user to install `MathBox.cljs` into
       SCI's shared context with one mutating call.
 
   - Migrates the project over to `clerk-utils` and all of its new custom build

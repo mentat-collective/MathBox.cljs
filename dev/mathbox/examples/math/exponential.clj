@@ -3,13 +3,20 @@
  :no-cache true
  :visibility :hide-ns}
 (ns mathbox.examples.math.exponential
-  (:require [nextjournal.clerk :as clerk]
-            [mentat.clerk-utils.show :refer [show-sci]]))
+  (:require [mentat.clerk-utils.show :refer [show-sci]]
+            [nextjournal.clerk :as clerk]))
+
+^{::clerk/visibility {:code :hide :result :hide}}
+(clerk/eval-cljs
+ ;; These aliases only apply inside this namespace.
+ '(require '[mathbox.core :as mathbox])
+ '(require '[mathbox.primitives :as mb])
+ '(require '[reagent.core :as reagent])
+ '(require '[leva.core :as leva]))
 
 ;; # Exponential
 ;;
 ;; ### UI
-
 
 (show-sci
  (defonce !state

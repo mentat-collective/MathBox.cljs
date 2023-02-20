@@ -32,6 +32,9 @@ including classic Winamp-style music visualizers.
 makes it easy to define MathBox constructions inside of a user interface built
 with ClojureScript.
 
+Visit the [Demo index][demo-index-url] for a tour of everything `MathBox.cljs`
+can do. These demos are also hosted at https://mathbox.org.
+
 ## Quickstart
 
 Install `MathBox.cljs` into your ClojureScript project using the instructions at
@@ -154,3 +157,4 @@ Distributed under the [MIT License](LICENSE). See [LICENSE](LICENSE).
 [mathbox-url]: https://github.com/unconed/mathbox
 [reagent-url]: https://reagent-project.github.io/
 [mathbox-react-url]: https://github.com/ChristopherChudzicki/mathbox-react
+[demo-index-url]: https://mathbox.mentat.org/dev/mathbox/examples/index.html

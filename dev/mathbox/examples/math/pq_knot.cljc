@@ -4,7 +4,7 @@
  :visibility :hide-ns}
 (ns mathbox.examples.math.pq-knot
   (:require
-   #?@(:cljs [[mathbox]
+   #?@(:cljs [[mathbox.core :as mathbox]
               [mathbox.primitives :as mb]
               ["three/examples/jsm/controls/TrackballControls.js"
                :as TrackballControls]])
@@ -39,9 +39,9 @@
 
 (show-sci
  [:<>
-  [leva/Config {:drag true}]
-  [leva/Controls
-   {:atom mathbox.examples.math.pq-knot/!state
+  [leva.core/Config {:drag true}]
+  [leva.core/Controls
+   {:atom !state
     :schema
     {:p {:min 0 :max 32 :step 1}
      :q {:min 0 :max 32 :step 1}
@@ -429,8 +429,6 @@
 ;; Then we can jump back to SCI, to get access to our shared state. Define the
 ;; full component that you need on the cljs side!
 
-^{::clerk/width :wide
-  ::clerk/visibility {:code :fold}}
+^{::clerk/width :wide}
 (show-sci
- [js/mathbox.examples.math.pq_knot.PQKnot
-  mathbox.examples.math.pq-knot/!state])
+ [js/mathbox.examples.math.pq_knot.PQKnot !state])
