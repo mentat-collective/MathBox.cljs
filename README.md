@@ -94,6 +94,13 @@ Use your mouse to click and drag the camera's orientation, and zoom in and out:
 See the project's [interactive documentation notebook](https://mathbox.mentat.org)
 for more guides and examples.
 
+## Clerk Support
+
+If you want to use `MathBox.cljs` with [Clerk][clerk-url], check out the
+[`mathbox/clerk` template][mathbox-clerk-template-url]. This
+[`deps-new`][deps-new-url] template will generate a Clerk project for you, fully
+configured to use `MathBox.cljs` in your Clerk notebooks.
+
 ## Interactive Documentation via Clerk
 
 The project's [interactive documentation](https://mathbox.mentat.org) was
