@@ -8,7 +8,7 @@ via Clerk"](https://mathbox.mentat.org/#mathbox.cljs-via-clerk) section of the
 To use the template, install the [`deps-new`][deps-new-url] tool:
 
 ```sh
-clojure -Ttools install io.github.seancorfield/deps-new '{:git/tag "v0.4.13"}' :as new
+clojure -Ttools install io.github.seancorfield/deps-new '{:git/tag "v0.5.0"}' :as new
 ```
 
 Then create a project using the `mathbox/clerk` template:

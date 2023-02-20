@@ -578,7 +578,7 @@
 ;; First, install the [`deps-new`](https://github.com/seancorfield/deps-new) tool:
 
 ;; ```sh
-;; clojure -Ttools install io.github.seancorfield/deps-new '{:git/tag "v0.4.13"}' :as new
+;; clojure -Ttools install io.github.seancorfield/deps-new '{:git/tag "v0.5.0"}' :as new
 ;; ```
 
 ;; To create a new Clerk project based on
@@ -733,7 +733,7 @@ clojure -Sdeps '{:deps {io.github.mentat-collective/mathbox.cljs {:git/sha \"%s\
 
 ;; ## License
 
-;; Copyright © 2022 Sam Ritchie.
+;; Copyright © 2022-2023 Sam Ritchie.
 
 ;; Distributed under the [MIT
 ;; License](https://github.com/mentat-collective/mathbox.cljs/blob/main/LICENSE).
