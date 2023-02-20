@@ -50,6 +50,12 @@
   h2 { @apply text-3xl; }
   h3 { @apply text-2xl; }
 
+  @media print {
+      h1 { @apply text-2xl !important; }
+      h2 { @apply text-xl !important; }
+      h3 { @apply text-lg !important; }
+  }
+  
   button { @apply focus:outline-none; }
   strong { @apply font-bold; }
   em     { @apply italic; }
@@ -124,12 +130,12 @@
 /* --------------------------------------------------------------- */
 
 .task-list-item + .task-list-item,
-.viewer-markdown ul ul {
+.markdown-viewer ul ul {
   @apply mt-1 mb-0;
 }
 
 /* compact TOC */
-.viewer-markdown .toc ul {
+.markdown-viewer .toc ul {
   list-style: none;
   @apply my-1;
 }
@@ -137,16 +143,23 @@
 /* Code Viewer */
 /* --------------------------------------------------------------- */
 
-.viewer-code {
+.code-viewer {
   @apply font-mono bg-slate-100 rounded-sm text-sm overflow-x-auto dark:bg-gray-800;
 }
-.viewer-code .cm-content {
+.code-listing  {
+    @apply -ml-8 -mr-8 relative !important;
+}
+.code-viewer .cm-content {
   @apply py-4 px-8;
 }
 @media (min-width: 960px){
-  .viewer-notebook .viewer-code .cm-content {
-    @apply py-4 pl-12;
-  }
+    .notebook-viewer .code-viewer .cm-content {
+        @apply py-4 pl-12;
+    }
+    .notebook-viewer .code-listing {
+        width: 48rem !important;
+        @apply -ml-12 mr-0 !important;
+    }
 }
 /* Don’t show focus outline when double-clicking cell in Safari */
 .cm-scroller { @apply focus:outline-none; }
@@ -161,7 +174,7 @@
 .cmt-link { @apply underline; }
 .untyped-value { @apply whitespace-nowrap; }
 
-.cm-editor, .cmt-default, .viewer-result {
+.cm-editor, .cmt-default, .result-viewer {
   @apply text-slate-800 dark:text-slate-300;
 }
 .cmt-keyword {
@@ -235,8 +248,8 @@
 /* Prose */
 /* --------------------------------------------------------------- */
 
-.viewer-notebook,
-.viewer-markdown {
+.notebook-viewer,
+.markdown-viewer {
   @apply prose
     dark:prose-invert
     prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
@@ -255,8 +268,8 @@
     prose-code:font-medium prose-code:bg-slate-100
     max-w-none;
 }
-.viewer-markdown blockquote p:first-of-type:before,
-.viewer-markdown blockquote p:last-of-type:after {
+.markdown-viewer blockquote p:first-of-type:before,
+.markdown-viewer blockquote p:last-of-type:after {
   @apply content-none;
 }
 
@@ -281,70 +294,81 @@
 /* Markdown TOC */
 /* --------------------------------------------------------------- */
 
-.viewer-markdown .toc      { @apply mt-4; }
-.viewer-markdown h1 + .toc { @apply mt-8; }
+.markdown-viewer .toc      { @apply mt-4; }
+.markdown-viewer h1 + .toc { @apply mt-8; }
 
-.viewer-markdown .toc h1,
-.viewer-markdown .toc h2,
-.viewer-markdown .toc h3,
-.viewer-markdown .toc h4,
-.viewer-markdown .toc h5,
-.viewer-markdown .toc h6 {
+.markdown-viewer .toc h1,
+.markdown-viewer .toc h2,
+.markdown-viewer .toc h3,
+.markdown-viewer .toc h4,
+.markdown-viewer .toc h5,
+.markdown-viewer .toc h6 {
   @apply text-base text-indigo-600 font-sans my-0;
 }
-.viewer-markdown .toc a {
+.markdown-viewer .toc a {
   @apply text-indigo-600 font-normal no-underline hover:underline;
 }
-.viewer-markdown .toc li    { @apply m-0; }
-.viewer-markdown .toc ul ul { @apply pl-4; }
+.markdown-viewer .toc li    { @apply m-0; }
+.markdown-viewer .toc ul ul { @apply pl-4; }
 
 /* Notebook Spacing */
 /* --------------------------------------------------------------- */
 
-.viewer-notebook { @apply py-16; }
-#clerk-static-app .viewer-notebook { @apply pt-[0.8rem] pb-16; }
-.viewer-markdown *:first-child:not(.viewer-code):not(li):not(h2) { @apply mt-0; }
+.notebook-viewer { @apply py-16; }
+#clerk-static-app .notebook-viewer { @apply pt-[0.8rem] pb-16; }
+.markdown-viewer *:first-child:not(.code-viewer):not(li):not(h2):not(.sidenote) { @apply mt-0; }
 /*.viewer + .viewer { @apply mt-6; }*/
-.viewer + .viewer-result { @apply mt-0; }
-.viewer-code + .viewer-result { @apply mt-3; }
-.viewer-markdown + .viewer-markdown { @apply mt-0; }
+.viewer + .result-viewer { @apply mt-0; }
+.code-viewer + .result-viewer { @apply mt-3; }
+.markdown-viewer + .markdown-viewer { @apply mt-0; }
 
 /* Sidenotes */
 /* --------------------------------------------------------------- */
 
 .sidenote-ref {
-  @apply top-[-3px] inline-flex justify-center items-center w-[18px] h-[18px]
-    rounded-full bg-slate-100 border border-slate-300 hover:bg-slate-200 hover:border-slate-300
-    m-0 ml-[4px] cursor-pointer;
+  @apply top-[-0.5em] w-auto h-auto inline border-0 bg-transparent m-0 pointer-events-none;
 }
 .sidenote {
-  @apply hidden float-left clear-both mx-[2.5%] my-4 text-xs relative w-[95%];
+  @apply block font-sans text-xs mt-4 bg-slate-100 dark:bg-slate-800 p-4;
+  font-style: normal;
+  font-weight: normal;
 }
-.sidenote-ref.expanded + .sidenote {
-  @apply block;
+.sidenote-container {
+  @apply mb-4;
 }
 @media (min-width: 860px) {
-  .sidenote-ref {
-    @apply top-[-0.5em] w-auto h-auto inline border-0 bg-transparent m-0 pointer-events-none;
-  }
   .sidenote sup { @apply inline; }
-  .viewer-markdown .contains-sidenotes p { @apply max-w-[65%]; }
-  .viewer-markdown p .sidenote {
-    @apply mr-[-54%] mt-[0.2rem] w-1/2 float-right clear-right relative block;
+  .sidenote-column {
+    @apply w-[165px] absolute right-0 top-0 -mr-[205px];
+  }
+  .sidenote {
+    @apply bg-transparent dark:bg-transparent p-0;
+  }
+  .sidenote:first-child {
+    @apply mt-1;
+  }
+  .sidenotes-layout .markdown-viewer {
+    @apply pr-[205px];
+  }
+  .sidenote-container {
+    @apply relative mb-0;
+  }
+  .sidenotes-layout h1 {
+    @apply w-[756px] !important;
   }
 }
-.viewer-code + .viewer:not(.viewer-markdown):not(.viewer-code):not(.viewer-code-folded),
-.viewer-code-folded + .viewer:not(.viewer-markdown):not(.viewer-code):not(.viewer-code-folded),
-.viewer-result + .viewer-result {
+.code-viewer + .viewer:not(.markdown-viewer):not(.code-viewer):not(.code-viewer-folded),
+.code-viewer-folded + .viewer:not(.markdown-viewer):not(.code-viewer):not(.code-viewer-folded),
+.result-viewer + .result-viewer {
   @apply mt-2;
 }
-.viewer-code + .viewer-code-folded {
+.code-viewer + .code-viewer-folded {
   @apply mt-4;
 }
-.viewer-result {
+.result-viewer {
   @apply leading-tight mb-6;
 }
-.viewer-result figure {
+.result-viewer figure {
   @apply mt-0 !important;
 }
 @media (min-width: 768px) {
@@ -382,8 +406,18 @@
 .vega-embed .chart-wrapper { @apply h-auto !important; }
 /* fixes fraction separators being overridden by tw’s border-color */
 .katex * { @apply border-black; }
-</style><script src="/js/_data/8VwZZs9zkTJXFdrsW8kUJRxvfaSRbecpwBG7EoggjqnCE1VkApSquTqvXeLzVaBW4z18FPeFFYiko9jiCsmJoN6UcD.js" type="module"></script><link href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css" rel="stylesheet" type="text/css"><link href="https://fonts.bunny.net" rel="preconnect"><link href="https://fonts.bunny.net/css?family=fira-code:400,700%7Cfira-mono:400,700%7Cfira-sans:400,400i,500,500i,700,700i%7Cfira-sans-condensed:700,700i%7Cpt-serif:400,400i,700,700i" rel="stylesheet" type="text/css"></head><body><div id="clerk-static-app"></div><script type="module">let viewer = nextjournal.clerk.sci_env
-let app = nextjournal.clerk.static_app
-let opts = viewer.read_string("{:out-path \"public\", :path->doc {\"dev/mathbox/examples/math/exponential.clj\" {:path [], :nextjournal/value {:toc {:type :toc, :children [{:type :toc, :content [{:type :text, :text \"Exponential\"}], :heading-level 1, :attrs {:id \"exponential\"}, :path [:content 0], :children [{:children [{:type :toc, :content [{:type :text, :text \"UI\"}], :heading-level 3, :attrs {:id \"ui\"}, :path [:content 1]} {:type :toc, :content [{:type :text, :text \"Animation\"}], :heading-level 3, :attrs {:id \"animation\"}, :path [:content 2]}], :type :toc}]}]}, :toc-visibility true, :atom-var-name->state #viewer-eval (nextjournal.clerk.render/intern-atoms! {}), :auto-expand-results? nil, :scope {:namespace :mathbox.examples.math.exponential}, :bundle? false, :open-graph {:type \"article:clerk\", :title \"Exponential\", :description nil}, :title \"Exponential\", :blocks [{:nextjournal/value [:div.viewer-markdown [\"h1\" {:id \"exponential\"} [:span \"Exponential\"]] [\"h3\" {:id \"ui\"} [:span \"UI\"]]], :nextjournal/viewer {:name :html-, :render-fn #viewer-fn identity, :hash \"5dsKyVZX2dPvsyoeg6dNrfeuqAh5UK\"}} {:nextjournal/value \"(show-sci\\n (defonce !state\\n   (reagent/atom\\n    {:projectionAngle 90\\n     :surface \\\"#ffffff\\\"\\n     :line \\\"#4169e1\\\"}))\\n\\n [:<>\\n  [leva/Config {:drag true}]\\n  [leva/Controls\\n   {:atom !state\\n    :schema\\n    {:projectionAngle\\n     {:label \\\"angle\\\"\\n      :min 0\\n      :max 360\\n      :step 0.5}}}]])\", :nextjournal/opts {:loc {:line 14, :column 1}}, :nextjournal/viewer {:name :code, :render-fn #viewer-fn nextjournal.clerk.render/render-code, :hash \"5duGVW4Xoi1QoW73J5wMRghqm9uVoW\"}} {:path [], :nextjournal/value {:nextjournal/presented {:path [], :nextjournal/value {}, :nextjournal/viewer {:render-fn #viewer-fn (clojure.core/fn [___30518__auto__] (clojure.core/let [result__30519__auto__ (do (defonce !state (reagent/atom {:projectionAngle 90, :surface \"#ffffff\", :line \"#4169e1\"})) [:<> [leva/Config {:drag true}] [leva/Controls {:atom !state, :schema {:projectionAngle {:label \"angle\", :min 0, :max 360, :step 0.5}}}]])] (v/html (if (clojure.core/vector? result__30519__auto__) result__30519__auto__ [nextjournal.clerk.render/inspect result__30519__auto__])))), :hash \"5drGAeiSt4U48EQwGArVTRJwuVTiPz\"}}}, :nextjournal/viewer {:name :clerk/result, :render-fn #viewer-fn nextjournal.clerk.render/render-result, :hash \"5drtBjvRGKwhUFrDTtWvTAduWDETV1\"}} {:nextjournal/value [:div.viewer-markdown [\"h3\" {:id \"animation\"} [:span \"Animation\"]]], :nextjournal/viewer {:name :html-, :render-fn #viewer-fn identity, :hash \"5dsKyVZX2dPvsyoeg6dNrfeuqAh5UK\"}} {:nextjournal/value \"^{::clerk/width :wide\\n  ::clerk/visibility {:code :fold}}\\n\\n(show-sci\\n [mathbox/MathBox\\n  {:container {:style {:height \\\"500px\\\" :width \\\"100%\\\"}}\\n   :renderer  {:background-color 0xffffff}\\n   :scale     500}\\n  [mb/Camera {:proxy true :position [3 2 5]}]\\n  [mb/Cartesian {}\\n   [mb/Transform4\\n    {:matrix\\n     (let [a (/ (* (:projectionAngle @!state) 2 Math/PI)\\n                360.0)]\\n       [1 0 0 (Math/cos a)\\n        0 1 0 0\\n        0 0 1 (Math/sin a)\\n        0 0 0 1])}\\n    [mb/Area\\n     {:rangeX [-3 1]\\n      :rangeY [(* -2 Math/PI) (* 2 Math/PI)]\\n      :width 129\\n      :height 65\\n      :channels 4\\n      :expr\\n      (fn [emit, x y _i _j]\\n        (let [r (Math/exp x)]\\n          (emit (* r (Math/cos y))\\n                (* r (Math/sin y))\\n                x\\n                y)))}]\\n    [mb/Surface\\n     {:color (:surface @!state)\\n      :zBias -0.25}]\\n    [mb/Line\\n     {:color (:line @!state)\\n      :width 4}]\\n    [mb/Transpose\\n     {:order \\\"yxzw\\\"}]\\n    [mb/Line\\n     {:color (:line @!state)\\n      :width 4}]]]])\", :nextjournal/opts {:loc {:line 34, :column 1}}, :nextjournal/viewer {:name :code-folded, :render-fn #viewer-fn nextjournal.clerk.render/render-folded-code, :hash \"5dqxn3akuEMwMuR49nVx1Xvqr1jYQM\"}} {:path [], :nextjournal/value {:nextjournal/presented {:path [], :nextjournal/value {}, :nextjournal/viewer {:render-fn #viewer-fn (clojure.core/fn [___30518__auto__] (clojure.core/let [result__30519__auto__ (do [mathbox/MathBox {:container {:style {:height \"500px\", :width \"100%\"}}, :renderer {:background-color 16777215}, :scale 500} [mb/Camera {:proxy true, :position [3 2 5]}] [mb/Cartesian {} [mb/Transform4 {:matrix (let [a (/ (* (:projectionAngle (clojure.core/deref !state)) 2 Math/PI) 360.0)] [1 0 0 (Math/cos a) 0 1 0 0 0 0 1 (Math/sin a) 0 0 0 1])} [mb/Area {:rangeX [-3 1], :rangeY [(* -2 Math/PI) (* 2 Math/PI)], :width 129, :height 65, :channels 4, :expr (fn [emit x y _i _j] (let [r (Math/exp x)] (emit (* r (Math/cos y)) (* r (Math/sin y)) x y)))}] [mb/Surface {:color (:surface (clojure.core/deref !state)), :zBias -0.25}] [mb/Line {:color (:line (clojure.core/deref !state)), :width 4}] [mb/Transpose {:order \"yxzw\"}] [mb/Line {:color (:line (clojure.core/deref !state)), :width 4}]]]])] (v/html (if (clojure.core/vector? result__30519__auto__) result__30519__auto__ [nextjournal.clerk.render/inspect result__30519__auto__])))), :hash \"5dsVQEYZfGtWgjQLLebKAD9aH4FYer\"}}}, :nextjournal/width :wide, :nextjournal/viewer {:name :clerk/result, :render-fn #viewer-fn nextjournal.clerk.render/render-result, :hash \"5drtBjvRGKwhUFrDTtWvTAduWDETV1\"}}], :css-class nil}, :nextjournal/viewer {:name :clerk/notebook, :render-fn #viewer-fn nextjournal.clerk.render/render-notebook, :hash \"5dt1qwFEn2BQwdEM84VqwY4LR6p4YV\"}}}, :index \"dev/mathbox/notebook.clj\", :browse? false, :git/url \"https://github.com/mentat-collective/mathbox.cljs\", :paths [\"dev/mathbox/examples/math/pq_knot.cljc\" \"dev/mathbox/examples/index.md\" \"dev/mathbox/examples/math/helitorus.cljc\" \"dev/mathbox/examples/test/curvedots.clj\" \"dev/mathbox/examples/test/closed_line.clj\" \"dev/mathbox/examples/test/context.clj\" \"dev/mathbox/examples/math/color_cube.clj\" \"dev/mathbox/examples/math/hopf.clj\" \"dev/mathbox/examples/test/compose.clj\" \"dev/mathbox/examples/test/camera.clj\" \"dev/mathbox/examples/test/face.cljc\" \"dev/mathbox/examples/test/closed_surface.clj\" \"dev/mathbox/examples/dataviz/scatter.clj\" \"dev/mathbox/examples/math/field_lines.clj\" \"dev/mathbox/examples/test/axis.clj\" \"dev/mathbox/notebook.clj\" \"dev/mathbox/examples/test/curve.clj\" \"dev/mathbox/examples/math/exponential.clj\" \"dev/mathbox/examples/test/cartesian4.clj\"], :resource->url {\"/js/viewer.js\" \"/js/_data/8VwZZs9zkTJXFdrsW8kUJRxvfaSRbecpwBG7EoggjqnCE1VkApSquTqvXeLzVaBW4z18FPeFFYiko9jiCsmJoN6UcD.js\"}, :current-path \"dev/mathbox/examples/math/exponential.clj\", :bundle? false, :git/sha \"c278809778066077583ee91772a76b99db8c7b1e\", :path->url {\"dev/mathbox/examples/math/pq_knot.cljc\" \"dev/mathbox/examples/math/pq_knot.html\", \"dev/mathbox/examples/index.md\" \"dev/mathbox/examples/\", \"dev/mathbox/examples/math/helitorus.cljc\" \"dev/mathbox/examples/math/helitorus.html\", \"dev/mathbox/examples/test/curvedots.clj\" \"dev/mathbox/examples/test/curvedots.html\", \"dev/mathbox/examples/test/closed_line.clj\" \"dev/mathbox/examples/test/closed_line.html\", \"dev/mathbox/examples/test/context.clj\" \"dev/mathbox/examples/test/context.html\", \"dev/mathbox/examples/math/color_cube.clj\" \"dev/mathbox/examples/math/color_cube.html\", \"dev/mathbox/examples/math/hopf.clj\" \"dev/mathbox/examples/math/hopf.html\", \"dev/mathbox/examples/test/compose.clj\" \"dev/mathbox/examples/test/compose.html\", \"dev/mathbox/examples/test/camera.clj\" \"dev/mathbox/examples/test/camera.html\", \"dev/mathbox/examples/test/face.cljc\" \"dev/mathbox/examples/test/face.html\", \"dev/mathbox/examples/test/closed_surface.clj\" \"dev/mathbox/examples/test/closed_surface.html\", \"dev/mathbox/examples/dataviz/scatter.clj\" \"dev/mathbox/examples/dataviz/scatter.html\", \"dev/mathbox/examples/math/field_lines.clj\" \"dev/mathbox/examples/math/field_lines.html\", \"dev/mathbox/examples/test/axis.clj\" \"dev/mathbox/examples/test/axis.html\", \"dev/mathbox/notebook.clj\" \"\", \"dev/mathbox/examples/test/curve.clj\" \"dev/mathbox/examples/test/curve.html\", \"dev/mathbox/examples/math/exponential.clj\" \"dev/mathbox/examples/math/exponential.html\", \"dev/mathbox/examples/test/cartesian4.clj\" \"dev/mathbox/examples/test/cartesian4.html\"}, :expanded-paths [\"dev/mathbox/examples/dataviz/scatter.clj\" \"dev/mathbox/examples/test/closed_surface.clj\" \"dev/mathbox/examples/test/context.clj\" \"dev/mathbox/examples/test/face.cljc\" \"dev/mathbox/examples/test/camera.clj\" \"dev/mathbox/examples/test/curve.clj\" \"dev/mathbox/examples/test/closed_line.clj\" \"dev/mathbox/examples/test/axis.clj\" \"dev/mathbox/examples/test/curvedots.clj\" \"dev/mathbox/examples/test/compose.clj\" \"dev/mathbox/examples/test/cartesian4.clj\" \"dev/mathbox/examples/math/hopf.clj\" \"dev/mathbox/examples/math/exponential.clj\" \"dev/mathbox/examples/math/helitorus.cljc\" \"dev/mathbox/examples/math/pq_knot.cljc\" \"dev/mathbox/examples/math/color_cube.clj\" \"dev/mathbox/examples/math/field_lines.clj\" \"dev/mathbox/examples/index.md\" \"dev/mathbox/notebook.clj\"], :report-fn #object[nextjournal.clerk.builder$stdout_reporter 0x17aea8f6 \"nextjournal.clerk.builder$stdout_reporter@17aea8f6\"]}")
-app.init(opts)
+
+@media print {
+    .dark-mode-toggle,
+    .toc-toggle { @apply hidden; }
+    .notebook-viewer { @apply pt-0; font-size: 12pt !important; margin-left: 0 !important; }
+    .code-viewer .cm-content,
+    .viewer-code .cm-content { @apply whitespace-pre-wrap !important; overflow: none; }
+    .code-viewer .cm-line { font-size: 12pt !important; }
+    html * { page-break-inside: avoid !important; }
+    .toc-panel { @apply hidden; }
+}
+</style><script src="../../../../_data/8VwppLwZ7uwW1QafQEpTYdUTuq3DXBbZLUj3DTB9buvjLMzNv4nBuZJUgtUqrKwaMWSXKxKJqky7azNSdRvHzsTtNg.js" type="module"></script><link href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css" rel="stylesheet" type="text/css"><link href="https://fonts.bunny.net" rel="preconnect"><link href="https://fonts.bunny.net/css?family=fira-mono:400,700%7Cfira-sans:400,400i,500,500i,700,700i%7Cfira-sans-condensed:700,700i%7Cpt-serif:400,400i,700,700i" rel="stylesheet" type="text/css"></head><body><div id="clerk-static-app"></div><script type="module">let state = "{:out-path \"public/build\", :path->doc {\"dev/mathbox/examples/math/exponential.clj\" {:path [], :nextjournal/value {:toc {:type :toc, :children [{:type :toc, :content [{:type :text, :text \"Exponential\"}], :heading-level 1, :attrs {:id \"exponential\"}, :path [:content 0], :children [{:children [{:type :toc, :content [{:type :text, :text \"UI\"}], :heading-level 3, :attrs {:id \"ui\"}, :path [:content 1]} {:type :toc, :content [{:type :text, :text \"Animation\"}], :heading-level 3, :attrs {:id \"animation\"}, :path [:content 2]}], :type :toc}]}]}, :sidenotes? false, :toc-visibility true, :atom-var-name->state #viewer-eval (nextjournal.clerk.render/intern-atoms! {}), :ns #viewer-eval (ns mathbox.examples.math.exponential), :auto-expand-results? nil, :scope mathbox.examples.math.exponential, :bundle? false, :open-graph {:type \"article:clerk\", :title \"Exponential\", :description nil}, :title \"Exponential\", :blocks [{:path [], :nextjournal/value {:nextjournal/presented {:path [], :nextjournal/value #viewer-eval (clojure.core/binding [clojure.core/*ns* clojure.core/*ns*] (require (quote [mathbox.core :as mathbox])) (require (quote [mathbox.primitives :as mb])) (require (quote [reagent.core :as reagent])) (require (quote [leva.core :as leva]))), :nextjournal/viewer {:var-from-def? true, :render-fn #viewer-fn (fn [x opts] (if (nextjournal.clerk.render/reagent-atom? x) [nextjournal.clerk.render/render-tagged-value {:space? false} \"#object\" [nextjournal.clerk.render/inspect [(symbol (pr-str (type x))) (clojure.core/deref x)]]] [nextjournal.clerk.render/inspect x])), :nextjournal.clerk/remount \"5ds8Vwzj9aAV1WnJmmpFt7JQJNjxW9\", :hash \"5dtMFgY4YhU2Dsn3hPDZgmWKyZpUpf\"}}, :nextjournal.clerk.viewer/viewer-eval-form (clojure.core/binding [clojure.core/*ns* clojure.core/*ns*] (require (quote [mathbox.core :as mathbox])) (require (quote [mathbox.primitives :as mb])) (require (quote [reagent.core :as reagent])) (require (quote [leva.core :as leva])))}, :nextjournal/viewer {:name nextjournal.clerk.viewer/result-viewer, :render-fn #viewer-fn (fn [_] [:<>]), :hash \"5ds2mGvrvNk7Cbsd66ZxWsbG6bXJDh\"}} {:nextjournal/value [:div.markdown-viewer [\"h1\" {:id \"exponential\"} [:<> \"Exponential\"]] [\"h3\" {:id \"ui\"} [:<> \"UI\"]]], :nextjournal/viewer {:name nextjournal.clerk.viewer/html-viewer-, :render-fn #viewer-fn identity, :hash \"5du1K91pV2nRmpCG3vM8fBcDsgHWKs\"}} {:nextjournal/value \"(show-sci\\n (defonce !state\\n   (reagent/atom\\n    {:projectionAngle 90\\n     :surface \\\"#ffffff\\\"\\n     :line \\\"#4169e1\\\"}))\\n\\n [:<>\\n  [leva/Config {:drag true}]\\n  [leva/Controls\\n   {:atom !state\\n    :schema\\n    {:projectionAngle\\n     {:label \\\"angle\\\"\\n      :min 0\\n      :max 360\\n      :step 0.5}}}]])\", :nextjournal/opts {:loc {:line 21, :end-line 37, :column 1, :end-column 22}}, :nextjournal/viewer {:name nextjournal.clerk.viewer/code-viewer, :render-fn #viewer-fn nextjournal.clerk.render/render-code, :hash \"5dsJQw12yyyd7TcZEf52VSHxnqnJUC\"}} {:path [], :nextjournal/value {:nextjournal/presented {:path [], :nextjournal/value {}, :nextjournal/viewer {:render-fn #viewer-fn (clojure.core/fn [___54901__auto__] (clojure.core/let [result__54902__auto__ (do (defonce !state (reagent/atom {:projectionAngle 90, :surface \"#ffffff\", :line \"#4169e1\"})) [:<> [leva/Config {:drag true}] [leva/Controls {:atom !state, :schema {:projectionAngle {:label \"angle\", :min 0, :max 360, :step 0.5}}}]])] (nextjournal.clerk.viewer/html (if (clojure.core/vector? result__54902__auto__) result__54902__auto__ [nextjournal.clerk.render/inspect result__54902__auto__])))), :hash \"5dr7PpBBugj9XK5QWyXJHrQycJSBim\"}}}, :nextjournal/viewer {:name nextjournal.clerk.viewer/result-viewer, :render-fn #viewer-fn nextjournal.clerk.render/render-result, :hash \"5dtGVHesd2XCTLFYF3aY4kJvkrX1x1\"}} {:nextjournal/value [:div.markdown-viewer [\"h3\" {:id \"animation\"} [:<> \"Animation\"]]], :nextjournal/viewer {:name nextjournal.clerk.viewer/html-viewer-, :render-fn #viewer-fn identity, :hash \"5du1K91pV2nRmpCG3vM8fBcDsgHWKs\"}} {:nextjournal/value \"(show-sci\\n [mathbox/MathBox\\n  {:container {:style {:height \\\"500px\\\" :width \\\"100%\\\"}}\\n   :renderer  {:background-color 0xffffff}\\n   :scale     500}\\n  [mb/Camera {:proxy true :position [3 2 5]}]\\n  [mb/Cartesian {}\\n   [mb/Transform4\\n    {:matrix\\n     (let [a (/ (* (:projectionAngle @!state) 2 Math/PI)\\n                360.0)]\\n       [1 0 0 (Math/cos a)\\n        0 1 0 0\\n        0 0 1 (Math/sin a)\\n        0 0 0 1])}\\n    [mb/Area\\n     {:rangeX [-3 1]\\n      :rangeY [(* -2 Math/PI) (* 2 Math/PI)]\\n      :width 129\\n      :height 65\\n      :channels 4\\n      :expr\\n      (fn [emit, x y _i _j]\\n        (let [r (Math/exp x)]\\n          (emit (* r (Math/cos y))\\n                (* r (Math/sin y))\\n                x\\n                y)))}]\\n    [mb/Surface\\n     {:color (:surface @!state)\\n      :zBias -0.25}]\\n    [mb/Line\\n     {:color (:line @!state)\\n      :width 4}]\\n    [mb/Transpose\\n     {:order \\\"yxzw\\\"}]\\n    [mb/Line\\n     {:color (:line @!state)\\n      :width 4}]]]])\", :nextjournal/opts {:loc {:line 41, :end-line 82, :column 1, :end-column 21}}, :nextjournal/viewer {:name nextjournal.clerk.viewer/code-folded-viewer, :render-fn #viewer-fn nextjournal.clerk.render/render-folded-code, :hash \"5dtDa1QgftrPjN8Mut4jai69mpkeDL\"}} {:path [], :nextjournal/value {:nextjournal/presented {:path [], :nextjournal/value {}, :nextjournal/viewer {:render-fn #viewer-fn (clojure.core/fn [___54901__auto__] (clojure.core/let [result__54902__auto__ (do [mathbox/MathBox {:container {:style {:height \"500px\", :width \"100%\"}}, :renderer {:background-color 16777215}, :scale 500} [mb/Camera {:proxy true, :position [3 2 5]}] [mb/Cartesian {} [mb/Transform4 {:matrix (let [a (/ (* (:projectionAngle (clojure.core/deref !state)) 2 Math/PI) 360.0)] [1 0 0 (Math/cos a) 0 1 0 0 0 0 1 (Math/sin a) 0 0 0 1])} [mb/Area {:rangeX [-3 1], :rangeY [(* -2 Math/PI) (* 2 Math/PI)], :width 129, :height 65, :channels 4, :expr (fn [emit x y _i _j] (let [r (Math/exp x)] (emit (* r (Math/cos y)) (* r (Math/sin y)) x y)))}] [mb/Surface {:color (:surface (clojure.core/deref !state)), :zBias -0.25}] [mb/Line {:color (:line (clojure.core/deref !state)), :width 4}] [mb/Transpose {:order \"yxzw\"}] [mb/Line {:color (:line (clojure.core/deref !state)), :width 4}]]]])] (nextjournal.clerk.viewer/html (if (clojure.core/vector? result__54902__auto__) result__54902__auto__ [nextjournal.clerk.render/inspect result__54902__auto__])))), :hash \"5dtf6Y4RZFGeLYL1niDgVG7pTUvf2j\"}}}, :nextjournal/width :wide, :nextjournal/viewer {:name nextjournal.clerk.viewer/result-viewer, :render-fn #viewer-fn nextjournal.clerk.render/render-result, :hash \"5dtGVHesd2XCTLFYF3aY4kJvkrX1x1\"}}], :css-class nil}, :nextjournal/viewer {:name nextjournal.clerk.viewer/notebook-viewer, :render-fn #viewer-fn nextjournal.clerk.render/render-notebook, :hash \"5duAFDxE4sCnRX71Wo6zeCpC9C3djE\"}}}, :cljs-namespaces [mathbox.sci-extensions], :index \"dev/mathbox/notebook.clj\", :browse? false, :git/url \"https://github.com/mentat-collective/mathbox.cljs\", :paths [\"dev/mathbox/examples/math/pq_knot.cljc\" \"dev/mathbox/examples/index.md\" \"dev/mathbox/examples/math/helitorus.cljc\" \"dev/mathbox/examples/test/curvedots.clj\" \"dev/mathbox/examples/test/closed_line.clj\" \"dev/mathbox/examples/test/context.clj\" \"dev/mathbox/examples/math/color_cube.clj\" \"dev/mathbox/examples/math/hopf.clj\" \"dev/mathbox/examples/test/compose.clj\" \"dev/mathbox/examples/test/camera.clj\" \"dev/mathbox/examples/test/face.cljc\" \"dev/mathbox/examples/test/closed_surface.clj\" \"dev/mathbox/examples/dataviz/scatter.clj\" \"dev/mathbox/examples/math/field_lines.clj\" \"dev/mathbox/examples/test/axis.clj\" \"dev/mathbox/notebook.clj\" \"dev/mathbox/examples/test/curve.clj\" \"dev/mathbox/examples/math/exponential.clj\" \"dev/mathbox/examples/test/cartesian4.clj\"], :resource->url {\"/js/viewer.js\" \"_data/8VwppLwZ7uwW1QafQEpTYdUTuq3DXBbZLUj3DTB9buvjLMzNv4nBuZJUgtUqrKwaMWSXKxKJqky7azNSdRvHzsTtNg.js\"}, :current-path \"dev/mathbox/examples/math/exponential.clj\", :bundle? false, :git/sha \"665a0d5f01fb2ed9b0bfeee6f9ad679915f13465\", :path->url {\"dev/mathbox/examples/math/pq_knot.cljc\" \"dev/mathbox/examples/math/pq_knot.html\", \"dev/mathbox/examples/index.md\" \"dev/mathbox/examples/\", \"dev/mathbox/examples/math/helitorus.cljc\" \"dev/mathbox/examples/math/helitorus.html\", \"dev/mathbox/examples/test/curvedots.clj\" \"dev/mathbox/examples/test/curvedots.html\", \"dev/mathbox/examples/test/closed_line.clj\" \"dev/mathbox/examples/test/closed_line.html\", \"dev/mathbox/examples/test/context.clj\" \"dev/mathbox/examples/test/context.html\", \"dev/mathbox/examples/math/color_cube.clj\" \"dev/mathbox/examples/math/color_cube.html\", \"dev/mathbox/examples/math/hopf.clj\" \"dev/mathbox/examples/math/hopf.html\", \"dev/mathbox/examples/test/compose.clj\" \"dev/mathbox/examples/test/compose.html\", \"dev/mathbox/examples/test/camera.clj\" \"dev/mathbox/examples/test/camera.html\", \"dev/mathbox/examples/test/face.cljc\" \"dev/mathbox/examples/test/face.html\", \"dev/mathbox/examples/test/closed_surface.clj\" \"dev/mathbox/examples/test/closed_surface.html\", \"dev/mathbox/examples/dataviz/scatter.clj\" \"dev/mathbox/examples/dataviz/scatter.html\", \"dev/mathbox/examples/math/field_lines.clj\" \"dev/mathbox/examples/math/field_lines.html\", \"dev/mathbox/examples/test/axis.clj\" \"dev/mathbox/examples/test/axis.html\", \"dev/mathbox/notebook.clj\" \"\", \"dev/mathbox/examples/test/curve.clj\" \"dev/mathbox/examples/test/curve.html\", \"dev/mathbox/examples/math/exponential.clj\" \"dev/mathbox/examples/math/exponential.html\", \"dev/mathbox/examples/test/cartesian4.clj\" \"dev/mathbox/examples/test/cartesian4.html\"}, :expanded-paths [\"dev/mathbox/examples/index.md\" \"dev/mathbox/examples/dataviz/scatter.clj\" \"dev/mathbox/examples/math/field_lines.clj\" \"dev/mathbox/examples/math/color_cube.clj\" \"dev/mathbox/examples/math/hopf.clj\" \"dev/mathbox/examples/math/helitorus.cljc\" \"dev/mathbox/examples/math/exponential.clj\" \"dev/mathbox/examples/math/pq_knot.cljc\" \"dev/mathbox/examples/test/face.cljc\" \"dev/mathbox/examples/test/curvedots.clj\" \"dev/mathbox/examples/test/camera.clj\" \"dev/mathbox/examples/test/closed_line.clj\" \"dev/mathbox/examples/test/curve.clj\" \"dev/mathbox/examples/test/compose.clj\" \"dev/mathbox/examples/test/context.clj\" \"dev/mathbox/examples/test/axis.clj\" \"dev/mathbox/examples/test/closed_surface.clj\" \"dev/mathbox/examples/test/cartesian4.clj\" \"dev/mathbox/notebook.clj\"], :cname \"mathbox.mentat.org\", :watch-paths [\"dev\"], :report-fn #object[nextjournal.clerk.builder$stdout_reporter 0x21ac1d95 \"nextjournal.clerk.builder$stdout_reporter@21ac1d95\"]}".replaceAll('nextjournal.clerk.view/escape-closing-script-tag', 'script')
+let opts = nextjournal.clerk.sci_env.read_string(state)
+nextjournal.clerk.static_app.init(opts)
 </script></body></html>

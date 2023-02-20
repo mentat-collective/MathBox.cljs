@@ -50,6 +50,12 @@
   h2 { @apply text-3xl; }
   h3 { @apply text-2xl; }
 
+  @media print {
+      h1 { @apply text-2xl !important; }
+      h2 { @apply text-xl !important; }
+      h3 { @apply text-lg !important; }
+  }
+  
   button { @apply focus:outline-none; }
   strong { @apply font-bold; }
   em     { @apply italic; }
@@ -124,12 +130,12 @@
 /* --------------------------------------------------------------- */
 
 .task-list-item + .task-list-item,
-.viewer-markdown ul ul {
+.markdown-viewer ul ul {
   @apply mt-1 mb-0;
 }
 
 /* compact TOC */
-.viewer-markdown .toc ul {
+.markdown-viewer .toc ul {
   list-style: none;
   @apply my-1;
 }
@@ -137,16 +143,23 @@
 /* Code Viewer */
 /* --------------------------------------------------------------- */
 
-.viewer-code {
+.code-viewer {
   @apply font-mono bg-slate-100 rounded-sm text-sm overflow-x-auto dark:bg-gray-800;
 }
-.viewer-code .cm-content {
+.code-listing  {
+    @apply -ml-8 -mr-8 relative !important;
+}
+.code-viewer .cm-content {
   @apply py-4 px-8;
 }
 @media (min-width: 960px){
-  .viewer-notebook .viewer-code .cm-content {
-    @apply py-4 pl-12;
-  }
+    .notebook-viewer .code-viewer .cm-content {
+        @apply py-4 pl-12;
+    }
+    .notebook-viewer .code-listing {
+        width: 48rem !important;
+        @apply -ml-12 mr-0 !important;
+    }
 }
 /* Don’t show focus outline when double-clicking cell in Safari */
 .cm-scroller { @apply focus:outline-none; }
@@ -161,7 +174,7 @@
 .cmt-link { @apply underline; }
 .untyped-value { @apply whitespace-nowrap; }
 
-.cm-editor, .cmt-default, .viewer-result {
+.cm-editor, .cmt-default, .result-viewer {
   @apply text-slate-800 dark:text-slate-300;
 }
 .cmt-keyword {
@@ -235,8 +248,8 @@
 /* Prose */
 /* --------------------------------------------------------------- */
 
-.viewer-notebook,
-.viewer-markdown {
+.notebook-viewer,
+.markdown-viewer {
   @apply prose
     dark:prose-invert
     prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
@@ -255,8 +268,8 @@
     prose-code:font-medium prose-code:bg-slate-100
     max-w-none;
 }
-.viewer-markdown blockquote p:first-of-type:before,
-.viewer-markdown blockquote p:last-of-type:after {
+.markdown-viewer blockquote p:first-of-type:before,
+.markdown-viewer blockquote p:last-of-type:after {
   @apply content-none;
 }
 
@@ -281,70 +294,81 @@
 /* Markdown TOC */
 /* --------------------------------------------------------------- */
 
-.viewer-markdown .toc      { @apply mt-4; }
-.viewer-markdown h1 + .toc { @apply mt-8; }
+.markdown-viewer .toc      { @apply mt-4; }
+.markdown-viewer h1 + .toc { @apply mt-8; }
 
-.viewer-markdown .toc h1,
-.viewer-markdown .toc h2,
-.viewer-markdown .toc h3,
-.viewer-markdown .toc h4,
-.viewer-markdown .toc h5,
-.viewer-markdown .toc h6 {
+.markdown-viewer .toc h1,
+.markdown-viewer .toc h2,
+.markdown-viewer .toc h3,
+.markdown-viewer .toc h4,
+.markdown-viewer .toc h5,
+.markdown-viewer .toc h6 {
   @apply text-base text-indigo-600 font-sans my-0;
 }
-.viewer-markdown .toc a {
+.markdown-viewer .toc a {
   @apply text-indigo-600 font-normal no-underline hover:underline;
 }
-.viewer-markdown .toc li    { @apply m-0; }
-.viewer-markdown .toc ul ul { @apply pl-4; }
+.markdown-viewer .toc li    { @apply m-0; }
+.markdown-viewer .toc ul ul { @apply pl-4; }
 
 /* Notebook Spacing */
 /* --------------------------------------------------------------- */
 
-.viewer-notebook { @apply py-16; }
-#clerk-static-app .viewer-notebook { @apply pt-[0.8rem] pb-16; }
-.viewer-markdown *:first-child:not(.viewer-code):not(li):not(h2) { @apply mt-0; }
+.notebook-viewer { @apply py-16; }
+#clerk-static-app .notebook-viewer { @apply pt-[0.8rem] pb-16; }
+.markdown-viewer *:first-child:not(.code-viewer):not(li):not(h2):not(.sidenote) { @apply mt-0; }
 /*.viewer + .viewer { @apply mt-6; }*/
-.viewer + .viewer-result { @apply mt-0; }
-.viewer-code + .viewer-result { @apply mt-3; }
-.viewer-markdown + .viewer-markdown { @apply mt-0; }
+.viewer + .result-viewer { @apply mt-0; }
+.code-viewer + .result-viewer { @apply mt-3; }
+.markdown-viewer + .markdown-viewer { @apply mt-0; }
 
 /* Sidenotes */
 /* --------------------------------------------------------------- */
 
 .sidenote-ref {
-  @apply top-[-3px] inline-flex justify-center items-center w-[18px] h-[18px]
-    rounded-full bg-slate-100 border border-slate-300 hover:bg-slate-200 hover:border-slate-300
-    m-0 ml-[4px] cursor-pointer;
+  @apply top-[-0.5em] w-auto h-auto inline border-0 bg-transparent m-0 pointer-events-none;
 }
 .sidenote {
-  @apply hidden float-left clear-both mx-[2.5%] my-4 text-xs relative w-[95%];
+  @apply block font-sans text-xs mt-4 bg-slate-100 dark:bg-slate-800 p-4;
+  font-style: normal;
+  font-weight: normal;
 }
-.sidenote-ref.expanded + .sidenote {
-  @apply block;
+.sidenote-container {
+  @apply mb-4;
 }
 @media (min-width: 860px) {
-  .sidenote-ref {
-    @apply top-[-0.5em] w-auto h-auto inline border-0 bg-transparent m-0 pointer-events-none;
-  }
   .sidenote sup { @apply inline; }
-  .viewer-markdown .contains-sidenotes p { @apply max-w-[65%]; }
-  .viewer-markdown p .sidenote {
-    @apply mr-[-54%] mt-[0.2rem] w-1/2 float-right clear-right relative block;
+  .sidenote-column {
+    @apply w-[165px] absolute right-0 top-0 -mr-[205px];
+  }
+  .sidenote {
+    @apply bg-transparent dark:bg-transparent p-0;
+  }
+  .sidenote:first-child {
+    @apply mt-1;
+  }
+  .sidenotes-layout .markdown-viewer {
+    @apply pr-[205px];
+  }
+  .sidenote-container {
+    @apply relative mb-0;
+  }
+  .sidenotes-layout h1 {
+    @apply w-[756px] !important;
   }
 }
-.viewer-code + .viewer:not(.viewer-markdown):not(.viewer-code):not(.viewer-code-folded),
-.viewer-code-folded + .viewer:not(.viewer-markdown):not(.viewer-code):not(.viewer-code-folded),
-.viewer-result + .viewer-result {
+.code-viewer + .viewer:not(.markdown-viewer):not(.code-viewer):not(.code-viewer-folded),
+.code-viewer-folded + .viewer:not(.markdown-viewer):not(.code-viewer):not(.code-viewer-folded),
+.result-viewer + .result-viewer {
   @apply mt-2;
 }
-.viewer-code + .viewer-code-folded {
+.code-viewer + .code-viewer-folded {
   @apply mt-4;
 }
-.viewer-result {
+.result-viewer {
   @apply leading-tight mb-6;
 }
-.viewer-result figure {
+.result-viewer figure {
   @apply mt-0 !important;
 }
 @media (min-width: 768px) {
@@ -382,8 +406,18 @@
 .vega-embed .chart-wrapper { @apply h-auto !important; }
 /* fixes fraction separators being overridden by tw’s border-color */
 .katex * { @apply border-black; }
-</style><script src="/js/_data/8VwZZs9zkTJXFdrsW8kUJRxvfaSRbecpwBG7EoggjqnCE1VkApSquTqvXeLzVaBW4z18FPeFFYiko9jiCsmJoN6UcD.js" type="module"></script><link href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css" rel="stylesheet" type="text/css"><link href="https://fonts.bunny.net" rel="preconnect"><link href="https://fonts.bunny.net/css?family=fira-code:400,700%7Cfira-mono:400,700%7Cfira-sans:400,400i,500,500i,700,700i%7Cfira-sans-condensed:700,700i%7Cpt-serif:400,400i,700,700i" rel="stylesheet" type="text/css"></head><body><div id="clerk-static-app"></div><script type="module">let viewer = nextjournal.clerk.sci_env
-let app = nextjournal.clerk.static_app
-let opts = viewer.read_string("{:out-path \"public\", :path->doc {\"dev/mathbox/examples/test/cartesian4.clj\" {:path [], :nextjournal/value {:toc {:type :toc, :children [{:type :toc, :content [{:type :text, :text \"Cartesian4\"}], :heading-level 1, :attrs {:id \"cartesian4\"}, :path [:content 0]}]}, :toc-visibility true, :atom-var-name->state #viewer-eval (nextjournal.clerk.render/intern-atoms! {}), :auto-expand-results? nil, :scope {:namespace :mathbox.examples.test.cartesian4}, :bundle? false, :open-graph {:type \"article:clerk\", :title \"Cartesian4\", :description \"https://andrewharvey4.wordpress.com/2008/09/29/xyzw-in-opengldirect3d-homogeneous-coordinates/\"}, :title \"Cartesian4\", :blocks [{:nextjournal/value [:div.viewer-markdown [\"h1\" {:id \"cartesian4\"} [:span \"Cartesian4\"]] [:p [:a {:href \"https://andrewharvey4.wordpress.com/2008/09/29/xyzw-in-opengldirect3d-homogeneous-coordinates/\"} [:span \"https://andrewharvey4.wordpress.com/2008/09/29/xyzw-in-opengldirect3d-homogeneous-coordinates/\"]]] [:p [:span \"homogeneous coordinates \"] [:a {:href \"https://www.tomdalling.com/blog/modern-opengl/explaining-homogenous-coordinates-and-projective-geometry/\"} [:span \"https://www.tomdalling.com/blog/modern-opengl/explaining-homogenous-coordinates-and-projective-geometry/\"]]]], :nextjournal/viewer {:name :html-, :render-fn #viewer-fn identity, :hash \"5dsKyVZX2dPvsyoeg6dNrfeuqAh5UK\"}} {:nextjournal/value \"^{:nextjournal.clerk/width :wide}\\n(show-sci\\n (letfn [(expr [emit x y _i _j time]\\n           (let [theta\\n                 (* (/ Math/PI 2)\\n                    (+ (Math/cos\\n                        (+ (* 0.31 time)\\n                           (Math/cos (- (* 0.481 time)\\n                                        (Math/sin (* 0.318 time))))\\n                           (Math/sin (* 1.179 time))))\\n                       (Math/cos\\n                        (+ (* 0.61 time)\\n                           (Math/sin (- (* 0.305 time)\\n                                        (Math/cos (* 0.573 time))))\\n                           (Math/cos (* 0.962 time))))))\\n                 phi\\n                 (+ time (Math/sin\\n                          (- (* 0.51 time)\\n                             (+ (Math/cos (+ (* 0.527 time)\\n                                             (Math/sin (* 0.113 time))))\\n                                (Math/sin (* 1.224 time))))))\\n                 zeta1 (+ phi (/ y 2))\\n                 zeta2 x\\n                 nu    theta\\n                 sum   (+ zeta1 zeta2)\\n                 diff  (- zeta1 zeta2)\\n                 s     (Math/sin nu)\\n                 c     (Math/cos nu)\\n                 x     (* s (Math/cos sum))\\n                 y     (* s (Math/sin sum))\\n                 z     (* c (Math/cos diff))\\n                 w     (* c (Math/sin diff))]\\n\\n             (emit x y z w)))]\\n   [mathbox/MathBox\\n    {:container {:style {:height \\\"500px\\\" :width \\\"100%\\\"}}\\n     :renderer  {:background-color 0xffffff}}\\n    [mb/Camera {:proxy true\\n                :position [2.3 1 2]}]\\n    [mb/Transform4\\n     ;; I think this will translate?\\n     {:matrix\\n      [1 0 0 0.577\\n       0 1 0 0.577\\n       0 0 1 0.577\\n       0 0 0 1]}\\n     [mb/Cartesian4\\n      {:range [[-1 1] [-1 1] [-1 1] [-1 1]]\\n       :scale [1 1 1 1]}\\n      [mb/Axis {:axis 1}]\\n      [mb/Grid {:axes [1 3] :width 4}]\\n      [mb/Axis {:axis 2}]\\n      [mb/Axis {:axis 3}]\\n      [mb/Axis {:axis 4}]\\n      [mb/Area\\n       {:rangeX [(- Math/PI) Math/PI]\\n        :rangeY [-1 1]\\n        :width 32\\n        :height 8\\n        :channels 4\\n        :expr expr}]\\n      [mb/Line {:color 0x3080ff :width 10}]\\n      [mb/Area\\n       {:rangeX [(- Math/PI) Math/PI]\\n        :rangeY [-1 1]\\n        :width 96\\n        :height 8\\n        :channels 4\\n        ;; TO show that these are the same.\\n        :expr (fn [emit x y i j time]\\n                (expr (fn [x y z w]\\n                        (let [s  0.577\\n                              ws (* w s)]\\n                          (emit (+ x ws)\\n                                (+ y ws)\\n                                (+ z ws)\\n                                0)))\\n                      x y i j time))}]\\n      [mb/Point {:color 0xc02050 :size 20}]]]]))\", :nextjournal/opts {:loc {:line 14, :column 1}}, :nextjournal/viewer {:name :code, :render-fn #viewer-fn nextjournal.clerk.render/render-code, :hash \"5duGVW4Xoi1QoW73J5wMRghqm9uVoW\"}} {:path [], :nextjournal/value {:nextjournal/presented {:path [], :nextjournal/value {}, :nextjournal/viewer {:render-fn #viewer-fn (clojure.core/fn [___30518__auto__] (clojure.core/let [result__30519__auto__ (do (letfn [(expr [emit x y _i _j time] (let [theta (* (/ Math/PI 2) (+ (Math/cos (+ (* 0.31 time) (Math/cos (- (* 0.481 time) (Math/sin (* 0.318 time)))) (Math/sin (* 1.179 time)))) (Math/cos (+ (* 0.61 time) (Math/sin (- (* 0.305 time) (Math/cos (* 0.573 time)))) (Math/cos (* 0.962 time)))))) phi (+ time (Math/sin (- (* 0.51 time) (+ (Math/cos (+ (* 0.527 time) (Math/sin (* 0.113 time)))) (Math/sin (* 1.224 time)))))) zeta1 (+ phi (/ y 2)) zeta2 x nu theta sum (+ zeta1 zeta2) diff (- zeta1 zeta2) s (Math/sin nu) c (Math/cos nu) x (* s (Math/cos sum)) y (* s (Math/sin sum)) z (* c (Math/cos diff)) w (* c (Math/sin diff))] (emit x y z w)))] [mathbox/MathBox {:container {:style {:height \"500px\", :width \"100%\"}}, :renderer {:background-color 16777215}} [mb/Camera {:proxy true, :position [2.3 1 2]}] [mb/Transform4 {:matrix [1 0 0 0.577 0 1 0 0.577 0 0 1 0.577 0 0 0 1]} [mb/Cartesian4 {:range [[-1 1] [-1 1] [-1 1] [-1 1]], :scale [1 1 1 1]} [mb/Axis {:axis 1}] [mb/Grid {:axes [1 3], :width 4}] [mb/Axis {:axis 2}] [mb/Axis {:axis 3}] [mb/Axis {:axis 4}] [mb/Area {:rangeX [(- Math/PI) Math/PI], :rangeY [-1 1], :width 32, :height 8, :channels 4, :expr expr}] [mb/Line {:color 3178751, :width 10}] [mb/Area {:rangeX [(- Math/PI) Math/PI], :rangeY [-1 1], :width 96, :height 8, :channels 4, :expr (fn [emit x y i j time] (expr (fn [x y z w] (let [s 0.577 ws (* w s)] (emit (+ x ws) (+ y ws) (+ z ws) 0))) x y i j time))}] [mb/Point {:color 12591184, :size 20}]]]]))] (v/html (if (clojure.core/vector? result__30519__auto__) result__30519__auto__ [nextjournal.clerk.render/inspect result__30519__auto__])))), :hash \"5dtXii8dUEBviKBbHiNtfgo678b3rn\"}}}, :nextjournal/width :wide, :nextjournal/viewer {:name :clerk/result, :render-fn #viewer-fn nextjournal.clerk.render/render-result, :hash \"5drtBjvRGKwhUFrDTtWvTAduWDETV1\"}}], :css-class nil}, :nextjournal/viewer {:name :clerk/notebook, :render-fn #viewer-fn nextjournal.clerk.render/render-notebook, :hash \"5dt1qwFEn2BQwdEM84VqwY4LR6p4YV\"}}}, :index \"dev/mathbox/notebook.clj\", :browse? false, :git/url \"https://github.com/mentat-collective/mathbox.cljs\", :paths [\"dev/mathbox/examples/math/pq_knot.cljc\" \"dev/mathbox/examples/index.md\" \"dev/mathbox/examples/math/helitorus.cljc\" \"dev/mathbox/examples/test/curvedots.clj\" \"dev/mathbox/examples/test/closed_line.clj\" \"dev/mathbox/examples/test/context.clj\" \"dev/mathbox/examples/math/color_cube.clj\" \"dev/mathbox/examples/math/hopf.clj\" \"dev/mathbox/examples/test/compose.clj\" \"dev/mathbox/examples/test/camera.clj\" \"dev/mathbox/examples/test/face.cljc\" \"dev/mathbox/examples/test/closed_surface.clj\" \"dev/mathbox/examples/dataviz/scatter.clj\" \"dev/mathbox/examples/math/field_lines.clj\" \"dev/mathbox/examples/test/axis.clj\" \"dev/mathbox/notebook.clj\" \"dev/mathbox/examples/test/curve.clj\" \"dev/mathbox/examples/math/exponential.clj\" \"dev/mathbox/examples/test/cartesian4.clj\"], :resource->url {\"/js/viewer.js\" \"/js/_data/8VwZZs9zkTJXFdrsW8kUJRxvfaSRbecpwBG7EoggjqnCE1VkApSquTqvXeLzVaBW4z18FPeFFYiko9jiCsmJoN6UcD.js\"}, :current-path \"dev/mathbox/examples/test/cartesian4.clj\", :bundle? false, :git/sha \"c278809778066077583ee91772a76b99db8c7b1e\", :path->url {\"dev/mathbox/examples/math/pq_knot.cljc\" \"dev/mathbox/examples/math/pq_knot.html\", \"dev/mathbox/examples/index.md\" \"dev/mathbox/examples/\", \"dev/mathbox/examples/math/helitorus.cljc\" \"dev/mathbox/examples/math/helitorus.html\", \"dev/mathbox/examples/test/curvedots.clj\" \"dev/mathbox/examples/test/curvedots.html\", \"dev/mathbox/examples/test/closed_line.clj\" \"dev/mathbox/examples/test/closed_line.html\", \"dev/mathbox/examples/test/context.clj\" \"dev/mathbox/examples/test/context.html\", \"dev/mathbox/examples/math/color_cube.clj\" \"dev/mathbox/examples/math/color_cube.html\", \"dev/mathbox/examples/math/hopf.clj\" \"dev/mathbox/examples/math/hopf.html\", \"dev/mathbox/examples/test/compose.clj\" \"dev/mathbox/examples/test/compose.html\", \"dev/mathbox/examples/test/camera.clj\" \"dev/mathbox/examples/test/camera.html\", \"dev/mathbox/examples/test/face.cljc\" \"dev/mathbox/examples/test/face.html\", \"dev/mathbox/examples/test/closed_surface.clj\" \"dev/mathbox/examples/test/closed_surface.html\", \"dev/mathbox/examples/dataviz/scatter.clj\" \"dev/mathbox/examples/dataviz/scatter.html\", \"dev/mathbox/examples/math/field_lines.clj\" \"dev/mathbox/examples/math/field_lines.html\", \"dev/mathbox/examples/test/axis.clj\" \"dev/mathbox/examples/test/axis.html\", \"dev/mathbox/notebook.clj\" \"\", \"dev/mathbox/examples/test/curve.clj\" \"dev/mathbox/examples/test/curve.html\", \"dev/mathbox/examples/math/exponential.clj\" \"dev/mathbox/examples/math/exponential.html\", \"dev/mathbox/examples/test/cartesian4.clj\" \"dev/mathbox/examples/test/cartesian4.html\"}, :expanded-paths [\"dev/mathbox/examples/dataviz/scatter.clj\" \"dev/mathbox/examples/test/closed_surface.clj\" \"dev/mathbox/examples/test/context.clj\" \"dev/mathbox/examples/test/face.cljc\" \"dev/mathbox/examples/test/camera.clj\" \"dev/mathbox/examples/test/curve.clj\" \"dev/mathbox/examples/test/closed_line.clj\" \"dev/mathbox/examples/test/axis.clj\" \"dev/mathbox/examples/test/curvedots.clj\" \"dev/mathbox/examples/test/compose.clj\" \"dev/mathbox/examples/test/cartesian4.clj\" \"dev/mathbox/examples/math/hopf.clj\" \"dev/mathbox/examples/math/exponential.clj\" \"dev/mathbox/examples/math/helitorus.cljc\" \"dev/mathbox/examples/math/pq_knot.cljc\" \"dev/mathbox/examples/math/color_cube.clj\" \"dev/mathbox/examples/math/field_lines.clj\" \"dev/mathbox/examples/index.md\" \"dev/mathbox/notebook.clj\"], :report-fn #object[nextjournal.clerk.builder$stdout_reporter 0x17aea8f6 \"nextjournal.clerk.builder$stdout_reporter@17aea8f6\"]}")
-app.init(opts)
+
+@media print {
+    .dark-mode-toggle,
+    .toc-toggle { @apply hidden; }
+    .notebook-viewer { @apply pt-0; font-size: 12pt !important; margin-left: 0 !important; }
+    .code-viewer .cm-content,
+    .viewer-code .cm-content { @apply whitespace-pre-wrap !important; overflow: none; }
+    .code-viewer .cm-line { font-size: 12pt !important; }
+    html * { page-break-inside: avoid !important; }
+    .toc-panel { @apply hidden; }
+}
+</style><script src="../../../../_data/8VwppLwZ7uwW1QafQEpTYdUTuq3DXBbZLUj3DTB9buvjLMzNv4nBuZJUgtUqrKwaMWSXKxKJqky7azNSdRvHzsTtNg.js" type="module"></script><link href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css" rel="stylesheet" type="text/css"><link href="https://fonts.bunny.net" rel="preconnect"><link href="https://fonts.bunny.net/css?family=fira-mono:400,700%7Cfira-sans:400,400i,500,500i,700,700i%7Cfira-sans-condensed:700,700i%7Cpt-serif:400,400i,700,700i" rel="stylesheet" type="text/css"></head><body><div id="clerk-static-app"></div><script type="module">let state = "{:out-path \"public/build\", :path->doc {\"dev/mathbox/examples/test/cartesian4.clj\" {:path [], :nextjournal/value {:toc {:type :toc, :children [{:type :toc, :content [{:type :text, :text \"Cartesian4\"}], :heading-level 1, :attrs {:id \"cartesian4\"}, :path [:content 0]}]}, :sidenotes? false, :toc-visibility true, :atom-var-name->state #viewer-eval (nextjournal.clerk.render/intern-atoms! {}), :ns #viewer-eval (ns mathbox.examples.test.cartesian4), :auto-expand-results? nil, :scope mathbox.examples.test.cartesian4, :bundle? false, :open-graph {:type \"article:clerk\", :title \"Cartesian4\", :description \"https://andrewharvey4.wordpress.com/2008/09/29/xyzw-in-opengldirect3d-homogeneous-coordinates/\"}, :title \"Cartesian4\", :blocks [{:path [], :nextjournal/value {:nextjournal/presented {:path [], :nextjournal/value #viewer-eval (clojure.core/binding [clojure.core/*ns* clojure.core/*ns*] (require (quote [mathbox.core :as mathbox])) (require (quote [mathbox.primitives :as mb]))), :nextjournal/viewer {:var-from-def? true, :render-fn #viewer-fn (fn [x opts] (if (nextjournal.clerk.render/reagent-atom? x) [nextjournal.clerk.render/render-tagged-value {:space? false} \"#object\" [nextjournal.clerk.render/inspect [(symbol (pr-str (type x))) (clojure.core/deref x)]]] [nextjournal.clerk.render/inspect x])), :nextjournal.clerk/remount \"5dsTiH6EMbUobw4SxHSW2M5NnLSyHE\", :hash \"5dsbktdbvjpS35dyHR4k82KxfJEfpZ\"}}, :nextjournal.clerk.viewer/viewer-eval-form (clojure.core/binding [clojure.core/*ns* clojure.core/*ns*] (require (quote [mathbox.core :as mathbox])) (require (quote [mathbox.primitives :as mb])))}, :nextjournal/viewer {:name nextjournal.clerk.viewer/result-viewer, :render-fn #viewer-fn (fn [_] [:<>]), :hash \"5ds2mGvrvNk7Cbsd66ZxWsbG6bXJDh\"}} {:nextjournal/value [:div.markdown-viewer [\"h1\" {:id \"cartesian4\"} [:<> \"Cartesian4\"]] [:p [:a {:href \"https://andrewharvey4.wordpress.com/2008/09/29/xyzw-in-opengldirect3d-homogeneous-coordinates/\"} [:<> \"https://andrewharvey4.wordpress.com/2008/09/29/xyzw-in-opengldirect3d-homogeneous-coordinates/\"]]] [:p [:<> \"homogeneous coordinates \"] [:a {:href \"https://www.tomdalling.com/blog/modern-opengl/explaining-homogenous-coordinates-and-projective-geometry/\"} [:<> \"https://www.tomdalling.com/blog/modern-opengl/explaining-homogenous-coordinates-and-projective-geometry/\"]]]], :nextjournal/viewer {:name nextjournal.clerk.viewer/html-viewer-, :render-fn #viewer-fn identity, :hash \"5du1K91pV2nRmpCG3vM8fBcDsgHWKs\"}} {:nextjournal/value \"(show-sci\\n (letfn [(expr [emit x y _i _j time]\\n           (let [theta\\n                 (* (/ Math/PI 2)\\n                    (+ (Math/cos\\n                        (+ (* 0.31 time)\\n                           (Math/cos (- (* 0.481 time)\\n                                        (Math/sin (* 0.318 time))))\\n                           (Math/sin (* 1.179 time))))\\n                       (Math/cos\\n                        (+ (* 0.61 time)\\n                           (Math/sin (- (* 0.305 time)\\n                                        (Math/cos (* 0.573 time))))\\n                           (Math/cos (* 0.962 time))))))\\n                 phi\\n                 (+ time (Math/sin\\n                          (- (* 0.51 time)\\n                             (+ (Math/cos (+ (* 0.527 time)\\n                                             (Math/sin (* 0.113 time))))\\n                                (Math/sin (* 1.224 time))))))\\n                 zeta1 (+ phi (/ y 2))\\n                 zeta2 x\\n                 nu    theta\\n                 sum   (+ zeta1 zeta2)\\n                 diff  (- zeta1 zeta2)\\n                 s     (Math/sin nu)\\n                 c     (Math/cos nu)\\n                 x     (* s (Math/cos sum))\\n                 y     (* s (Math/sin sum))\\n                 z     (* c (Math/cos diff))\\n                 w     (* c (Math/sin diff))]\\n\\n             (emit x y z w)))]\\n   [mathbox/MathBox\\n    {:container {:style {:height \\\"500px\\\" :width \\\"100%\\\"}}\\n     :renderer  {:background-color 0xffffff}}\\n    [mb/Camera {:proxy true\\n                :position [2.3 1 2]}]\\n    [mb/Transform4\\n     ;; I think this will translate?\\n     {:matrix\\n      [1 0 0 0.577\\n       0 1 0 0.577\\n       0 0 1 0.577\\n       0 0 0 1]}\\n     [mb/Cartesian4\\n      {:range [[-1 1] [-1 1] [-1 1] [-1 1]]\\n       :scale [1 1 1 1]}\\n      [mb/Axis {:axis 1}]\\n      [mb/Grid {:axes [1 3] :width 4}]\\n      [mb/Axis {:axis 2}]\\n      [mb/Axis {:axis 3}]\\n      [mb/Axis {:axis 4}]\\n      [mb/Area\\n       {:rangeX [(- Math/PI) Math/PI]\\n        :rangeY [-1 1]\\n        :width 32\\n        :height 8\\n        :channels 4\\n        :expr expr}]\\n      [mb/Line {:color 0x3080ff :width 10}]\\n      [mb/Area\\n       {:rangeX [(- Math/PI) Math/PI]\\n        :rangeY [-1 1]\\n        :width 96\\n        :height 8\\n        :channels 4\\n        ;; TO show that these are the same.\\n        :expr (fn [emit x y i j time]\\n                (expr (fn [x y z w]\\n                        (let [s  0.577\\n                              ws (* w s)]\\n                          (emit (+ x ws)\\n                                (+ y ws)\\n                                (+ z ws)\\n                                0)))\\n                      x y i j time))}]\\n      [mb/Point {:color 0xc02050 :size 20}]]]]))\", :nextjournal/opts {:loc {:line 21, :end-line 99, :column 1, :end-column 49}}, :nextjournal/viewer {:name nextjournal.clerk.viewer/code-viewer, :render-fn #viewer-fn nextjournal.clerk.render/render-code, :hash \"5dsJQw12yyyd7TcZEf52VSHxnqnJUC\"}} {:path [], :nextjournal/value {:nextjournal/presented {:path [], :nextjournal/value {}, :nextjournal/viewer {:render-fn #viewer-fn (clojure.core/fn [___54901__auto__] (clojure.core/let [result__54902__auto__ (do (letfn [(expr [emit x y _i _j time] (let [theta (* (/ Math/PI 2) (+ (Math/cos (+ (* 0.31 time) (Math/cos (- (* 0.481 time) (Math/sin (* 0.318 time)))) (Math/sin (* 1.179 time)))) (Math/cos (+ (* 0.61 time) (Math/sin (- (* 0.305 time) (Math/cos (* 0.573 time)))) (Math/cos (* 0.962 time)))))) phi (+ time (Math/sin (- (* 0.51 time) (+ (Math/cos (+ (* 0.527 time) (Math/sin (* 0.113 time)))) (Math/sin (* 1.224 time)))))) zeta1 (+ phi (/ y 2)) zeta2 x nu theta sum (+ zeta1 zeta2) diff (- zeta1 zeta2) s (Math/sin nu) c (Math/cos nu) x (* s (Math/cos sum)) y (* s (Math/sin sum)) z (* c (Math/cos diff)) w (* c (Math/sin diff))] (emit x y z w)))] [mathbox/MathBox {:container {:style {:height \"500px\", :width \"100%\"}}, :renderer {:background-color 16777215}} [mb/Camera {:proxy true, :position [2.3 1 2]}] [mb/Transform4 {:matrix [1 0 0 0.577 0 1 0 0.577 0 0 1 0.577 0 0 0 1]} [mb/Cartesian4 {:range [[-1 1] [-1 1] [-1 1] [-1 1]], :scale [1 1 1 1]} [mb/Axis {:axis 1}] [mb/Grid {:axes [1 3], :width 4}] [mb/Axis {:axis 2}] [mb/Axis {:axis 3}] [mb/Axis {:axis 4}] [mb/Area {:rangeX [(- Math/PI) Math/PI], :rangeY [-1 1], :width 32, :height 8, :channels 4, :expr expr}] [mb/Line {:color 3178751, :width 10}] [mb/Area {:rangeX [(- Math/PI) Math/PI], :rangeY [-1 1], :width 96, :height 8, :channels 4, :expr (fn [emit x y i j time] (expr (fn [x y z w] (let [s 0.577 ws (* w s)] (emit (+ x ws) (+ y ws) (+ z ws) 0))) x y i j time))}] [mb/Point {:color 12591184, :size 20}]]]]))] (nextjournal.clerk.viewer/html (if (clojure.core/vector? result__54902__auto__) result__54902__auto__ [nextjournal.clerk.render/inspect result__54902__auto__])))), :hash \"5drgf8hvhSwSgGTKjxRmvxmrxugPnC\"}}}, :nextjournal/width :wide, :nextjournal/viewer {:name nextjournal.clerk.viewer/result-viewer, :render-fn #viewer-fn nextjournal.clerk.render/render-result, :hash \"5dtGVHesd2XCTLFYF3aY4kJvkrX1x1\"}}], :css-class nil}, :nextjournal/viewer {:name nextjournal.clerk.viewer/notebook-viewer, :render-fn #viewer-fn nextjournal.clerk.render/render-notebook, :hash \"5duAFDxE4sCnRX71Wo6zeCpC9C3djE\"}}}, :cljs-namespaces [mathbox.sci-extensions], :index \"dev/mathbox/notebook.clj\", :browse? false, :git/url \"https://github.com/mentat-collective/mathbox.cljs\", :paths [\"dev/mathbox/examples/math/pq_knot.cljc\" \"dev/mathbox/examples/index.md\" \"dev/mathbox/examples/math/helitorus.cljc\" \"dev/mathbox/examples/test/curvedots.clj\" \"dev/mathbox/examples/test/closed_line.clj\" \"dev/mathbox/examples/test/context.clj\" \"dev/mathbox/examples/math/color_cube.clj\" \"dev/mathbox/examples/math/hopf.clj\" \"dev/mathbox/examples/test/compose.clj\" \"dev/mathbox/examples/test/camera.clj\" \"dev/mathbox/examples/test/face.cljc\" \"dev/mathbox/examples/test/closed_surface.clj\" \"dev/mathbox/examples/dataviz/scatter.clj\" \"dev/mathbox/examples/math/field_lines.clj\" \"dev/mathbox/examples/test/axis.clj\" \"dev/mathbox/notebook.clj\" \"dev/mathbox/examples/test/curve.clj\" \"dev/mathbox/examples/math/exponential.clj\" \"dev/mathbox/examples/test/cartesian4.clj\"], :resource->url {\"/js/viewer.js\" \"_data/8VwppLwZ7uwW1QafQEpTYdUTuq3DXBbZLUj3DTB9buvjLMzNv4nBuZJUgtUqrKwaMWSXKxKJqky7azNSdRvHzsTtNg.js\"}, :current-path \"dev/mathbox/examples/test/cartesian4.clj\", :bundle? false, :git/sha \"665a0d5f01fb2ed9b0bfeee6f9ad679915f13465\", :path->url {\"dev/mathbox/examples/math/pq_knot.cljc\" \"dev/mathbox/examples/math/pq_knot.html\", \"dev/mathbox/examples/index.md\" \"dev/mathbox/examples/\", \"dev/mathbox/examples/math/helitorus.cljc\" \"dev/mathbox/examples/math/helitorus.html\", \"dev/mathbox/examples/test/curvedots.clj\" \"dev/mathbox/examples/test/curvedots.html\", \"dev/mathbox/examples/test/closed_line.clj\" \"dev/mathbox/examples/test/closed_line.html\", \"dev/mathbox/examples/test/context.clj\" \"dev/mathbox/examples/test/context.html\", \"dev/mathbox/examples/math/color_cube.clj\" \"dev/mathbox/examples/math/color_cube.html\", \"dev/mathbox/examples/math/hopf.clj\" \"dev/mathbox/examples/math/hopf.html\", \"dev/mathbox/examples/test/compose.clj\" \"dev/mathbox/examples/test/compose.html\", \"dev/mathbox/examples/test/camera.clj\" \"dev/mathbox/examples/test/camera.html\", \"dev/mathbox/examples/test/face.cljc\" \"dev/mathbox/examples/test/face.html\", \"dev/mathbox/examples/test/closed_surface.clj\" \"dev/mathbox/examples/test/closed_surface.html\", \"dev/mathbox/examples/dataviz/scatter.clj\" \"dev/mathbox/examples/dataviz/scatter.html\", \"dev/mathbox/examples/math/field_lines.clj\" \"dev/mathbox/examples/math/field_lines.html\", \"dev/mathbox/examples/test/axis.clj\" \"dev/mathbox/examples/test/axis.html\", \"dev/mathbox/notebook.clj\" \"\", \"dev/mathbox/examples/test/curve.clj\" \"dev/mathbox/examples/test/curve.html\", \"dev/mathbox/examples/math/exponential.clj\" \"dev/mathbox/examples/math/exponential.html\", \"dev/mathbox/examples/test/cartesian4.clj\" \"dev/mathbox/examples/test/cartesian4.html\"}, :expanded-paths [\"dev/mathbox/examples/index.md\" \"dev/mathbox/examples/dataviz/scatter.clj\" \"dev/mathbox/examples/math/field_lines.clj\" \"dev/mathbox/examples/math/color_cube.clj\" \"dev/mathbox/examples/math/hopf.clj\" \"dev/mathbox/examples/math/helitorus.cljc\" \"dev/mathbox/examples/math/exponential.clj\" \"dev/mathbox/examples/math/pq_knot.cljc\" \"dev/mathbox/examples/test/face.cljc\" \"dev/mathbox/examples/test/curvedots.clj\" \"dev/mathbox/examples/test/camera.clj\" \"dev/mathbox/examples/test/closed_line.clj\" \"dev/mathbox/examples/test/curve.clj\" \"dev/mathbox/examples/test/compose.clj\" \"dev/mathbox/examples/test/context.clj\" \"dev/mathbox/examples/test/axis.clj\" \"dev/mathbox/examples/test/closed_surface.clj\" \"dev/mathbox/examples/test/cartesian4.clj\" \"dev/mathbox/notebook.clj\"], :cname \"mathbox.mentat.org\", :watch-paths [\"dev\"], :report-fn #object[nextjournal.clerk.builder$stdout_reporter 0x21ac1d95 \"nextjournal.clerk.builder$stdout_reporter@21ac1d95\"]}".replaceAll('nextjournal.clerk.view/escape-closing-script-tag', 'script')
+let opts = nextjournal.clerk.sci_env.read_string(state)
+nextjournal.clerk.static_app.init(opts)
 </script></body></html>
