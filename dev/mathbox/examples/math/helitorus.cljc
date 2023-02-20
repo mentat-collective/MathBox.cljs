@@ -4,7 +4,7 @@
  :visibility :hide-ns}
 (ns mathbox.examples.math.helitorus
   (:require
-   #?@(:cljs [[mathbox]
+   #?@(:cljs [[mathbox.core :as mathbox]
               [mathbox.primitives :as mb]
               #_["three" :as three]
               ["three/examples/jsm/controls/TrackballControls.js"
@@ -43,9 +43,6 @@
     "\\begin{pmatrix}\\displaystyle{\\left(R + r\\,\\cos\\left(n\\,\\theta\\right)\\right)\\,\\cos\\left(\\theta\\right)} \\cr \\cr \\displaystyle{\\left(R + r\\,\\cos\\left(n\\,\\theta\\right)\\right)\\,\\sin\\left(\\theta\\right)} \\cr \\cr \\displaystyle{r\\,\\sin\\left(n\\,\\theta\\right)}\\end{pmatrix}"))
 ;; ## UI
 
-;; TODO that if you are going to export, this will currently break your code...
-;; having clerk/sync set to true.
-
 ^{::clerk/sync true}
 (defonce !state
   (atom
@@ -56,9 +53,9 @@
 
 (show-sci
  [:<>
-  [leva/Config {:drag true}]
-  [leva/Controls
-   {:atom mathbox.examples.math.helitorus/!state
+  [leva.core/Config {:drag true}]
+  [leva.core/Controls
+   {:atom !state
     :schema
     {:n {:min 0 :max 32 :step 1}
      :r1 {:min 0 :max 3 :step 0.001}
@@ -797,8 +794,6 @@ emit((-1.0 * x51276 * x51277 * x51278 * G00000000000000be * G00000000000000a8 * 
 ;; Then we can jump back to SCI, to get access to our shared state. Define the
 ;; full component that you need on the cljs side!
 
-^{::clerk/width :wide
-  ::clerk/visibility {:code :fold}}
+^{::clerk/width :wide}
 (show-sci
- [js/mathbox.examples.math.helitorus.Helitorus
-  mathbox.examples.math.helitorus/!state])
+ [js/mathbox.examples.math.helitorus.Helitorus !state])

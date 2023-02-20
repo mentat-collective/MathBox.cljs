@@ -3,7 +3,15 @@
  :no-cache true
  :visibility :hide-ns}
 (ns mathbox.examples.test.camera
-  (:require [mentat.clerk-utils.show :refer [show-sci]]))
+  (:require [mentat.clerk-utils.show :refer [show-sci]]
+            [nextjournal.clerk :as clerk]))
+
+^{::clerk/visibility {:code :hide :result :hide}}
+(clerk/eval-cljs
+ ;; These aliases only apply inside this namespace.
+ '(require '[mathbox.core :as mathbox])
+ '(require '[mathbox.primitives :as mb])
+ '(require '[reagent.core :as reagent]))
 
 ;; # Camera
 
@@ -17,7 +25,7 @@
    {:range [[-1 1] [-1 1] [-1 1]]
     :scale [1 1 1]}
    [mb/Camera
-    {#_#_:proxy true
+    {:proxy true
      :lookAt [0 0 0]
      :liveProps
      {:position

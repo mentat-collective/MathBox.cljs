@@ -1,15 +1,42 @@
-^#:nextjournal.clerk
-{:toc true
- :no-cache true
- :visibility :hide-ns}
-(ns mathbox.examples.test.face
-  (:require
-   #?@(:cljs [[mathbox.core :as mathbox]
-              [mathbox.primitives :as mb]
-              [reagent.core :as reagent]])
-   [mentat.clerk-utils.show :refer [show-cljs]]))
+;; # High Performance MathBox
 
-^{:nextjournal.clerk/width :wide}
+^{:nextjournal.clerk/toc true}
+(ns {{top/ns}}.performance
+    (:require
+     #?@(:cljs [[mathbox.core :as mathbox]
+                [mathbox.primitives :as mb]
+                [reagent.core :as reagent]])
+     [mentat.clerk-utils.show :refer [show-cljs]]))
+
+;; This notebook implements
+;; the [`test/face`](https://mathbox.mentat.org/dev/mathbox/examples/test/face.html)
+;; example from the [MathBox examples
+;; index](https://mathbox.mentat.org/dev/mathbox/examples/index.html).
+;;
+;; > NOTE that this example only works because your project's
+;; > `src/{{top/file}}/sci_extensions.cljs` file requires this namespace.
+;; > Without doing this, or adding `{{top/ns}}.performance` to the vector passed
+;; > to `:cljs-namespaces` in the functions in `dev/user.clj`, the ClojureScript
+;; > compiler wouldn't know to look for this file.
+;;
+;; ## `Face` definition
+;;
+;; This file is a `cljc` file, but our MathBox component definition only makes
+;; sense in ClojureScript. If we defined it like this:
+
+;; ```clj
+;; #?(:cljs
+;;    (defn Face [] ...))
+;; ```
+;;
+;; Clerk (which runs on the JVM only) wouldn't be able to see the definition,
+;; and we wouldn't be able to share it with our users.
+;;
+;; To fix this, we wrap our component definition in
+;; `mentat.clerk-utils.show/show-cljs`, which allows Clerk to render the code on
+;; the JVM and the ClojureScript compiler to compile the definition for the
+;; browser.
+
 (show-cljs
  (defn Face []
    (reagent/with-let
@@ -90,6 +117,13 @@
        [mb/Point
         {:size 5
          :color 0xb0c7ff
-         :zBias 2}]]]))
+         :zBias 2}]]])))
 
+;; ## Using the Component
+
+;; With that component defined, we can use `show-cljs` to mount the component
+;; onto the page:
+
+^{:nextjournal.clerk/width :wide}
+(show-cljs
  [Face])

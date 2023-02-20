@@ -1,0 +1,20 @@
+{:description "TODO replace me with a description of your project!"
+ :clerk-port 7777
+ :mathbox-version "0.2.0"
+ :clerk-sha "fad499407d979916d21b33cc7e46e73f7a485e37"
+ :clerk-utils-sha "8d8986e835e396443560a34fb29a2033a47f6bd0"
+ :shadow-port 8765
+ :shadow-version "2.20.14"
+ :clj-version "1.11.1"
+ :cljs-version "1.11.60"
+ :http-server-port 8080
+ :cname ""
+ :transform
+ [["src" "src"
+   {"custom.tmpl" "{{top/file}}/custom.cljs"
+    "sci_extensions.tmpl" "{{top/file}}/sci_extensions.cljs"}]
+  ["notebooks" "notebooks"
+   {"main.tmpl" "{{top/file}}/{{main/file}}.clj"
+    "performance.tmpl" "{{top/file}}/performance.cljc"}]
+  ["dev" "dev"
+   {"user.tmpl" "user.clj"}]]}

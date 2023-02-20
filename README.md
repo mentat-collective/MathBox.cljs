@@ -32,6 +32,9 @@ including classic Winamp-style music visualizers.
 makes it easy to define MathBox constructions inside of a user interface built
 with ClojureScript.
 
+Visit the [Demo index][demo-index-url] for a tour of everything `MathBox.cljs`
+can do. These demos are also hosted at https://mathbox.org.
+
 ## Quickstart
 
 Install `MathBox.cljs` into your ClojureScript project using the instructions at
@@ -94,6 +97,13 @@ Use your mouse to click and drag the camera's orientation, and zoom in and out:
 See the project's [interactive documentation notebook](https://mathbox.mentat.org)
 for more guides and examples.
 
+## Clerk Support
+
+If you want to use `MathBox.cljs` with [Clerk][clerk-url], check out the
+[`mathbox/clerk` template][mathbox-clerk-template-url]. This
+[`deps-new`][deps-new-url] template will generate a Clerk project for you, fully
+configured to use `MathBox.cljs` in your Clerk notebooks.
+
 ## Interactive Documentation via Clerk
 
 The project's [interactive documentation](https://mathbox.mentat.org) was
@@ -104,21 +114,14 @@ you'd like to edit or play with the documentation, you'll need to install
 - The [clojure command line tool](https://clojure.org/guides/install_clojure)
 - [Babashka](https://github.com/babashka/babashka#installation)
 
-Once this is done, run this command in one terminal window to build and serve
-the custom JS required by the notebook:
+Once this is done, run this command:
 
-```
-bb dev-notebook
-```
-
-In another terminal window, run
-
-```
-bb start-clerk
+```sh
+bb clerk-watch
 ```
 
-This should open a browser window to `http://localhost:7777` with the contents
-of the documentation notebook. Any edits you make to `dev/mathbox/notebook.clj`
+This will open a browser window to `http://localhost:7777` with the contents of
+the documentation notebook. Any edits you make to `dev/mathbox/notebook.clj`
 will be picked up and displayed in the browser on save.
 
 ## Thanks and Support
@@ -154,3 +157,4 @@ Distributed under the [MIT License](LICENSE). See [LICENSE](LICENSE).
 [mathbox-url]: https://github.com/unconed/mathbox
 [reagent-url]: https://reagent-project.github.io/
 [mathbox-react-url]: https://github.com/ChristopherChudzicki/mathbox-react
+[demo-index-url]: https://mathbox.mentat.org/dev/mathbox/examples/index.html

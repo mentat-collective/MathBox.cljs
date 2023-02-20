@@ -3,7 +3,16 @@
  :no-cache true
  :visibility :hide-ns}
 (ns mathbox.notebook
-  (:require [mentat.clerk-utils.show :refer [show-sci]]))
+  (:require [mentat.clerk-utils.docs :as docs]
+            [mentat.clerk-utils.show :refer [show-sci]]
+            [nextjournal.clerk :as clerk]))
+
+^{::clerk/visibility {:code :hide :result :hide}}
+(clerk/eval-cljs
+ ;; These aliases only apply inside this namespace.
+ '(require '[mathbox.core :as mathbox])
+ '(require '[mathbox.primitives :as mb])
+ '(require '[reagent.core :as reagent]))
 
 ;; # MathBox.cljs
 
@@ -49,8 +58,8 @@
 ;; For example, here is an example of a dynamically updating surface, monitored
 ;; by an orbiting camera:
 
-^{:nextjournal.clerk/width :wide
-  :nextjournal.clerk/visibility {:code :fold}}
+^{::clerk/width :wide
+  ::clerk/visibility {:code :fold}}
 (show-sci
  [mathbox.examples.test.face/Face])
 
@@ -75,21 +84,32 @@
 ;;    Project](https://img.shields.io/clojars/v/org.mentat/mathbox.cljs.svg)](https://clojars.org/org.mentat/mathbox.cljs)
 ;;
 ;; Or grab the most recent code using a Git dependency:
-;;
-;; ```clj
-;; ;; deps
-;; {io.github.mentat-collective/mathbox.cljs
-;;   {:git/sha "$GIT_SHA"}}
-;; ```
 
-;; Require `mathbox.core` in your ClojureScript namespace:
+^{::clerk/visibility {:code :hide}}
+(docs/git-dependency
+ "mentat-collective/mathbox.cljs")
+
+;; Require `mathbox.core` and `mathbox.primitives` in your ClojureScript
+;; namespace:
 
 ;; ```clj
 ;; (ns my-app
-;;   (:require [mathbox]
+;;   (:require [mathbox.core :as mathbox]
 ;;             [mathbox.primitives :as mb]
 ;;             [reagent.core :as reagent]))
 ;; ```
+;;
+;; You'll also need to include the stylesheets that ship with `MathBox`. If
+;; you're using Clerk
+;; and [`clerk-utils`](https://github.com/mentat-collective/clerk-utils), add
+;; this form to `dev/user.clj`:
+
+;; ```clj
+;; (mentat.clerk-utils.css/set-css!
+;;  "https://unpkg.com/mathbox/build/mathbox.css")
+;; ```
+;;
+;; Otherwise find some way to load this CSS file in your project's header.
 ;;
 ;; ## Your First Scene
 
@@ -118,7 +138,7 @@
 ;; 3 units to `[0 0 3]`. We also set `:proxy` to true: this allows interactive
 ;; camera controls to override our given position.
 
-^{:nextjournal.clerk/width :wide}
+^{::clerk/width :wide}
 (show-sci
  [mathbox/MathBox
   {:container
@@ -147,15 +167,15 @@
 ;; Now we're going to set up a simple 2D cartesian coordinate system. We'll make
 ;; it twice as wide as high.
 
-^{:nextjournal.clerk/width :wide}
+^{::clerk/width :wide}
 (show-sci
- '[mathbox/MathBox
-   {:container {:style {:height "400px" :width "100%"}}}
-   [mb/Camera {:position [0 0 3]
-               :proxy true}]
-   [mb/Cartesian
-    {:range [[-2 2] [-1 1]]
-     :scale [2 1]}]])
+ [mathbox/MathBox
+  {:container {:style {:height "400px" :width "100%"}}}
+  [mb/Camera {:position [0 0 3]
+              :proxy true}]
+  [mb/Cartesian
+   {:range [[-2 2] [-1 1]]
+    :scale [2 1]}]])
 
 ;; The `:range` specifies the area we're looking at as a vector of pairs: `[-2
 ;; 2]` in the `X` direction, `[-1, 1]` in the `Y` direction.
@@ -166,7 +186,7 @@
 ;; Add two axes and a grid as children of the `mb/Cartesian` component so we can
 ;; finally see something:
 
-^{:nextjournal.clerk/width :wide}
+^{::clerk/width :wide}
 (show-sci
  [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}}
@@ -196,7 +216,7 @@
 
 ;; You might make your axes black by passing the `:color "black"` attribute:
 
-^{:nextjournal.clerk/width :wide}
+^{::clerk/width :wide}
 (show-sci
  [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}}
@@ -215,7 +235,7 @@
 ;; camera distance. Set options on `<root>` by passing them to
 ;; `mathbox/MathBox`:
 
-^{:nextjournal.clerk/width :wide}
+^{::clerk/width :wide}
 (show-sci
  [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}
@@ -289,7 +309,7 @@
 
 ;; Add a `Curve` instance to the component tree:
 
-^{:nextjournal.clerk/width :wide}
+^{::clerk/width :wide}
 (show-sci
  [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}
@@ -328,7 +348,7 @@
 ;; data multiple ways. For example, add on an `mb/Point` component to draw
 ;; points as well along them length of the data interval:
 
-^{:nextjournal.clerk/width :wide}
+^{::clerk/width :wide}
 (show-sci
  [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}
@@ -379,7 +399,7 @@
 
 ;; Render the scene again after adding the new `Vector` component to the end:
 
-^{:nextjournal.clerk/width :wide}
+^{::clerk/width :wide}
 (show-sci
  [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}
@@ -428,7 +448,7 @@
 
 ;; Adding all of these components yields the following scene:
 
-^{:nextjournal.clerk/width :wide}
+^{::clerk/width :wide}
 (show-sci
  [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}
@@ -465,7 +485,7 @@
 
 ;; Finally we'll add on a little bit of animation by adding a `mb/Play` block.
 
-^{:nextjournal.clerk/width :wide}
+^{::clerk/width :wide}
 (show-sci
  [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}
@@ -505,6 +525,83 @@
 
 ;; We set the `:pace` of the animation to 5 seconds per step, tell it to play
 ;; till keyframe time `2` and to `:loop` afterwards.
+
+;; ## MathBox.cljs via SCI
+;;
+;; `MathBox.cljs` is compatible with [SCI, the Small Clojure
+;; Interpreter](https://github.com/babashka/sci).
+;;
+;; To install `MathBox.cljs` into your SCI context, require
+;; the [`mathbox.sci`](https://cljdoc.org/d/org.mentat/mathbox.cljs/CURRENT/api/mathbox.sci)
+;; namespace and call `mathbox.sci/install!`:
+
+;; ```clj
+;; (ns myproject.sci-extensions
+;;   (:require [mathbox.sci]))
+
+;; (mathbox.sci/install!)
+;; ```
+;;
+;; If you want more granular control, see the [cljdoc page for
+;; `mathbox.sci`](https://cljdoc.org/d/org.mentat/mathbox.cljs/CURRENT/api/mathbox.sci)
+;; for an SCI config and distinct SCI namespace objects that you can piece
+;; together.
+;;
+;; > Note that `MathBox.cljs` does not ship with a dependency on SCI, so you'll
+;; > need to install your own version.
+;;
+;; ## MathBox.cljs via Clerk
+;;
+;; Using `MathBox.cljs` with Nextjournal's [Clerk](https://clerk.vision/) gives
+;; you the ability to write notebooks like this one with embedded MathBox
+;; constructions.
+;;
+;; Doing this requires that you generate a custom ClojureScript build for your
+;; Clerk project. The easiest way to do this for an existing project is with
+;; the [`clerk-utils` project](https://clerk-utils.mentat.org/). Follow the
+;; instructions on the [`clerk-utils` guide for custom
+;; ClojureScript](https://clerk-utils.mentat.org/#custom-clojurescript-builds).
+;;
+;; If this is your first time using Clerk, use the [`mathbox/clerk` template
+;; described below](#project-template) to generate a new project with all steps
+;; described in ["MathBox.cljs via SCI"](#mathbox.cljs-via-sci) already
+;; completed.
+
+;; ## Project Template
+;;
+;; `MathBox.cljs` includes
+;; a [`deps-new`](https://github.com/seancorfield/deps-new) template called
+;; [`mathbox/clerk`](https://github.com/mentat-collective/mathbox.cljs/tree/main/resources/mathbox/clerk)
+;; that makes it easy to configure a new Clerk project with everything described
+;; in ["MathBox.cljs via SCI"](#mathbox.cljs-via-sci) already configured.
+
+;; First, install the [`deps-new`](https://github.com/seancorfield/deps-new) tool:
+
+;; ```sh
+;; clojure -Ttools install io.github.seancorfield/deps-new '{:git/tag "v0.5.0"}' :as new
+;; ```
+
+;; To create a new Clerk project based on
+;; [`mathbox/clerk`](https://github.com/mentat-collective/mathbox.cljs/tree/main/resources/mathbox/clerk)
+;; in a folder called `my-notebook-project`, run the following command:
+
+^{::clerk/visibility {:code :hide}}
+(clerk/md
+ (format "
+```sh
+clojure -Sdeps '{:deps {io.github.mentat-collective/mathbox.cljs {:git/sha \"%s\"}}}' \\
+-Tnew create \\
+:template mathbox/clerk \\
+:name myusername/my-notebook-project
+```" (docs/git-sha)))
+
+;; The `README.md` file in the generated project contains information on how to
+;; develop within the new project.
+
+;; If you have an existing Clerk notebook project and are considering adding
+;; `MathBox.cljs`, you might consider
+;; using [`mathbox/clerk`](https://github.com/mentat-collective/mathbox.cljs/tree/main/resources/mathbox/clerk)
+;; to get some ideas on how to structure your own project.
 
 ;; ## Guides
 ;;
@@ -636,7 +733,7 @@
 
 ;; ## License
 
-;; Copyright © 2022 Sam Ritchie.
+;; Copyright © 2022-2023 Sam Ritchie.
 
 ;; Distributed under the [MIT
 ;; License](https://github.com/mentat-collective/mathbox.cljs/blob/main/LICENSE).

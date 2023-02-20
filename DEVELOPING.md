@@ -1,6 +1,8 @@
 ## Dev Dependencies
 
-`clj`, `shadow-cljs`, `node` and `babashka`.
+- [node.js](https://nodejs.org/en/)
+- The [clojure command line tool](https://clojure.org/guides/install_clojure)
+- [Babashka](https://github.com/babashka/babashka#installation)
 
 ## Github Pages, Docs Notebook
 
@@ -10,29 +12,28 @@ the library's use.
 
 ### Local Notebook Dev
 
-To start a shadow-cljs process watcher for the JS required to run the Clerk
-notebook, run
+Start a Clojure process however you like, and run `(user/serve!)` to run the
+Clerk server. This command should open up `localhost:7777`.
 
+Alternatively, run
+
+```sh
+bb clerk-watch
 ```
-bb dev-notebook
-```
 
-Then start a Clojure process however you like, and run `(user/start!)` to run
-the Clerk server. This command should open up `localhost:7777`.
+### Static Build
 
-### Github Pages Static Build
-
-To test the Pages build locally:
+To test the static build locally:
 
 ```
 bb publish-local
 ```
 
-This will generate the static site in `public`, start a development http server
-and open up a browser window (http://127.0.0.1:8080/) with the production build
-of the documentation notebook.
+This will generate the static site in `public/build`, start a development http
+server and open up a browser window (http://127.0.0.1:8080/) with the production
+build of the documentation notebook.
 
-### Pages Build
+### GitHub Pages
 
 To build and release to Github Pages:
 
@@ -66,9 +67,7 @@ The new release will appear on Clojars.
 
 ## Linting
 
-Code is linted with `clj-kondo`. [Install
-`clj-kondo`](https://github.com/clj-kondo/clj-kondo/blob/master/doc/install.md)
-then run
+Code is linted with [`clj-kondo`](https://github.com/clj-kondo/clj-kondo):
 
 ```
 bb lint

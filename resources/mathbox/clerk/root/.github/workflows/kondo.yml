@@ -1,4 +1,4 @@
-name: Linter
+name: CLJ-Kondo
 
 on:
   pull_request:
