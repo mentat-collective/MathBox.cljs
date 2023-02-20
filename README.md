@@ -111,21 +111,14 @@ you'd like to edit or play with the documentation, you'll need to install
 - The [clojure command line tool](https://clojure.org/guides/install_clojure)
 - [Babashka](https://github.com/babashka/babashka#installation)
 
-Once this is done, run this command in one terminal window to build and serve
-the custom JS required by the notebook:
+Once this is done, run this command:
 
-```
-bb dev-notebook
-```
-
-In another terminal window, run
-
-```
-bb start-clerk
+```sh
+bb clerk-watch
 ```
 
-This should open a browser window to `http://localhost:7777` with the contents
-of the documentation notebook. Any edits you make to `dev/mathbox/notebook.clj`
+This will open a browser window to `http://localhost:7777` with the contents of
+the documentation notebook. Any edits you make to `dev/mathbox/notebook.clj`
 will be picked up and displayed in the browser on save.
 
 ## Thanks and Support

@@ -57,7 +57,44 @@
 ;; > Note that you can also use fully-qualified names of any namespace installed
 ;; > into SCI via the `{{top/ns}}.sci-extensions` namespace.
 
-;; TODO
+;; The following snippet implements the example from the ["Your First
+;; Scene"](https://mathbox.mentat.org/#your-first-scene) section of
+;; the [`MathBox.cljs` docs
+;; notebook](https://mathbox.mentat.org/#your-first-scene):
+
+^{::clerk/width :wide}
+(show-sci
+ [mathbox/MathBox
+  {:container {:style {:height "400px" :width "100%"}}
+   :focus 3}
+  [mb/Camera {:position [0 0 3]
+              :proxy true}]
+  [mb/Cartesian
+   {:range [[-2 2] [-1 1]]
+    :scale [2 1]}
+
+   [mb/Axis {:axis 1 :width 3 :color "black"}]
+   [mb/Axis {:axis 2 :width 3 :color "black"}]
+   [mb/Grid {:width 2 :divideX 20 :divideY 10}]
+   [Curve]
+   [mb/Point {:size 8 :color "#3090FF"}]
+
+   [Vector]
+
+   [mb/Scale {:divide 10}]
+   [mb/Ticks {:width 5 :size 15 :color "black"}]
+   [mb/Format {:digits 2 :weight "bold"}]
+   [mb/Label {:color "red"
+              :zIndex 1}]]
+  [mb/Play
+   {:target "cartesian"
+    :pace 5
+    :to 2
+    :loop true
+    :script
+    [{:props {:range [[-2 2] [-1 1]]}}
+     {:props {:range [[-4 4] [-2 2]]}}
+     {:props {:range [[-2 2] [-1 1]]}}]}]])
 
 ;; One potential wrinkle to note when using `MathBox.cljs` in Clerk is that you
 ;; have to define any function you'd like to use over on the ClojureScript side.
@@ -73,7 +110,3 @@
 (show-sci
  (defn square [x]
    (* x x)))
-
-;; ## MathBox Clerk Viewer
-;;
-;; TODO
