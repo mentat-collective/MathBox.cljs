@@ -6,6 +6,8 @@
 
 - #14:
 
+  - Adds a link to the MathBox example index back to README.md.
+
   - Renames the `mathbox` namespace to `mathbox.core` to prevent collisions with
     the `"mathbox"` package import. I was hesitant to do this, but of course you
     can always alias `mathbox.core` to `mathbox` when you require it.

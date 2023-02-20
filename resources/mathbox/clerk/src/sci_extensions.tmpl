@@ -1,5 +1,6 @@
 (ns {{top/ns}}.sci-extensions
     (:require [{{top/ns}}.custom]
+              [{{top/ns}}.performance]
               [mathbox.sci]
               [sci.ctx-store]
               [sci.core :as sci]))
@@ -40,7 +41,6 @@
 ;; `:as` form to a namespace: `(:require [{{top/ns}}.custom :as custom])`
 (def custom-aliases
   {'custom '{{top/ns}}.custom})
-
 
 ;; This next form mutates SCI's default environment, merging in your custom code
 ;; on top of what Clerk has already configured.

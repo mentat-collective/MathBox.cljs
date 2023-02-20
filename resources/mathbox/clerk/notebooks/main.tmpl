@@ -17,6 +17,7 @@
 
 ;; - Visit this project's README.md for guides on how to proceed.
 ;; - Read the [`MathBox.cljs` documentation notebook](https://mathbox.mentat.org)
+;; - Visit https://mathbox.org and the [MathBox examples index](https://mathbox.mentat.org/dev/mathbox/examples/index.html)
 ;; - Read the [Book of Clerk](https://book.clerk.vision/)
 ;; - Visit the [Awesome-Clerk](https://github.com/mentat-collective/awesome-clerk) list for ideas
 ;; - Delete anything in this notebook you feel like you don't need.
@@ -55,12 +56,45 @@
  '(require '[mathbox.primitives :as mb]))
 
 ;; > Note that you can also use fully-qualified names of any namespace installed
-;; > into SCI via the `{{top/ns}}.sci-extensions` namespace.
+;; > into SCI via the `myusername.sci-extensions` namespace.
 
-;; The following snippet implements the example from the ["Your First
+;; The following snippets implement the example from the ["Your First
 ;; Scene"](https://mathbox.mentat.org/#your-first-scene) section of
 ;; the [`MathBox.cljs` docs
-;; notebook](https://mathbox.mentat.org/#your-first-scene):
+;; notebook](https://mathbox.mentat.org/#your-first-scene).
+;;
+;; First, some preliminary components:
+
+(show-sci
+ (defn Data []
+   [mb/Interval
+    {:expr (fn [emit x _i t]
+             (emit x (Math/sin (+ x t))))
+     :width 64
+     :channels 2}])
+
+ (defn Curve []
+   [:<>
+    [Data]
+    [mb/Line {:width 5
+              :color "#3090FF"}]])
+
+ (defn Vector []
+   [:<>
+    [mb/Interval
+     {:expr (fn [emit x _i t]
+              (emit x 0)
+              (emit x (- (Math/sin (+ x t)))))
+      :width 64
+      :channels 2
+      :items 2}]
+    [mb/Vector
+     {:end true
+      :width 5
+      :color "#50A000"}]]))
+
+
+;; And then the final animating scene:
 
 ^{::clerk/width :wide}
 (show-sci
@@ -110,3 +144,19 @@
 (show-sci
  (defn square [x]
    (* x x)))
+
+;; ## ClojureScript vs SCI
+;;
+;; Animations are often quite performance-intensive; you might find that a
+;; component written inside of the SCI environment is not fast enough.
+;;
+;; In this case you can use Clerk to render a `cljc` file, which can be
+;; processed
+;;
+;; - evaluated by Clerk on the JVM side, and
+;; - compiled by `shadow-cljs` on the ClojureScript side
+;;
+;; Visit `notebooks/{{top/file}}/performance.cljc` by making an edit to the file
+;; or evaluating `(clerk/show! "notebooks/{{top/file}}/performance.cljc")` at
+;; the REPL to see an example of a high-performance MathBox visualization using
+;; custom ClojureScript.

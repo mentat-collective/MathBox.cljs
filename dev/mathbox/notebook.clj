@@ -58,8 +58,8 @@
 ;; For example, here is an example of a dynamically updating surface, monitored
 ;; by an orbiting camera:
 
-^{:nextjournal.clerk/width :wide
-  :nextjournal.clerk/visibility {:code :fold}}
+^{::clerk/width :wide
+  ::clerk/visibility {:code :fold}}
 (show-sci
  [mathbox.examples.test.face/Face])
 
@@ -138,7 +138,7 @@
 ;; 3 units to `[0 0 3]`. We also set `:proxy` to true: this allows interactive
 ;; camera controls to override our given position.
 
-^{:nextjournal.clerk/width :wide}
+^{::clerk/width :wide}
 (show-sci
  [mathbox/MathBox
   {:container
@@ -167,7 +167,7 @@
 ;; Now we're going to set up a simple 2D cartesian coordinate system. We'll make
 ;; it twice as wide as high.
 
-^{:nextjournal.clerk/width :wide}
+^{::clerk/width :wide}
 (show-sci
  [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}}
@@ -186,7 +186,7 @@
 ;; Add two axes and a grid as children of the `mb/Cartesian` component so we can
 ;; finally see something:
 
-^{:nextjournal.clerk/width :wide}
+^{::clerk/width :wide}
 (show-sci
  [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}}
@@ -216,7 +216,7 @@
 
 ;; You might make your axes black by passing the `:color "black"` attribute:
 
-^{:nextjournal.clerk/width :wide}
+^{::clerk/width :wide}
 (show-sci
  [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}}
@@ -235,7 +235,7 @@
 ;; camera distance. Set options on `<root>` by passing them to
 ;; `mathbox/MathBox`:
 
-^{:nextjournal.clerk/width :wide}
+^{::clerk/width :wide}
 (show-sci
  [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}
@@ -309,7 +309,7 @@
 
 ;; Add a `Curve` instance to the component tree:
 
-^{:nextjournal.clerk/width :wide}
+^{::clerk/width :wide}
 (show-sci
  [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}
@@ -348,7 +348,7 @@
 ;; data multiple ways. For example, add on an `mb/Point` component to draw
 ;; points as well along them length of the data interval:
 
-^{:nextjournal.clerk/width :wide}
+^{::clerk/width :wide}
 (show-sci
  [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}
@@ -399,7 +399,7 @@
 
 ;; Render the scene again after adding the new `Vector` component to the end:
 
-^{:nextjournal.clerk/width :wide}
+^{::clerk/width :wide}
 (show-sci
  [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}
@@ -448,7 +448,7 @@
 
 ;; Adding all of these components yields the following scene:
 
-^{:nextjournal.clerk/width :wide}
+^{::clerk/width :wide}
 (show-sci
  [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}
@@ -485,7 +485,7 @@
 
 ;; Finally we'll add on a little bit of animation by adding a `mb/Play` block.
 
-^{:nextjournal.clerk/width :wide}
+^{::clerk/width :wide}
 (show-sci
  [mathbox/MathBox
   {:container {:style {:height "400px" :width "100%"}}
