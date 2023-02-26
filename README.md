@@ -54,7 +54,7 @@ Require `mathbox` and `mathbox.primitives` in your ClojureScript namespace:
 
 ```clj
 (ns my-app
-  (:require [mathbox]
+  (:require [mathbox.core :as mathbox]
             [mathbox.primitives :as mb]
             [reagent.core :as reagent]))
 ```
