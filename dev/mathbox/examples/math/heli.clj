@@ -2,21 +2,13 @@
 {:toc true
  :no-cache true
  :visibility :hide-ns}
-(ns mathbox.examples.math.helitorus
+(ns mathbox.examples.math.heli
   (:require
-   #?@(:cljs [[mathbox.core :as mathbox]
-              [mathbox.primitives :as mb]
-              #_["three" :as three]
-              ["three/examples/jsm/controls/TrackballControls.js"
-               :as TrackballControls]])
-   [nextjournal.clerk #?(:clj :as :cljs :as-alias) clerk]
-   [mentat.clerk-utils.show :refer [show-sci show-cljs]]))
+   [nextjournal.clerk :as clerk]
+   [mentat.clerk-utils.show :refer [show-sci]]))
 
 ;; # Helitorus
 
-#?(:clj
-   (clerk/tex
-    "\\begin{pmatrix}\\displaystyle{\\left(R + r\\,\\cos\\left(n\\,\\theta\\right)\\right)\\,\\cos\\left(\\theta\\right)} \\cr \\cr \\displaystyle{\\left(R + r\\,\\cos\\left(n\\,\\theta\\right)\\right)\\,\\sin\\left(\\theta\\right)} \\cr \\cr \\displaystyle{r\\,\\sin\\left(n\\,\\theta\\right)}\\end{pmatrix}"))
 ;; ## UI
 
 ^::clerk/sync
@@ -314,11 +306,13 @@
      :renderer {:background-color 0xffffff}
      :scale 500
      :focus 3}
-    [mathbox.primitives/Camera {:proxy true
-                                :position [1 1 3]}]
-    [mathbox.primitives/Cartesian {:range [[-1 1] [-1 1] [-1 1]]
-                                   :scale [1 1 1]
-                                   :quaternion [0.7 0 0 0.7]}
+    [mathbox.primitives/Camera
+     {:proxy true
+      :position [1 1 3]}]
+    [mathbox.primitives/Cartesian
+     {:range [[-1 1] [-1 1] [-1 1]]
+      :scale [1 1 1]
+      :quaternion [0.7 0 0 0.7]}
      [:div {:state @!state}
       [mathbox.primitives/Area
        {:rangeX [(- Math/PI) Math/PI]

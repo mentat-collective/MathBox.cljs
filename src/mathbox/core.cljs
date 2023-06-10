@@ -20,8 +20,8 @@
 
 ;; ## Components
 
-(defn ^:no-doc Rawbox
-  "Light wrapper around the `ContainedMathbox` and `Mathbox` components exposed by
+(defn ^:no-doc RawBox
+  "Light wrapper around the `ContainedMathbox` and `MathBox` components exposed by
   `mathbox-react.`
 
   The main differences are:
@@ -66,7 +66,7 @@
                   (assoc :ref set-box)
                   (update :threestrap (partial merge threestrap-defaults)))]
     (hooks/install-hooks box hook-config)
-    (into [Rawbox props] children)))
+    (into [RawBox props] children)))
 
 (defn MathBox
   "Component that configures a MathBox-backed canvas and reactively mounts all
