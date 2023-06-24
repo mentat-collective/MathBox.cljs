@@ -1,7 +1,6 @@
 (ns mathbox.hooks
   "Collection of hooks used to configure the [[mathbox/MathBox]] component."
-  (:require [goog.object :as o]
-            [mathbox.types :as t]
+  (:require [mathbox.types :as t]
             ["react" :as react]))
 
 (defn ^:no-doc split-map [m ks]
@@ -74,7 +73,7 @@
   (fn []
     (when (and box v)
       (doto (.. box -three -controls)
-        (o/set k v)))
+        (aset k v)))
     js/undefined))
 
 (defn configureControls
