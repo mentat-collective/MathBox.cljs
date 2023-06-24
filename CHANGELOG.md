@@ -2,6 +2,12 @@
 
 ## [unreleased]
 
+- #16:
+
+ - removes `defprim` in favor of bare `def`, and all supporting clj-kondo hooks.
+   This achieves compatibility with Portal and other systems that load
+   `MathBox.cljs` namespaces via SCI.
+
 ## [0.2.0]
 
 - #14:

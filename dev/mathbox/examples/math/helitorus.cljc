@@ -5,12 +5,9 @@
 (ns mathbox.examples.math.helitorus
   (:require
    #?@(:cljs [[mathbox.core :as mathbox]
-              [mathbox.primitives :as mb]
-              #_["three" :as three]
-              ["three/examples/jsm/controls/TrackballControls.js"
-               :as TrackballControls]])
+              [mathbox.primitives :as mb]])
    [nextjournal.clerk #?(:clj :as :cljs :as-alias) clerk]
-   [mentat.clerk-utils.show :refer [show-sci show-cljs]]))
+   [mentat.clerk-utils.show :refer [show-sci]]))
 
 ;; # Helitorus
 
