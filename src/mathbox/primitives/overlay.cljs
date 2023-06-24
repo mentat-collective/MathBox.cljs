@@ -1,8 +1,8 @@
 (ns mathbox.primitives.overlay
   (:require ["mathbox-react" :as box]
-            [mathbox.macros :refer [defprim]]))
+            [reagent.core :as r]))
 
-(defprim box/Dom
+(def Dom
   "*HTML DOM injector*
 
   - `:attributes`: `null` (nullable object) - HTML attributes, e.g. `{\"style\": {\"color\": \"red\"}}`
@@ -20,9 +20,10 @@
   - `:snap`: `false` (bool) - Snap to pixel
   - `:visible`: `true` (bool) - Visibility for rendering
   - `:zIndex`: `0` (positive int) - Z-Index (2D stacking)
-  - `:zoom`: `1` (number) - HTML zoom")
+  - `:zoom`: `1` (number) - HTML zoom"
+  (r/adapt-react-class box/Dom))
 
-(defprim box/Html
+(def Html
   "*HTML element source*
 
   - `:aligned`: `false` (bool) - Use (fast) integer lookups
@@ -43,4 +44,5 @@
   - `:live`: `true` (bool) - Update continuously
   - `:observe`: `false` (bool) - Pass clock time to data
   - `:realtime`: `false` (bool) - Run on real time, not clock time
-  - `:width`: `1` (nullable number) - Voxel width")
+  - `:width`: `1` (nullable number) - Voxel width"
+  (r/adapt-react-class box/Html))

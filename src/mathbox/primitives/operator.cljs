@@ -1,16 +1,17 @@
 (ns mathbox.primitives.operator
   (:refer-clojure :exclude [Repeat])
   (:require ["mathbox-react" :as box]
-            [mathbox.macros :refer [defprim]]))
+            [reagent.core :as r]))
 
-(defprim box/Clamp
+(def Clamp
   "*Clamp out-of-bounds samples to the nearest data point*
 
   - `:classes`: `[]` (string array) - Custom classes, e.g. `[\"big\"]`
   - `:id`: `null` (nullable string) - Unique ID, e.g. `\"sampler\"`
-  - `:source`: `\"<\"` (select) - Input source")
+  - `:source`: `\"<\"` (select) - Input source"
+  (r/adapt-react-class box/Clamp))
 
-(defprim box/Grow
+(def Grow
   "*Scale data relative to reference data point*
 
   - `:classes`: `[]` (string array) - Custom classes, e.g. `[\"big\"]`
@@ -20,9 +21,10 @@
   - `:items`: `null` (nullable anchor) - Items alignment
   - `:scale`: `1` (number) - Scale factor
   - `:source`: `\"<\"` (select) - Input source
-  - `:width`: `null` (nullable anchor) - Width alignment")
+  - `:width`: `null` (nullable anchor) - Width alignment"
+  (r/adapt-react-class box/Grow))
 
-(defprim box/Join
+(def Join
   "*Join two array dimensions into one by concatenating rows/columns/stacks*
 
   - `:axis`: `null` (nullable axis) - Axis to join, e.g. `x`
@@ -30,9 +32,10 @@
   - `:id`: `null` (nullable string) - Unique ID, e.g. `\"sampler\"`
   - `:order`: `\"wxyz\"` (transpose) - Axis order
   - `:overlap`: `1` (number) - Tuple overlap
-  - `:source`: `\"<\"` (select) - Input source")
+  - `:source`: `\"<\"` (select) - Input source"
+  (r/adapt-react-class box/Join))
 
-(defprim box/Lerp
+(def Lerp
   "*Linear interpolation of data*
 
   - `:centeredW`: `false` (bool) - Centered instead of corner sampling
@@ -50,9 +53,10 @@
   - `:paddingZ`: `0` (number) - Number of samples padding
   - `:size`: `\"absolute\"` (mapping) - Scaling mode (relative, absolute)
   - `:source`: `\"<\"` (select) - Input source
-  - `:width`: `null` (nullable number) - Lerp to width, e.g. `5`")
+  - `:width`: `null` (nullable number) - Lerp to width, e.g. `5`"
+  (r/adapt-react-class box/Lerp))
 
-(defprim box/Memo
+(def Memo
   "*Memoize data to an array/texture*
 
   - `:classes`: `[]` (string array) - Custom classes, e.g. `[\"big\"]`
@@ -60,9 +64,10 @@
   - `:magFilter`: `\"nearest\"` (filter) - Texture magnification filtering
   - `:minFilter`: `\"nearest\"` (filter) - Texture minification filtering
   - `:source`: `\"<\"` (select) - Input source
-  - `:type`: `\"float\"` (type) - Texture data type")
+  - `:type`: `\"float\"` (type) - Texture data type"
+  (r/adapt-react-class box/Memo))
 
-(defprim box/Readback
+(def Readback
   "*Read data back to a binary JavaScript array*
 
   - `:active`: `true` (bool) - Updates continuously
@@ -76,9 +81,10 @@
   - `:items`: `1` (nullable number) - Readback items (read only)
   - `:source`: `\"<\"` (select) - Input source
   - `:type`: `\"float\"` (float) - Readback data type (float, unsignedByte)
-  - `:width`: `1` (nullable number) - Readback width (read only)")
+  - `:width`: `1` (nullable number) - Readback width (read only)"
+  (r/adapt-react-class box/Readback))
 
-(defprim box/Repeat
+(def Repeat
   "*Repeat data in one or more dimensions*
 
   - `:classes`: `[]` (string array) - Custom classes, e.g. `[\"big\"]`
@@ -87,9 +93,10 @@
   - `:id`: `null` (nullable string) - Unique ID, e.g. `\"sampler\"`
   - `:items`: `1` (number) - Repeat items
   - `:source`: `\"<\"` (select) - Input source
-  - `:width`: `1` (number) - Repeat width")
+  - `:width`: `1` (number) - Repeat width"
+  (r/adapt-react-class box/Repeat))
 
-(defprim box/Resample
+(def Resample
   "*Resample data to new dimensions with a shader*
 
   - `:centeredW`: `false` (bool) - Centered instead of corner sampling
@@ -111,9 +118,10 @@
   - `:shader`: `\"<\"` (select) - Shader to use
   - `:size`: `\"absolute\"` (mapping) - Scaling mode (relative, absolute)
   - `:source`: `\"<\"` (select) - Input source
-  - `:width`: `null` (nullable number) - Resample factor width, e.g. `10`")
+  - `:width`: `null` (nullable number) - Resample factor width, e.g. `10`"
+  (r/adapt-react-class box/Resample))
 
-(defprim box/Slice
+(def Slice
   "*Select one or more rows/columns/stacks*
 
   - `:classes`: `[]` (string array) - Custom classes, e.g. `[\"big\"]`
@@ -122,9 +130,10 @@
   - `:id`: `null` (nullable string) - Unique ID, e.g. `\"sampler\"`
   - `:items`: `null` (nullable vec2) - Slice from, to items (excluding to), e.g. `[2, 4]`
   - `:source`: `\"<\"` (select) - Input source
-  - `:width`: `null` (nullable vec2) - Slice from, to width (excluding to), e.g. `[2, 4]`")
+  - `:width`: `null` (nullable vec2) - Slice from, to width (excluding to), e.g. `[2, 4]`"
+  (r/adapt-react-class box/Slice))
 
-(defprim box/Split
+(def Split
   "*Split one array dimension into two by splitting rows/columns/etc*
 
   - `:axis`: `null` (nullable axis) - Axis to split, e.g. `x`
@@ -133,9 +142,10 @@
   - `:length`: `1` (number) - Tuple length
   - `:order`: `\"wxyz\"` (transpose) - Axis order
   - `:overlap`: `1` (number) - Tuple overlap
-  - `:source`: `\"<\"` (select) - Input source")
+  - `:source`: `\"<\"` (select) - Input source"
+  (r/adapt-react-class box/Split))
 
-(defprim box/Spread
+(def Spread
   "*Spread data values according to array indices*
 
   - `:alignDepth`: `0` (anchor) - Depth alignment
@@ -149,9 +159,10 @@
   - `:items`: `null` (nullable vec4) - Items offset, e.g. `[1.5, 0, 0, 0]`
   - `:source`: `\"<\"` (select) - Input source
   - `:unit`: `\"relative\"` (mapping) - Spread per item (absolute) or array (relative)
-  - `:width`: `null` (nullable vec4) - Width offset, e.g. `[1.5, 0, 0, 0]`")
+  - `:width`: `null` (nullable vec4) - Width offset, e.g. `[1.5, 0, 0, 0]`"
+  (r/adapt-react-class box/Spread))
 
-(defprim box/Subdivide
+(def Subdivide
   "*Subdivide data points evenly or with a bevel*
 
   - `:bevel`: `1` (number) - Fraction to end outward from vertices
@@ -162,20 +173,23 @@
   - `:items`: `null` (nullable positive int) - Divisions of items, e.g. `5`
   - `:lerp`: `true` (boolean) - Interpolate values with computed indices
   - `:source`: `\"<\"` (select) - Input source
-  - `:width`: `null` (nullable positive int) - Divisions of width, e.g. `5`")
+  - `:width`: `null` (nullable positive int) - Divisions of width, e.g. `5`"
+  (r/adapt-react-class box/Subdivide))
 
-(defprim box/Swizzle
+(def Swizzle
   "*Swizzle data values*
 
   - `:classes`: `[]` (string array) - Custom classes, e.g. `[\"big\"]`
   - `:id`: `null` (nullable string) - Unique ID, e.g. `\"sampler\"`
   - `:order`: `xyzw` (swizzle) - Swizzle order
-  - `:source`: `\"<\"` (select) - Input source")
+  - `:source`: `\"<\"` (select) - Input source"
+  (r/adapt-react-class box/Swizzle))
 
-(defprim box/Transpose
+(def Transpose
   "*Transpose array dimensions*
 
   - `:classes`: `[]` (string array) - Custom classes, e.g. `[\"big\"]`
   - `:id`: `null` (nullable string) - Unique ID, e.g. `\"sampler\"`
   - `:order`: `xyzw` (transpose) - Transpose order
-  - `:source`: `\"<\"` (select) - Input source")
+  - `:source`: `\"<\"` (select) - Input source"
+  (r/adapt-react-class box/Transpose))

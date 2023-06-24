@@ -3,7 +3,4 @@
   {:unresolved-symbol {:level :off}}}
 
  :lint-as
- {reagent.core/with-let clojure.core/let}
-
- :config-paths
- ["../resources/clj-kondo.exports/org.mentat/mathbox.cljs"]}
+ {reagent.core/with-let clojure.core/let}}

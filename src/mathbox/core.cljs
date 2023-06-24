@@ -2,6 +2,7 @@
   "Home of the [[MathBox]]"
   (:require ["mathbox-react" :as box]
             ["react" :as react]
+            ["three" :as three]
             ["three/examples/jsm/controls/OrbitControls.js" :as OrbitControls]
             [mathbox.hooks :as hooks]))
 
@@ -9,14 +10,12 @@
 ;;
 ;; - better formatting on primitive keyword options
 ;; - document these core namespaces
-;; -
 
-(def
-  ^{:doc "Default `:threestrap` options for the [[MathBox]] component."}
-  threestrap-defaults
+(def threestrap-defaults
+  "Default `:threestrap` options for the [[MathBox]] component."
   {:plugins  ["core" "controls" "cursor"]
    :controls {:klass OrbitControls/OrbitControls}
-   :camera   {}})
+   :camera   {:up (three/Vector3. 0 0 1)}})
 
 ;; ## Components
 

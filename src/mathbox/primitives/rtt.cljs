@@ -1,8 +1,8 @@
 (ns mathbox.primitives.rtt
   (:require ["mathbox-react" :as box]
-            [mathbox.macros :refer [defprim]]))
+            [reagent.core :as r]))
 
-(defprim box/Compose
+(def Compose
   "*Full-screen render pass*
 
   - `:alpha`: `false` (bool) - Compose with alpha transparency
@@ -17,9 +17,10 @@
   - `:zIndex`: `0` (positive int) - Z-Index (2D stacking)
   - `:zOrder`: `null` (nullable number) - Z-Order (drawing order), e.g. `2`
   - `:zTest`: `false` (bool) - Test Z buffer
-  - `:zWrite`: `false` (bool) - Write Z buffer")
+  - `:zWrite`: `false` (bool) - Write Z buffer"
+  (r/adapt-react-class box/Compose))
 
-(defprim box/Rtt
+(def Rtt
   "*Render objects to a texture*
 
   - `:camera`: `\"[camera]\"` (select) - Active camera
@@ -32,4 +33,5 @@
   - `:pass`: `\"view\"` (vertexPass) - Vertex pass (data, view, world, eye)
   - `:speed`: `1` (number) - Global speed
   - `:type`: `\"unsignedByte\"` (type) - Texture data type
-  - `:width`: `null` (nullable number) - RTT width, e.g. `640`")
+  - `:width`: `null` (nullable number) - RTT width, e.g. `640`"
+  (r/adapt-react-class box/Rtt))

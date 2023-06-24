@@ -1,8 +1,8 @@
 (ns mathbox.primitives.draw
   (:require ["mathbox-react" :as box]
-            [mathbox.macros :refer [defprim]]))
+            [reagent.core :as r]))
 
-(defprim box/Axis
+(def Axis
   "*Draw an axis*
 
   - `:axis`: `1` (axis) - Axis
@@ -28,9 +28,10 @@
   - `:zIndex`: `0` (positive int) - Z-Index (2D stacking)
   - `:zOrder`: `null` (nullable number) - Z-Order (drawing order), e.g. `2`
   - `:zTest`: `true` (bool) - Test Z buffer
-  - `:zWrite`: `true` (bool) - Write Z buffer")
+  - `:zWrite`: `true` (bool) - Write Z buffer"
+  (r/adapt-react-class box/Axis))
 
-(defprim box/Face
+(def Face
   "*Draw polygon faces*
 
   - `:blending`: `\"normal\"` (blending) - Blending mode ('no, normal, add, subtract, multiply)
@@ -55,9 +56,10 @@
   - `:zIndex`: `0` (positive int) - Z-Index (2D stacking)
   - `:zOrder`: `null` (nullable number) - Z-Order (drawing order), e.g. `2`
   - `:zTest`: `true` (bool) - Test Z buffer
-  - `:zWrite`: `true` (bool) - Write Z buffer")
+  - `:zWrite`: `true` (bool) - Write Z buffer"
+  (r/adapt-react-class box/Face))
 
-(defprim box/Grid
+(def Grid
   "*Draw a 2D line grid*
 
   - `:axes`: `[1, 2]` (swizzle(2) axis) - Axis pair
@@ -106,9 +108,10 @@
   - `:zTest`: `true` (bool) - Test Z buffer
   - `:zWrite`: `true` (bool) - Write Z buffer
   - `:zeroX`: `true` (bool) - Include zero
-  - `:zeroY`: `true` (bool) - Include zero")
+  - `:zeroY`: `true` (bool) - Include zero"
+  (r/adapt-react-class box/Grid))
 
-(defprim box/Line
+(def Line
   "*Draw lines*
 
   - `:blending`: `\"normal\"` (blending) - Blending mode ('no, normal, add, subtract, multiply)
@@ -131,9 +134,10 @@
   - `:zIndex`: `0` (positive int) - Z-Index (2D stacking)
   - `:zOrder`: `null` (nullable number) - Z-Order (drawing order), e.g. `2`
   - `:zTest`: `true` (bool) - Test Z buffer
-  - `:zWrite`: `true` (bool) - Write Z buffer")
+  - `:zWrite`: `true` (bool) - Write Z buffer"
+  (r/adapt-react-class box/Line))
 
-(defprim box/Point
+(def Point
   "*Draw points*
 
   - `:blending`: `\"normal\"` (blending) - Blending mode ('no, normal, add, subtract, multiply)
@@ -154,9 +158,10 @@
   - `:zIndex`: `0` (positive int) - Z-Index (2D stacking)
   - `:zOrder`: `null` (nullable number) - Z-Order (drawing order), e.g. `2`
   - `:zTest`: `true` (bool) - Test Z buffer
-  - `:zWrite`: `true` (bool) - Write Z buffer")
+  - `:zWrite`: `true` (bool) - Write Z buffer"
+  (r/adapt-react-class box/Point))
 
-(defprim box/Strip
+(def Strip
   "*Draw triangle strips*
 
   - `:blending`: `\"normal\"` (blending) - Blending mode ('no, normal, add, subtract, multiply)
@@ -181,9 +186,10 @@
   - `:zIndex`: `0` (positive int) - Z-Index (2D stacking)
   - `:zOrder`: `null` (nullable number) - Z-Order (drawing order), e.g. `2`
   - `:zTest`: `true` (bool) - Test Z buffer
-  - `:zWrite`: `true` (bool) - Write Z buffer")
+  - `:zWrite`: `true` (bool) - Write Z buffer"
+  (r/adapt-react-class box/Strip))
 
-(defprim box/Surface
+(def Surface
   "*Draw surfaces*
 
   - `:blending`: `\"normal\"` (blending) - Blending mode ('no, normal, add, subtract, multiply)
@@ -212,9 +218,10 @@
   - `:zIndex`: `0` (positive int) - Z-Index (2D stacking)
   - `:zOrder`: `null` (nullable number) - Z-Order (drawing order), e.g. `2`
   - `:zTest`: `true` (bool) - Test Z buffer
-  - `:zWrite`: `true` (bool) - Write Z buffer")
+  - `:zWrite`: `true` (bool) - Write Z buffer"
+  (r/adapt-react-class box/Surface))
 
-(defprim box/Ticks
+(def Ticks
   "*Draw ticks*
 
   - `:blending`: `\"normal\"` (blending) - Blending mode ('no, normal, add, subtract, multiply)
@@ -237,9 +244,10 @@
   - `:zIndex`: `0` (positive int) - Z-Index (2D stacking)
   - `:zOrder`: `null` (nullable number) - Z-Order (drawing order), e.g. `2`
   - `:zTest`: `true` (bool) - Test Z buffer
-  - `:zWrite`: `true` (bool) - Write Z buffer")
+  - `:zWrite`: `true` (bool) - Write Z buffer"
+  (r/adapt-react-class box/Ticks))
 
-(defprim box/Vector
+(def Vector
   "*Draw vectors*
 
   - `:blending`: `\"normal\"` (blending) - Blending mode ('no, normal, add, subtract, multiply)
@@ -262,4 +270,5 @@
   - `:zIndex`: `0` (positive int) - Z-Index (2D stacking)
   - `:zOrder`: `null` (nullable number) - Z-Order (drawing order), e.g. `2`
   - `:zTest`: `true` (bool) - Test Z buffer
-  - `:zWrite`: `true` (bool) - Write Z buffer")
+  - `:zWrite`: `true` (bool) - Write Z buffer"
+  (r/adapt-react-class box/Vector))
