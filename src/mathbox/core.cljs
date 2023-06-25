@@ -1,14 +1,40 @@
 (ns mathbox.core
-  "Home of the [[MathBox]]"
+  "MathBox core components."
   (:require ["mathbox-react" :as box]
             ["react" :as react]
+            ["three" :as three]
             ["three/examples/jsm/controls/OrbitControls.js" :as OrbitControls]
+            ["three/examples/jsm/controls/TrackballControls.js" :as TrackballControls]
             [mathbox.hooks :as hooks]))
 
-;; TODO for release:
-;;
-;; - better formatting on primitive keyword options
-;; - document these core namespaces
+(defn- update-if-exists
+  "Similar to `update-in`, but won't modify the map if the value at `ks` is
+  `nil`."
+  [m ks f]
+  (if-let [v (get-in m ks)]
+    (assoc-in m ks (f v))
+    m))
+
+(defn- k->control
+  "Given a keyword `k`, returns a corresponding threejs controls klass, or `k` if
+  not found."
+  [k]
+  (case k
+    :orbit OrbitControls/OrbitControls
+    :trackball TrackballControls/TrackballControls
+    k))
+
+(defn- update-threestrap
+  "Bespoke processing of a few options that are tough to handle without knowing
+  specific threejs details."
+  [m]
+  (-> m
+      (update-if-exists [:controls :klass] k->control)
+      (update-if-exists [:camera :up] (fn [v]
+                                        (if (vector? v)
+                                          (let [[x y z] v]
+                                            (three/Vector3. x y z))
+                                          v)))))
 
 (def threestrap-defaults
   "Default `:threestrap` options for the [[MathBox]] component."
@@ -61,7 +87,11 @@
         [hook-config props] (hooks/split-config props)
         props (-> props
                   (assoc :ref set-box)
-                  (update :threestrap (partial merge threestrap-defaults)))]
+                  (update :threestrap
+                          (fn [m]
+                            (if m
+                              (merge threestrap-defaults (update-threestrap m))
+                              threestrap-defaults))))]
     (hooks/install-hooks box hook-config)
     (into [RawBox props] children)))
 
