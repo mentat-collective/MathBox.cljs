@@ -2,6 +2,8 @@
 
 ## [unreleased]
 
+## [0.2.1]
+
 - #16:
 
   - Adds support for keywords `:orbit` or `:trackball` in the `[:threestrap
