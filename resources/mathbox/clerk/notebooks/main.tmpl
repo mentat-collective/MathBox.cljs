@@ -51,9 +51,9 @@
 ;; notebook's namespace:
 
 (clerk/eval-cljs
- '(require '[reagent.core :as reagent])
- '(require '[mathbox.core :as mathbox])
- '(require '[mathbox.primitives :as mb]))
+ '(do (require '[reagent.core :as reagent])
+      (require '[mathbox.core :as mathbox])
+      (require '[mathbox.primitives :as mb])))
 
 ;; > Note that you can also use fully-qualified names of any namespace installed
 ;; > into SCI via the `myusername.sci-extensions` namespace.
