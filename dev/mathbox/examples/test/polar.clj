@@ -33,7 +33,7 @@
                  [-1 1]]
          :scale [2 1 1]
          :helix 0.1}
-        ;; radius axis with tickets.
+        ;; radius axis with ticks.
         [box/Transform {:position [0 0.5 0]}
          [box/Axis {:detail 256}]
          [box/Scale {:divide 10 :unit Math/PI :base 2}]

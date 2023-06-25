@@ -17,7 +17,7 @@
 ;; ## Variables
 
 (def lib 'org.mentat/mathbox.cljs)
-(def version "0.2.1")
+(def version "0.2.2")
 (def pom-deps
   {'org.babashka/sci
    {:mvn/version "0.7.39"
