@@ -2,6 +2,10 @@
 
 ## [unreleased]
 
+## [0.2.2]
+
+- #17 limits the max threejs version to 0.150.0 to preserve colors.
+
 ## [0.2.1]
 
 - #16:
