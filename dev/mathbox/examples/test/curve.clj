@@ -9,8 +9,8 @@
 ^{::clerk/visibility {:code :hide :result :hide}}
 (clerk/eval-cljs
  ;; These aliases only apply inside this namespace.
- '(require '[mathbox.core :as mathbox])
- '(require '[mathbox.primitives :as mb]))
+ '(do (require '[mathbox.core :as mathbox])
+      (require '[mathbox.primitives :as mb])))
 
 ;; # Curve
 
