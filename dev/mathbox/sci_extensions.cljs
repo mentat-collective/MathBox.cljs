@@ -3,8 +3,6 @@
             ["three" :as three]
             [mathbox.sci]
             [mathbox.examples.test.face]
-            [mathbox.examples.math.helitorus]
-            [mathbox.examples.math.pq-knot]
             [sci.ctx-store]
             [sci.core :as sci]))
 

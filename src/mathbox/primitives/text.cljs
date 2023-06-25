@@ -1,8 +1,8 @@
 (ns mathbox.primitives.text
   (:require ["mathbox-react" :as box]
-            [mathbox.macros :refer [defprim]]))
+            [reagent.core :as r]))
 
-(defprim box/Format
+(def Format
   "*Text formatter*
 
   - `:classes`: `[]` (string array) - Custom classes, e.g. `[\"big\"]`
@@ -20,9 +20,10 @@
   - `:style`: `\"\"` (string) - Font style, e.g. `\"italic\"`
   - `:type`: `\"float\"` (type) - Texture data type
   - `:variant`: `\"\"` (string) - Font variant, e.g. `\"small-caps\"`
-  - `:weight`: `\"\"` (string) - Font weight, e.g. `\"bold\"`")
+  - `:weight`: `\"\"` (string) - Font weight, e.g. `\"bold\"`"
+  (r/adapt-react-class box/Format))
 
-(defprim box/Label
+(def Label
   "*Draw GL labels*
 
   - `:background`: `\"rgb(255, 255, 255)\"` (color) - Outline background
@@ -45,9 +46,10 @@
   - `:zIndex`: `0` (positive int) - Z-Index (2D stacking)
   - `:zOrder`: `null` (nullable number) - Z-Order (drawing order), e.g. `2`
   - `:zTest`: `true` (bool) - Test Z buffer
-  - `:zWrite`: `true` (bool) - Write Z buffer")
+  - `:zWrite`: `true` (bool) - Write Z buffer"
+  (r/adapt-react-class box/Label))
 
-(defprim box/Retext
+(def Retext
   "*Text atlas resampler*
 
   - `:centeredW`: `false` (bool) - Centered instead of corner sampling
@@ -69,9 +71,10 @@
   - `:shader`: `\"<\"` (select) - Shader to use
   - `:size`: `\"absolute\"` (mapping) - Scaling mode (relative, absolute)
   - `:source`: `\"<\"` (select) - Input source
-  - `:width`: `null` (nullable number) - Resample factor width, e.g. `10`")
+  - `:width`: `null` (nullable number) - Resample factor width, e.g. `10`"
+  (r/adapt-react-class box/Retext))
 
-(defprim box/Text
+(def Text
   "*GL text source*
 
   - `:aligned`: `false` (bool) - Use (fast) integer lookups
@@ -101,4 +104,5 @@
   - `:type`: `\"float\"` (type) - Texture data type
   - `:variant`: `\"\"` (string) - Font variant, e.g. `\"small-caps\"`
   - `:weight`: `\"\"` (string) - Font weight, e.g. `\"bold\"`
-  - `:width`: `1` (nullable number) - Voxel width")
+  - `:width`: `1` (nullable number) - Voxel width"
+  (r/adapt-react-class box/Text))

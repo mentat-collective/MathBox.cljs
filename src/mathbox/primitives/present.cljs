@@ -1,8 +1,8 @@
 (ns mathbox.primitives.present
   (:require ["mathbox-react" :as box]
-            [mathbox.macros :refer [defprim]]))
+            [reagent.core :as r]))
 
-(defprim box/Move
+(def Move
   "*Move elements in/out on transition*
 
   - `:classes`: `[]` (string array) - Custom classes, e.g. `[\"big\"]`
@@ -18,9 +18,10 @@
   - `:id`: `null` (nullable string) - Unique ID, e.g. `\"sampler\"`
   - `:pass`: `\"view\"` (vertexPass) - Vertex pass (data, view, world, eye)
   - `:stagger`: `[0, 0, 0, 0]` (vec4) - Stagger dimensions, e.g. `[2, 1, 0, 0]`
-  - `:to`: `[0, 0, 0, 0]` (vec4) - Exit to")
+  - `:to`: `[0, 0, 0, 0]` (vec4) - Exit to"
+  (r/adapt-react-class box/Move))
 
-(defprim box/Play
+(def Play
   "*Play a sequenced animation*
 
   - `:classes`: `[]` (string array) - Custom classes, e.g. `[\"big\"]`
@@ -35,18 +36,20 @@
   - `:speed`: `1` (number) - Play speed
   - `:target`: `\"<\"` (select) - Animation target
   - `:to`: `Infinity` (number) - Play until
-  - `:trigger`: `1` (nullable number) - Trigger on step")
+  - `:trigger`: `1` (nullable number) - Trigger on step"
+  (r/adapt-react-class box/Play))
 
-(defprim box/Present
+(def Present
   "*Present a tree of slides*
 
   - `:classes`: `[]` (string array) - Custom classes, e.g. `[\"big\"]`
   - `:directed`: `true` (bool) - Apply directional transitions
   - `:id`: `null` (nullable string) - Unique ID, e.g. `\"sampler\"`
   - `:index`: `1` (number) - Present slide number
-  - `:length`: `0` (number) - Presentation length (computed)")
+  - `:length`: `0` (number) - Presentation length (computed)"
+  (r/adapt-react-class box/Present))
 
-(defprim box/Reveal
+(def Reveal
   "*Reveal/hide elements on transition*
 
   - `:classes`: `[]` (string array) - Custom classes, e.g. `[\"big\"]`
@@ -59,9 +62,10 @@
   - `:enter`: `null` (nullable number) - Enter state, e.g. `0.5`
   - `:exit`: `null` (nullable number) - Exit state, e.g. `0.5`
   - `:id`: `null` (nullable string) - Unique ID, e.g. `\"sampler\"`
-  - `:stagger`: `[0, 0, 0, 0]` (vec4) - Stagger dimensions, e.g. `[2, 1, 0, 0]`")
+  - `:stagger`: `[0, 0, 0, 0]` (vec4) - Stagger dimensions, e.g. `[2, 1, 0, 0]`"
+  (r/adapt-react-class box/Reveal))
 
-(defprim box/Slide
+(def Slide
   "*Presentation slide*
 
   - `:classes`: `[]` (string array) - Custom classes, e.g. `[\"big\"]`
@@ -71,9 +75,10 @@
   - `:late`: `0` (number) - Stay late steps
   - `:order`: `0` (nullable number) - Slide order
   - `:steps`: `1` (number) - Slide steps
-  - `:to`: `null` (nullable number) - Disappear on step, e.g. `4`")
+  - `:to`: `null` (nullable number) - Disappear on step, e.g. `4`"
+  (r/adapt-react-class box/Slide))
 
-(defprim box/Step
+(def Step
   "*Step through a sequenced animation*
 
   - `:classes`: `[]` (string array) - Custom classes, e.g. `[\"big\"]`
@@ -90,4 +95,5 @@
   - `:speed`: `1` (number) - Step speed
   - `:stops`: `null` (nullable number array) - Playhead stops, e.g. `[0, 1, 3, 5]`
   - `:target`: `\"<\"` (select) - Animation target
-  - `:trigger`: `1` (nullable number) - Trigger on step")
+  - `:trigger`: `1` (nullable number) - Trigger on step"
+  (r/adapt-react-class box/Step))

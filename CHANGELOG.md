@@ -2,6 +2,29 @@
 
 ## [unreleased]
 
+## [0.2.1]
+
+- #16:
+
+  - Adds support for keywords `:orbit` or `:trackball` in the `[:threestrap
+    :controls :klass]` position of the options supplied to
+    `mathbox.core/MathBox`, vs having to supply the class yourself.
+
+  - Automatically converts a 3-vector in the `[:threestrap :camera :up]`
+    position of the options supplied to `mathbox.core/MathBox` into a proper
+    threejs `Vector3`, allowing easier customization of the up direction without
+    a threejs import.
+
+  - removes `defprim` in favor of bare `def`, and all supporting clj-kondo
+    hooks. This achieves compatibility with Portal and other systems that load
+    `MathBox.cljs` namespaces via SCI.
+
+  - Bumps `mathbox-react` to 0.2.2 and adds a version range to the threejs
+    dependency to keep it below v163 when WebGL1 support expires.
+
+  - Removes Helitorus and pq-knot examples, since these live more naturally in
+    [Emmy-Viewers](https://github.com/mentat-collective/emmy-viewers).
+
 ## [0.2.0]
 
 - #14:

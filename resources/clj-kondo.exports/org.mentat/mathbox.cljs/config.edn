@@ -1,4 +1,0 @@
-{:hooks
- {:analyze-call
-  {mathbox.macros/defprim
-   hooks.mathbox.macros/defprim}}}

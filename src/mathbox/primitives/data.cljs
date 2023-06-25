@@ -1,8 +1,8 @@
 (ns mathbox.primitives.data
   (:require ["mathbox-react" :as box]
-            [mathbox.macros :refer [defprim]]))
+            [reagent.core :as r]))
 
-(defprim box/Area
+(def Area
   "*2D sampled matrix*
 
   - `:aligned`: `false` (bool) - Use (fast) integer lookups
@@ -32,9 +32,10 @@
   - `:rangeY`: `[-1, 1]` (vec2) - Range on axis
   - `:realtime`: `false` (bool) - Run on real time, not clock time
   - `:type`: `\"float\"` (type) - Texture data type
-  - `:width`: `1` (nullable number) - Matrix width")
+  - `:width`: `1` (nullable number) - Matrix width"
+  (r/adapt-react-class box/Area))
 
-(defprim box/Array
+(def Array
   "*1D array*
 
   - `:aligned`: `false` (bool) - Use (fast) integer lookups
@@ -55,9 +56,10 @@
   - `:observe`: `false` (bool) - Pass clock time to data
   - `:realtime`: `false` (bool) - Run on real time, not clock time
   - `:type`: `\"float\"` (type) - Texture data type
-  - `:width`: `1` (nullable number) - Array width")
+  - `:width`: `1` (nullable number) - Array width"
+  (r/adapt-react-class box/Array))
 
-(defprim box/Interval
+(def Interval
   "*1D sampled array*
 
   - `:aligned`: `false` (bool) - Use (fast) integer lookups
@@ -82,9 +84,10 @@
   - `:range`: `[-1, 1]` (vec2) - Range on axis
   - `:realtime`: `false` (bool) - Run on real time, not clock time
   - `:type`: `\"float\"` (type) - Texture data type
-  - `:width`: `1` (nullable number) - Array width")
+  - `:width`: `1` (nullable number) - Array width"
+  (r/adapt-react-class box/Interval))
 
-(defprim box/Matrix
+(def Matrix
   "*2D matrix*
 
   - `:aligned`: `false` (bool) - Use (fast) integer lookups
@@ -107,9 +110,10 @@
   - `:observe`: `false` (bool) - Pass clock time to data
   - `:realtime`: `false` (bool) - Run on real time, not clock time
   - `:type`: `\"float\"` (type) - Texture data type
-  - `:width`: `1` (nullable number) - Matrix width")
+  - `:width`: `1` (nullable number) - Matrix width"
+  (r/adapt-react-class box/Matrix))
 
-(defprim box/Scale
+(def Scale
   "*Human-friendly divisions on an axis, subdivided as needed*
 
   - `:axis`: `1` (axis) - Axis
@@ -125,9 +129,10 @@
   - `:range`: `[-1, 1]` (vec2) - Range on axis
   - `:start`: `true` (bool) - Include start
   - `:unit`: `1` (number) - Reference unit
-  - `:zero`: `true` (bool) - Include zero")
+  - `:zero`: `true` (bool) - Include zero"
+  (r/adapt-react-class box/Scale))
 
-(defprim box/Volume
+(def Volume
   "*3D sampled voxels*
 
   - `:aligned`: `false` (bool) - Use (fast) integer lookups
@@ -161,9 +166,10 @@
   - `:rangeZ`: `[-1, 1]` (vec2) - Range on axis
   - `:realtime`: `false` (bool) - Run on real time, not clock time
   - `:type`: `\"float\"` (type) - Texture data type
-  - `:width`: `1` (nullable number) - Voxel width")
+  - `:width`: `1` (nullable number) - Voxel width"
+  (r/adapt-react-class box/Volume))
 
-(defprim box/Voxel
+(def Voxel
   "*3D voxels*
 
   - `:aligned`: `false` (bool) - Use (fast) integer lookups
@@ -187,4 +193,5 @@
   - `:observe`: `false` (bool) - Pass clock time to data
   - `:realtime`: `false` (bool) - Run on real time, not clock time
   - `:type`: `\"float\"` (type) - Texture data type
-  - `:width`: `1` (nullable number) - Voxel width")
+  - `:width`: `1` (nullable number) - Voxel width"
+  (r/adapt-react-class box/Voxel))
