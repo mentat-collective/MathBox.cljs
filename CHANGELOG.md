@@ -20,6 +20,9 @@
   - Bumps `mathbox-react` to 0.2.2 and adds a version range to the threejs
     dependency to keep it below v163 when WebGL1 support expires.
 
+  - Removes Helitorus and pq-knot examples, since these live more naturally in
+    [Emmy-Viewers](https://github.com/mentat-collective/emmy-viewers).
+
 ## [0.2.0]
 
 - #14:

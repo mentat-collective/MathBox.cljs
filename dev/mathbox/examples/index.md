@@ -13,8 +13,6 @@ Each example below is marked with one of the these three statuses:
 - 🚧 [Color Cube](math/colorcube.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/math/colorcube.clj))
 - 🚧 [Exponential](math/exponential.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/math/exponential.clj))
 - ❌ [Field Lines](math/fieldlines.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/math/fieldlines.clj))
-- 🚧 [Helitorus](math/helitorus.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/math/helitorus.cljc))
-- 🚧 [(p, q) Torus Knot](math/pq_knot.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/math/pq_knot.cljc))
 - ❌ [Hopf](math/hopf.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/math/hopf.clj))
 - ❌ [Hyperbolic](math/hyperbolic.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/math/hyperbolic.clj))
 - ❌ [Ortho](math/ortho.html) ([code](https://github.com/mentat-collective/mathbox.cljs/tree/main/dev/mathbox/examples/math/ortho.clj))
